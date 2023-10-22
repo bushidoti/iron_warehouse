@@ -1,13 +1,23 @@
-import React from 'react';
-import { UploadOutlined, UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import React, {useState} from 'react';
+import { UserOutlined } from '@ant-design/icons';
+import {Alert, Avatar, Layout, Menu, MenuProps} from 'antd';
+import {items} from "./menu_items";
+import Marquee from 'react-fast-marquee';
 
 const { Header, Content, Footer, Sider } = Layout;
+const rootSubmenuKeys = ['sub1', 'sub4', 'sub5'];
 
 const LayoutForm: React.FC = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [openKeys, setOpenKeys] = useState(['']);
+
+  const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+    if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+      setOpenKeys(keys);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  };
 
   return (
     <Layout	style={{minHeight: '100vh'}}>
@@ -21,25 +31,35 @@ const LayoutForm: React.FC = () => {
           console.log(collapsed, type);
         }}
       >
-        <div className="demo-logo-vertical" />
+              <Avatar size={100}  style={{
+                    right: '20%', margin: 10
+                }}  icon={<UserOutlined />} />
         <Menu
-          theme="dark"
           mode="inline"
-          defaultSelectedKeys={['4']}
-          items={[UserOutlined, VideoCameraOutlined, UploadOutlined, UserOutlined].map(
-            (icon, index) => ({
-              key: String(index + 1),
-              icon: React.createElement(icon),
-              label: `nav ${index + 1}`,
-            }),
-          )}
+          theme={"dark"}
+          items={items}
+          style={{backgroundColor:'#00022b'}}
+          defaultSelectedKeys={['1']}
+          openKeys={openKeys}
+          onOpenChange={onOpenChange}
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0 }} className='bg-sky-200'/>
+        <Header style={{ padding: 0 }}>
+           <Alert
+                banner
+                type="info"
+                style={{height:'100%'}}
+                showIcon={false}
+                message={
+                  <Marquee pauseOnHover gradient={false}>
+                    خوش آمدید آقای ..... !
+                  </Marquee>
+                }
+              />
+        </Header>
         <Content style={{ margin: '24px 16px 0' }}>
-          <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>content
-          </div>
+          <div className='bg-blue-50 rounded' style={{ padding: 24 }}>content</div>
         </Content>
         <Footer style={{textAlign: 'center'}}>تمامی حقوق برای شرکت digitkey می باشد.</Footer>
       </Layout>

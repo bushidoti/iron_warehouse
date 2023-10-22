@@ -12,16 +12,24 @@ const root = ReactDOM.createRoot(
 );
 root.render(
     <ConfigProvider locale={fa_IR} direction="rtl" theme={{
-        token:{
-            colorBgLayout:'rgb(186 230 253)'
-
-        },
         components: {
             Layout: {
                 triggerColor:'rgb(14 165 233)',
+                bodyBg:'#daeaf7',
+                headerBg:'#4fa5d8',
+                siderBg:'#00022b',
+                footerBg:'#4fa5d8',
             },
             Divider: {
                 colorSplit: '#69b1ff'
+            },
+            Menu: {
+                colorBgContainer: '#69b1ff',
+                darkItemBg: '#69b1ff',
+                darkSubMenuItemBg:'#010e54',
+                darkItemSelectedBg: '#0855b1',
+                darkItemHoverBg	: '#daeaf7',
+                darkItemHoverColor	: '#00022b',
             }
         }
     }}>
