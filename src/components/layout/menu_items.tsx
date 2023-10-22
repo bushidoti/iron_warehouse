@@ -19,6 +19,8 @@ function getItem(
     icon?: React.ReactNode,
     children?: MenuItem[] ,
     disabled?: boolean,
+    danger?: boolean ,
+
 
 ): MenuItem {
     return {
@@ -27,6 +29,8 @@ function getItem(
         children,
         label,
         disabled,
+        danger,
+
 
     } as MenuItem;
 }
@@ -77,5 +81,5 @@ export const items: MenuItem[] = [
         getItem(<Link to='../warhouse/handling'>انبارگردانی</Link>, '19')
     ] ),
     getItem(<Link to='../contactus'>پشتیبانی</Link>, '20', <PhoneOutlined/>),
-    getItem(<Link to='../logout'>خروج</Link>, '21', <PoweroffOutlined/>),
+    getItem(<Link to='../logout'>خروج</Link>, '21', <PoweroffOutlined/>,undefined,undefined,true),
 ];

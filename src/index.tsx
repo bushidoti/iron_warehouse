@@ -26,6 +26,7 @@ root.render(
             Menu: {
                 colorBgContainer: '#69b1ff',
                 darkItemBg: '#69b1ff',
+                darkItemColor: '#69b1ff',
                 darkSubMenuItemBg:'#010e54',
                 darkItemSelectedBg: '#0855b1',
                 darkItemHoverBg	: '#daeaf7',
