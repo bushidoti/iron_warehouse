@@ -1,15 +1,33 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {Route, Routes} from "react-router-dom";
 import LayoutForm from "./components/layout/layout";
+import {Loading} from "./components/loading/loading";
 
 function App() {
-  return (
-    <Routes>
-        <Route path={'*'} element={<LayoutForm/>}>
+    const [loading, setLoading] = useState(true)
 
-        </Route>
-    </Routes>
+       useEffect(() => {
+        if (document.readyState === "complete") {
+            setTimeout(() => setLoading(false), 3000)
+        }
+    }, [])
+
+  return (
+        <>
+          {loading ?
+
+            <Loading/>
+
+                :
+
+            <Routes>
+                <Route path={'*'} element={<LayoutForm/>}>
+
+                </Route>
+            </Routes>
+          }
+        </>
   );
 }
 

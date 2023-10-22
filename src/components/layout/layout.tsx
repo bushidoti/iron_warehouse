@@ -26,6 +26,7 @@ const LayoutForm: React.FC = () => {
         collapsedWidth="0">
                 <div className='flex flex-col items-center m-5'>
                     <Avatar size={100} icon={<UserOutlined />} />
+                    <p className='text-gray-50'>مالی</p>
                     <p className='text-gray-50'>حسین شاه محمدلو</p>
                 </div>
                 <Menu
