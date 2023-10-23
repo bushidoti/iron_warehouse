@@ -57,24 +57,25 @@ export const items: MenuItem[] = [
             getItem(<Link to='../personal/upload'>باگذاری</Link>, '9'),
         ]),
         getItem(<Link to='../personal'>انبار محصول</Link>, '10', undefined),
+        getItem(<Link to='../personal'>انبار ضایعات</Link>, '11', undefined),
 
         getItem(<Link to='../personal'>اموال</Link>, 'sub4', undefined, [
-            getItem(<Link to='../personal/register'>ثبت</Link>, '11'),
-            getItem(<Link to='../personal/report'>گزارش</Link>, '12'),
-            getItem(<Link to='../personal/upload'>باگذاری</Link>, '13'),
+            getItem(<Link to='../personal/register'>ثبت</Link>, '12'),
+            getItem(<Link to='../personal/report'>گزارش</Link>, '13'),
+            getItem(<Link to='../personal/upload'>باگذاری</Link>, '14'),
         ]),
     ]),
     getItem(<Link to='../warhouse'>تولید</Link>, 'sub5', <ConstructionIcon/>, [
         getItem(<Link to='../warhouse/product'>مدیریت تولید</Link>, 'sub6', null, [
-            getItem(<Link to='../warhouse/product/register'>ثبت</Link>, '14'),
-            getItem(<Link to='../warhouse/product/report'>گزارش</Link>, '15'),
+            getItem(<Link to='../warhouse/product/register'>ثبت</Link>, '15'),
+            getItem(<Link to='../warhouse/product/report'>گزارش</Link>, '16'),
         ]),
 
         getItem(<Link to='../warhouse/property'>انبار تولید</Link>, 'sub7', null, [
-            getItem(<Link to='../warhouse/property/register'>ثبت</Link>, '16'),
-            getItem(<Link to='../warhouse/property/report'>گزارش</Link>, '17'),
-            getItem(<Link to='../warhouse/property/sent'>ارسالی</Link>, '18'),
-            getItem(<Link to='../warhouse/property/recycle'>بایگانی</Link>, '19'),
+            getItem(<Link to='../warhouse/property/register'>ثبت</Link>, '17'),
+            getItem(<Link to='../warhouse/property/report'>گزارش</Link>, '18'),
+            getItem(<Link to='../warhouse/property/sent'>ارسالی</Link>, '19'),
+            getItem(<Link to='../warhouse/property/recycle'>بایگانی</Link>, '20'),
         ]),
     ] ),
     getItem(<Link to='../logout'>فروش</Link>, '21', <SellIcon/>),

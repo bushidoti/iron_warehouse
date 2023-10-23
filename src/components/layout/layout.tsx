@@ -1,10 +1,9 @@
 import React, {useState} from 'react';
 import { UserOutlined } from '@ant-design/icons';
-import {Alert, Avatar, Layout, Menu, MenuProps} from 'antd';
+import { Avatar, Layout, Menu, MenuProps } from 'antd';
 import {items} from "./menu_items";
-import Marquee from 'react-fast-marquee';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 const rootSubmenuKeys = ['sub1', 'sub5'];
 
 const LayoutForm: React.FC = () => {
@@ -33,28 +32,15 @@ const LayoutForm: React.FC = () => {
                   mode="inline"
                   theme={"dark"}
                   items={items}
-                  style={{backgroundColor:'#00022b'}}
                   defaultSelectedKeys={['1']}
                   openKeys={openKeys}
                   onOpenChange={onOpenChange}
                 />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0 }}>
-           <Alert
-                banner
-                type="info"
-                className='h-full'
-                showIcon={false}
-                message={
-                  <Marquee pauseOnHover gradient={false}>
-                    خوش آمدید آقای ..... !
-                  </Marquee>
-                }
-              />
-        </Header>
         <Content style={{ margin: '24px 16px 0' }}>
           <div className='bg-blue-50 rounded' style={{ padding: 24 }}>
+
           </div>
         </Content>
         <Footer style={{textAlign: 'center'}}>تمامی حقوق برای شرکت digitkey می باشد.</Footer>

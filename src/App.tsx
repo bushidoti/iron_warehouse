@@ -3,7 +3,7 @@ import './App.css';
 import {Route, Routes} from "react-router-dom";
 import LayoutForm from "./components/layout/layout";
 import {Loading} from "./components/loading/loading";
-
+import {Banner} from "./components/layout/banner";
 
 function App() {
 
@@ -22,12 +22,14 @@ function App() {
             <Loading/>
 
                 :
+                <>
+                      <Banner/>
+                     <Routes>
+                        <Route path={'*'} element={<LayoutForm/>}>
 
-            <Routes>
-                <Route path={'*'} element={<LayoutForm/>}>
-
-                </Route>
-            </Routes>
+                        </Route>
+                     </Routes>
+                </>
           }
         </>
   );

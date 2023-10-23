@@ -36,12 +36,13 @@ root.render(
             },
             Menu: {
                 colorBgContainer: '#69b1ff',
-                darkItemBg: '#69b1ff',
+                darkItemBg: '#00022b',
                 darkItemColor: '#69b1ff',
-                darkSubMenuItemBg:'#010e54',
+                subMenuItemBg:'#69b1ff',
                 iconSize:20,
                 itemMarginBlock:8,
                 darkItemSelectedBg: '#0855b1',
+                darkSubMenuItemBg: '#010e54',
                 darkItemHoverBg	: '#daeaf7',
                 darkItemHoverColor	: '#00022b',
             }
