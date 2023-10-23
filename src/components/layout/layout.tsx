@@ -40,7 +40,7 @@ const LayoutForm: React.FC = () => {
       <Layout>
         <Content style={{ margin: '24px 16px 0' }}>
           <div className='bg-blue-50 rounded' style={{ padding: 24 }}>
-
+                    بدنه برنامه در این قسمت قرار میگیرد
           </div>
         </Content>
         <Footer style={{textAlign: 'center'}}>تمامی حقوق برای شرکت digitkey می باشد.</Footer>
