@@ -5,11 +5,12 @@ import LayoutForm from "./components/layout/layout";
 import {Loading} from "./components/loading/loading";
 
 function App() {
+
     const [loading, setLoading] = useState(true)
 
-       useEffect(() => {
+    useEffect(() => {
         if (document.readyState === "complete") {
-            setTimeout(() => setLoading(false), 3000)
+            setTimeout(() => setLoading(false), 1000)
         }
     }, [])
 
