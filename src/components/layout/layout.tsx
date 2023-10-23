@@ -5,7 +5,7 @@ import {items} from "./menu_items";
 import Marquee from 'react-fast-marquee';
 
 const { Header, Content, Footer, Sider } = Layout;
-const rootSubmenuKeys = ['sub1', 'sub4', 'sub5'];
+const rootSubmenuKeys = ['sub1', 'sub5'];
 
 const LayoutForm: React.FC = () => {
   const [openKeys, setOpenKeys] = useState(['']);
@@ -54,7 +54,8 @@ const LayoutForm: React.FC = () => {
               />
         </Header>
         <Content style={{ margin: '24px 16px 0' }}>
-          <div className='bg-blue-50 rounded' style={{ padding: 24 }}>content</div>
+          <div className='bg-blue-50 rounded' style={{ padding: 24 }}>
+          </div>
         </Content>
         <Footer style={{textAlign: 'center'}}>تمامی حقوق برای شرکت digitkey می باشد.</Footer>
       </Layout>
