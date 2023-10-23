@@ -11,7 +11,7 @@ function App() {
 
     useEffect(() => {
         if (document.readyState === "complete") {
-            setTimeout(() => setLoading(false), 2000)
+            setTimeout(() => setLoading(false), 3000)
         }
     }, [])
 
