@@ -1,5 +1,5 @@
 import {Link} from "react-router-dom";
-import {MenuProps} from "antd";
+import {Menu, MenuProps} from "antd";
 import {
     PieChartOutlined,
     PoweroffOutlined,
@@ -8,6 +8,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import HomeSharpIcon from '@mui/icons-material/HomeSharp';
+import React, {useState} from "react";
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -73,3 +74,29 @@ export const items: MenuItem[] = [
     getItem(<Link to='../buy'>درخواست خرید</Link>, '22', <SellIcon/>),
     getItem(<Link to='../logout'>خروج</Link>, '23', <PoweroffOutlined/>,undefined,undefined,true),
 ];
+
+const rootSubmenuKeys = ['sub1', 'sub5'];
+
+
+export const MenuLayout = () => {
+  const [openKeys, setOpenKeys] = useState(['']);
+  const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
+    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+    if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
+      setOpenKeys(keys);
+    } else {
+      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
+    }
+  };
+
+    return (
+         <Menu
+                  mode="inline"
+                  theme={"dark"}
+                  items={items}
+                  defaultSelectedKeys={['1']}
+                  openKeys={openKeys}
+                  onOpenChange={onOpenChange}
+                />
+    )
+}
