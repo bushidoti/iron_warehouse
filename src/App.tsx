@@ -34,29 +34,38 @@ function App() {
     useEffect(() => {
         if (isLogged) {
             (async () => {
-                const {data} = (await axios.get(`${Url}/permission/`, {
+                await axios.get(`${Url}/permission/`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
-                }));
-                setPermission(data.message)
+                }).then(response => {
+                    return response
+                }).then(async data => {
+                    setPermission(data.data.message)
+                })
             })().then(
                 async () => {
-                const {data} = (await axios.get(`${Url}/name/`, {
+                await axios.get(`${Url}/name/`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
-                }));
-                setFullName(data.message)
+                }).then(response => {
+                    return response
+                }).then(async data => {
+                    setFullName(data.data.message)
+                })
             }
             ).then(
                  async () => {
-                const {data} = (await axios.get(`${Url}/department/`, {
+                await axios.get(`${Url}/department/`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
-                }));
-                setDepartment(data.message)
+                }).then(response => {
+                    return response
+                }).then(async data => {
+                    setDepartment(data.data.message)
+                })
             }
             )
         }

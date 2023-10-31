@@ -8,6 +8,7 @@ import SellIcon from '@mui/icons-material/Sell';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import HomeSharpIcon from '@mui/icons-material/HomeSharp';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React, {useState} from "react";
 
 type MenuItem = Required<MenuProps>['items'][number];
@@ -71,9 +72,10 @@ export const items: MenuItem[] = [
         ]),
     ] ),
     getItem(<Link to='../sale'>فروش</Link>, '21', <SellIcon/>),
-    getItem(<Link to='../buy'>درخواست خرید</Link>, '22', <SellIcon/>),
+    getItem(<Link to='../buy'>درخواست خرید</Link>, '22', <ShoppingCartIcon/>),
     getItem(<Link to='../logout'>خروج</Link>, '23', <PoweroffOutlined/>,undefined,undefined,true),
 ];
+
 
 const rootSubmenuKeys = ['sub1', 'sub5'];
 
