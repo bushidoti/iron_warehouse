@@ -41,7 +41,7 @@ function App() {
                 }).then(response => {
                     return response
                 }).then(async data => {
-                    setPermission(data.data.message)
+                    setPermission(data.data.content)
                 })
             })().then(
                 async () => {
@@ -52,7 +52,7 @@ function App() {
                 }).then(response => {
                     return response
                 }).then(async data => {
-                    setFullName(data.data.message)
+                    setFullName(data.data.content)
                 })
             }
             ).then(
@@ -64,7 +64,7 @@ function App() {
                 }).then(response => {
                     return response
                 }).then(async data => {
-                    setDepartment(data.data.message)
+                    setDepartment(data.data.content)
                 })
             }
             )
