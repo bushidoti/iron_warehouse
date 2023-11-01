@@ -10,7 +10,9 @@ const Login: React.FC = () => {
     const context = useContext(Context)
     const navigate = useNavigate();
 
-
+   const success = () => {
+        message.success('خوش آمدید');
+    };
     const error = () => {
         message.error('نام کاربری یا رمز عبور اشتباه است');
     };
@@ -35,6 +37,7 @@ const Login: React.FC = () => {
             axios.defaults.headers.common['Authorization'] = `Bearer ${data['access']}`;
             navigate('/');
             context.setLogged(true)
+            success()
         } catch (e) {
             context.setLogged(false)
             error()

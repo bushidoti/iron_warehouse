@@ -13,7 +13,7 @@ function App() {
     const [loading, setLoading] = useState(true)
     const [isLogged, setLogged] = useState(false)
     const navigate = useNavigate();
-    const [permission, setPermission] = useState<object>({});
+    const [permission, setPermission] = useState<[]>([]);
     const [fullName, setFullName] = useState('');
     const [department, setDepartment] = useState('');
 
