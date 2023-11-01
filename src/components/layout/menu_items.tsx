@@ -68,7 +68,7 @@ export const MenuLayout = () => {
             getItem(<Link to='../consumable_inventory/register'>ثبت</Link>, '7'),
             getItem(<Link to='../consumable_inventory/report'>گزارش</Link>, '8'),
             getItem(<Link to='../consumable_inventory/upload'>باگذاری</Link>, '9'),
-        ], true),
+        ], !context.permission.includes('Can view product')),
         getItem(<Link to='../product_inventory'>انبار محصول</Link>, '10', undefined, undefined,!context.permission.includes('Can view production')),
         getItem(<Link to='../waste_inventory'>انبار ضایعات</Link>, '11', undefined, undefined,!context.permission.includes('Can view waste')),
         getItem('اموال', 'sub4', undefined, [
