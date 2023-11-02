@@ -11,6 +11,7 @@ import HomeSharpIcon from '@mui/icons-material/HomeSharp';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import React, {useContext, useState} from "react";
 import {Context} from "../../context";
+import CalculateIcon from '@mui/icons-material/Calculate';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -96,7 +97,8 @@ export const MenuLayout = () => {
             getItem(<Link to='../buy/register'>ثبت</Link>, '21'),
             getItem(<Link to='../buy/report'>گزارش</Link>, '22'),
         ] , !context.permission.includes('Can view apply buy')),
-    getItem(<Link to='../logout'>خروج</Link>, '23', <PoweroffOutlined/>,undefined,undefined,true),
+    getItem(<Link style={!(context.department === 'مدیریت مالی' || context.department === 'مدیر کارخانه') ? {pointerEvents:'none'} : {}} to='/finance/main'>مالی</Link>, '23', <CalculateIcon/> , undefined , !(context.department === 'مدیریت مالی' || context.department === 'مدیر کارخانه')),
+    getItem(<Link to='../logout'>خروج</Link>, '24', <PoweroffOutlined/>,undefined,undefined,true),
 ];
 
     return (

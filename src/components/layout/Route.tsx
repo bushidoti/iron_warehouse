@@ -18,6 +18,7 @@ import {RegisterRequestProduction} from "../production/request/register/register
 import {ReportRequestProduction} from "../production/request/report/report";
 import {ReportPendingProduction} from "../production/pending/report/report";
 import {RegisterPendingProduction} from "../production/pending/register/register";
+import {FinanceMain} from "../finance/main";
 
 export const RouteLayout = () => {
     return (
@@ -42,6 +43,7 @@ export const RouteLayout = () => {
              <Route path={'/production/request/report'} element={<ReportRequestProduction/>}/>
              <Route path={'/production/pending_production/register'} element={<RegisterPendingProduction/>}/>
              <Route path={'/production/pending_production/report'} element={<ReportPendingProduction/>}/>
+             <Route path={'/finance/main'} element={<FinanceMain/>}/>
          </Routes>
     )
 }
