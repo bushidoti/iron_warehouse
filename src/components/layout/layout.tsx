@@ -1,9 +1,8 @@
 import React, {useContext} from 'react';
 import { Avatar, Layout } from 'antd';
 import {MenuLayout} from "./menu_items";
-import {Route, Routes} from "react-router-dom";
-import {Logout} from "../login/logout";
 import {Context} from "../../context";
+import {RouteLayout} from "./Route";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -26,9 +25,7 @@ const LayoutForm: React.FC = () => {
       <Layout>
         <Content style={{ margin: '24px 16px 0' }}>
           <div className='bg-blue-50 rounded' style={{ padding: 24 }}>
-                 <Routes>
-                            <Route path={'/logout'} element={<Logout/>}/>
-                        </Routes>
+                 <RouteLayout/>
           </div>
         </Content>
         <Footer style={{textAlign: 'center'}}>تمامی حقوق برای شرکت digitkey می باشد.</Footer>

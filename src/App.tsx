@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import './App.css';
 import LayoutForm from "./components/layout/layout";
 import {Loading} from "./components/loading/loading";
-import {Banner} from "./components/layout/banner";
 import {Context} from "./context";
 import Login from "./components/login/login";
 import {Route, Routes, useNavigate} from "react-router-dom";
@@ -86,7 +85,7 @@ function App() {
                 }}>
                 {isLogged ?
                     <>
-                        <Banner/>
+                       {/* <Banner/>*/}
                         <Routes>
                             <Route path={'*'} element={<LayoutForm/>}>
 
