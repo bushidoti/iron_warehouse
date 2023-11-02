@@ -12,6 +12,10 @@ import rtlPlugin from "stylis-plugin-rtl";
 import {CacheProvider} from "@emotion/react";
 import {LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFnsJalali} from "@mui/x-date-pickers/AdapterDateFnsJalali";
+import dayjs from "dayjs";
+import jalaliday from 'jalaliday'
+
+dayjs.extend(jalaliday).calendar('jalali')
 
 const cacheRtl = createCache({
   key: 'muirtl',

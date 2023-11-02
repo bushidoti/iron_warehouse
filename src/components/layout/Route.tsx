@@ -2,7 +2,7 @@ import {Logout} from "../login/logout";
 import {Route, Routes} from "react-router-dom";
 import React from "react";
 import {Home} from "../home/home";
-import {RegisterIndustrialWareHouse} from "../warehouse/industrial_warehouse/register/register";
+import RegisterIndustrialWareHouse from "../warehouse/industrial_warehouse/register/page";
 import {UploadIndustrialWareHouse} from "../warehouse/industrial_warehouse/upload/upload";
 import {ReportIndustrialWareHouse} from "../warehouse/industrial_warehouse/report/report";
 import {RegisterConsumableWareHouse} from "../warehouse/consumable_warehouse/register/register";
