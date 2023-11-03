@@ -9,7 +9,7 @@ import WarehouseIcon from '@mui/icons-material/Warehouse';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import HomeSharpIcon from '@mui/icons-material/HomeSharp';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import React, {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {Context} from "../../context";
 import CalculateIcon from '@mui/icons-material/Calculate';
 
@@ -38,28 +38,14 @@ function getItem(
 }
 
 
-
-const rootSubmenuKeys = ['sub1', 'sub5','sub8','sub9'];
-
-
 export const MenuLayout = () => {
-  const [openKeys, setOpenKeys] = useState(['']);
   const context = useContext(Context)
-  const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
-    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
-    if (latestOpenKey && rootSubmenuKeys.indexOf(latestOpenKey!) === -1) {
-      setOpenKeys(keys);
-    } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-    }
-  };
-
 
   const items: MenuItem[] = [
     getItem(<Link to='/'>خانه</Link>, '1', <HomeSharpIcon/>),
     getItem(<Link target={"_blank"} to='http://127.0.0.1:8000/admin/'>پنل مدیریت</Link>, '2', <PieChartOutlined/> ,  undefined , context.department !== 'مدیر کارخانه'),
     getItem('انبارداری', 'sub1', <WarehouseIcon/>, [
-        getItem('انبار صنعتی', 'sub2', undefined , [
+        getItem(<Link  style={!['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element)) ? {pointerEvents:'none'} : {}} to='../warehouse/industrial_warehouse'>انبار صنعتی</Link>, 'sub2', undefined , [
             getItem(<Link to='../warehouse/industrial_warehouse/register'>ثبت</Link>, '4',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element)) ),
             getItem(<Link to='../warehouse/industrial_warehouse/report'>گزارش</Link>, '5' , undefined , undefined,!['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element))),
             getItem(<Link to='../warehouse/industrial_warehouse/upload'>باگذاری</Link>, '6',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element))),
@@ -107,8 +93,6 @@ export const MenuLayout = () => {
               theme={"dark"}
               items={items}
               defaultSelectedKeys={['1']}
-              openKeys={openKeys}
-              onOpenChange={onOpenChange}
             />
     )
 }

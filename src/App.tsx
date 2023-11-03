@@ -8,6 +8,7 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import Url from "./components/api-configue";
 import axios from "axios";
 import Compressor from "compressorjs";
+import {Banner} from "./components/layout/banner";
 
 declare global {
     interface Window {
@@ -20,6 +21,7 @@ function App() {
     const [loading, setLoading] = useState(true)
     const [isLogged, setLogged] = useState(false)
     const navigate = useNavigate();
+    const [currentProduct, setCurrentProduct] = useState<number>(0)
     const [permission, setPermission] = useState<[]>([]);
     const [fullName, setFullName] = useState('');
     const [department, setDepartment] = useState('');
@@ -42,7 +44,7 @@ function App() {
     useEffect(() => {
         if (isLogged) {
             (async () => {
-                await axios.get(`${Url}/permission/`, {
+                await axios.get(`${Url}/permission`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
@@ -53,7 +55,7 @@ function App() {
                 })
             })().then(
                 async () => {
-                await axios.get(`${Url}/name/`, {
+                await axios.get(`${Url}/name`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
@@ -65,7 +67,7 @@ function App() {
             }
             ).then(
                  async () => {
-                await axios.get(`${Url}/department/`, {
+                await axios.get(`${Url}/department`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
@@ -147,6 +149,8 @@ function App() {
                <Context.Provider value={{
                     setLogged,
                     isLogged,
+                    currentProduct,
+                    setCurrentProduct,
                     fullName,
                     department,
                     compressed,
@@ -154,7 +158,7 @@ function App() {
                 }}>
                 {isLogged ?
                     <>
-                       {/* <Banner/>*/}
+                        <Banner/>
                         <Routes>
                             <Route path={'*'} element={<LayoutForm/>}>
 

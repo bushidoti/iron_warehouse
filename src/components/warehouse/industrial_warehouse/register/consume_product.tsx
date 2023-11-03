@@ -46,7 +46,7 @@ const ConsumeProductForm: React.FC = () => {
 
     const fetchData = async () => {
         setLoading(true)
-        await axios.get(`${Url}/api/consuming_material/`, {
+        await axios.get(`${Url}/api/consuming_material`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
             }
@@ -65,7 +65,7 @@ const ConsumeProductForm: React.FC = () => {
         }).then(async data => {
             setAllProduct(data.data)
         }).then(async () => {
-            return await axios.get(`${Url}/auto_increment/industrial_warehouse_consumingmaterial/`, {
+            return await axios.get(`${Url}/auto_increment/industrial_warehouse_consumingmaterial`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -77,7 +77,7 @@ const ConsumeProductForm: React.FC = () => {
                 code: data.data.content,
             });
         }).then(async () => {
-            return await axios.get(`${Url}/auto_increment/industrial_warehouse_consumingmaterialfactor/`, {
+            return await axios.get(`${Url}/auto_increment/industrial_warehouse_consumingmaterialfactor`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }

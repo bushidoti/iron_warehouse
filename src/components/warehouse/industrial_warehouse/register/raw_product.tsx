@@ -49,7 +49,7 @@ const RawProductForm: React.FC = () => {
 
     const fetchData = async () => {
         setLoading(true)
-        await axios.get(`${Url}/api/raw_material/`, {
+        await axios.get(`${Url}/api/raw_material`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
             }
@@ -68,7 +68,7 @@ const RawProductForm: React.FC = () => {
         }).then(async data => {
             setAllProduct(data.data)
         }).then(async () => {
-            return await axios.get(`${Url}/auto_increment/industrial_warehouse_rawmaterial/`, {
+            return await axios.get(`${Url}/auto_increment/industrial_warehouse_rawmaterial`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -80,7 +80,7 @@ const RawProductForm: React.FC = () => {
                 code: data.data.content,
             });
         }).then(async () => {
-            return await axios.get(`${Url}/auto_increment/industrial_warehouse_rawmaterialfactor/`, {
+            return await axios.get(`${Url}/auto_increment/industrial_warehouse_rawmaterialfactor`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }

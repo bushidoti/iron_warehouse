@@ -1,6 +1,6 @@
 import {Logout} from "../login/logout";
 import {Route, Routes} from "react-router-dom";
-import React from "react";
+import React, {useContext} from "react";
 import {Home} from "../home/home";
 import RegisterIndustrialWareHouse from "../warehouse/industrial_warehouse/register/page";
 import {UploadIndustrialWareHouse} from "../warehouse/industrial_warehouse/upload/upload";
@@ -19,15 +19,24 @@ import {ReportRequestProduction} from "../production/request/report/report";
 import {ReportPendingProduction} from "../production/pending/report/report";
 import {RegisterPendingProduction} from "../production/pending/register/register";
 import {FinanceMain} from "../finance/main";
+import MainIndustrialWarehouse from "../warehouse/industrial_warehouse/main/page";
+import CardConsumable from "../warehouse/industrial_warehouse/card/card_consumable";
+import {Context} from "../../context";
+import CardRaw from "../warehouse/industrial_warehouse/card/card_raw";
 
 export const RouteLayout = () => {
+    const context = useContext(Context)
+
     return (
          <Routes>
              <Route path={'/logout'} element={<Logout/>}/>
              <Route path={'/'} element={<Home/>}/>
+             <Route path={'/warehouse/industrial_warehouse'} element={<MainIndustrialWarehouse/>}/>
              <Route path={'/warehouse/industrial_warehouse/register'} element={<RegisterIndustrialWareHouse/>}/>
              <Route path={'/warehouse/industrial_warehouse/upload'} element={<UploadIndustrialWareHouse/>}/>
              <Route path={'/warehouse/industrial_warehouse/report'} element={<ReportIndustrialWareHouse/>}/>
+             <Route path={`/warehouse/industrial_warehouse/raw/edit/${context.currentProduct}`} element={<CardRaw/>}/>
+             <Route path={`/warehouse/industrial_warehouse/consumable/edit/${context.currentProduct}`} element={<CardConsumable/>}/>
              <Route path={'/warehouse/consumable_warehouse/register'} element={<RegisterConsumableWareHouse/>}/>
              <Route path={'/warehouse/consumable_warehouse/upload'} element={<UploadConsumableWareHouse/>}/>
              <Route path={'/warehouse/consumable_warehouse/report'} element={<ReportConsumableWareHouse/>}/>

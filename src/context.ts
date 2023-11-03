@@ -1,21 +1,26 @@
 import {createContext} from "react";
 
-type SetValue = (_value: boolean) => void;
+type SetValueBool = (_value: boolean) => void;
+type SetValueNumber = (_value: number) => void;
 
 type ContextType = {
   isLogged: boolean;
   department: string;
   fullName: string;
+  currentProduct: number;
   compressed: string;
   permission: string[];
-  setLogged: SetValue;
+  setLogged: SetValueBool;
+  setCurrentProduct: SetValueNumber;
 };
 
 export const Context = createContext<ContextType>({
     setLogged: () => {},
+    setCurrentProduct: () => {},
     isLogged: false,
     department: '',
     compressed: '',
+    currentProduct: 0,
     fullName: '',
     permission: [],
 })
