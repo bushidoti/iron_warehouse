@@ -18,6 +18,8 @@ import Url from "../../../api-configue";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Context} from "../../../../context";
+import TablePrint from "./table_raw";
+import {useReactToPrint} from "react-to-print";
 
 
 
@@ -37,7 +39,7 @@ const RawProductForm: React.FC = () => {
     const context = useContext(Context)
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-
+    const componentPDF = useRef(null);
     const onProductNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setProductName(event.target.value);
     };
@@ -208,6 +210,7 @@ const RawProductForm: React.FC = () => {
                 }).then(async data => {
                     if (data.status === 201) {
                         message.success('فاکتور ثبت شد.');
+                        generatePDF()
                         setLoading(false)
                     }
                 }).catch(async (error) => {
@@ -252,7 +255,13 @@ const RawProductForm: React.FC = () => {
         }
     }
 
+    const generatePDF = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "کالا ها",
+    });
+
     return (
+        <>
         <Form
             form={form}
             onFinish={onFinish}
@@ -397,6 +406,10 @@ const RawProductForm: React.FC = () => {
                                                         }))}
                                                 />
                                             </Form.Item>
+                                            <Form.Item name={[subField.name, 'carton']} rules={[{required: true}]}
+                                                       label='تعداد کارتن'>
+                                                <InputNumber min={1} placeholder="تعداد کارتن"/>
+                                            </Form.Item>
                                             <Form.Item name={[subField.name, 'input']} rules={[{required: true}]}
                                                        label='تعداد'>
                                                 <InputNumber min={1} placeholder="تعداد"/>
@@ -431,6 +444,8 @@ const RawProductForm: React.FC = () => {
                 </Form.Item>
             </>
         </Form>
+            <TablePrint componentPDF={componentPDF} productSub={form.getFieldValue(['products']) !== undefined ? form.getFieldValue(['products']) : []}/>
+        </>
     );
 };
 
