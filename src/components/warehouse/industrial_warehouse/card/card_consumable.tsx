@@ -15,7 +15,6 @@ import TablePrint from "./table_raw";
 import qs from "qs";
 import {DatePicker as DatePickerJalali, JalaliLocaleListener} from "antd-jalali";
 import dayjs from "dayjs";
-import EditRaw from "./edit_raw";
 import EditConsumable from "./edit_consumable";
 
 interface DataType {
