@@ -18,7 +18,7 @@ import Url from "../../../api-configue";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Context} from "../../../../context";
-import TablePrint from "./table_raw";
+import TablePrint from "./table";
 import {useReactToPrint} from "react-to-print";
 
 
@@ -210,8 +210,7 @@ const RawProductForm: React.FC = () => {
                 }).then(async data => {
                     if (data.status === 201) {
                         message.success('فاکتور ثبت شد.');
-                        generatePDF()
-                        setLoading(false)
+
                     }
                 }).catch(async (error) => {
                     if (error.request.status === 403) {
@@ -239,6 +238,9 @@ const RawProductForm: React.FC = () => {
                         async data => {
                             if (data.status === 201) {
                                 message.success('ثبت شد.');
+                                generatePDF()
+                                setLoading(false)
+
                             }
                         }
                 ).then(async () => {
@@ -413,6 +415,14 @@ const RawProductForm: React.FC = () => {
                                             <Form.Item name={[subField.name, 'input']} rules={[{required: true}]}
                                                        label='تعداد'>
                                                 <InputNumber min={1} placeholder="تعداد"/>
+                                            </Form.Item>
+                                            <Form.Item name={[subField.name, 'rate']} rules={[{required: true}]}
+                                                       label='نرخ'>
+                                                <InputNumber
+                                                    addonAfter="ریال"
+                                                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                                                />
                                             </Form.Item>
                                             <Form.Item name={[subField.name, 'scale']} style={{width: 150}}
                                                        label='مقیاس'>

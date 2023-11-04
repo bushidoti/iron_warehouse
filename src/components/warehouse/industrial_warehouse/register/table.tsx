@@ -58,14 +58,14 @@ const TablePrint = (props: {
 
                 <tbody>
                 {props.productSub.map((data, i) => (
-                    <tr key={data.id}>
+                    <tr key={data.product}>
                         <th className='border-solid	border' scope="row">{i+1}</th>
                         <td className='border-solid	border text-center'>{data.product}</td>
                         <td className='border-solid	border text-center'>{data.name}</td>
                         <td className='border-solid	border text-center'>{data.carton}</td>
                         <td className='border-solid	border text-center'>{data.input}</td>
-                        <td className='border-solid	border text-center'>{data.rate}</td>
-                        <td className='border-solid	border text-center'>{data.rate * data.input}</td>
+                        <td className='border-solid	border text-center'>{`${data.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                        <td className='border-solid	border text-center'>{`${data.rate * data.input}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                     </tr>
                 ))
                 }

@@ -18,6 +18,8 @@ import Url from "../../../api-configue";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Context} from "../../../../context";
+import TablePrint from "./table";
+import {useReactToPrint} from "react-to-print";
 
 const ConsumeProductForm: React.FC = () => {
     const [form] = Form.useForm();
@@ -31,6 +33,7 @@ const ConsumeProductForm: React.FC = () => {
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const context = useContext(Context)
+    const componentPDF = useRef(null);
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -205,7 +208,7 @@ const ConsumeProductForm: React.FC = () => {
                 }).then(async data => {
                     if (data.status === 201) {
                         message.success('فاکتور ثبت شد.');
-                        setLoading(false)
+
                     }
                 }).catch(async (error) => {
                     if (error.request.status === 403) {
@@ -233,6 +236,8 @@ const ConsumeProductForm: React.FC = () => {
                         async data => {
                             if (data.status === 201) {
                                 message.success('ثبت شد.');
+                                generatePDF()
+                                setLoading(false)
                             }
                         }
                 ).catch(async (error) => {
@@ -255,7 +260,13 @@ const ConsumeProductForm: React.FC = () => {
         }
     }
 
+    const generatePDF = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "کالا ها",
+    });
+
     return (
+        <>
         <Form
             form={form}
             onFinish={onFinish}
@@ -402,9 +413,21 @@ const ConsumeProductForm: React.FC = () => {
                                                         }))}
                                                 />
                                             </Form.Item>
+                                            <Form.Item name={[subField.name, 'carton']} rules={[{required: true}]}
+                                                       label='تعداد کارتن'>
+                                                <InputNumber min={1} placeholder="تعداد کارتن"/>
+                                            </Form.Item>
                                             <Form.Item name={[subField.name, 'input']} rules={[{required: true}]}
                                                        label='تعداد'>
                                                 <InputNumber min={1} placeholder="تعداد"/>
+                                            </Form.Item>
+                                            <Form.Item name={[subField.name, 'rate']} rules={[{required: true}]}
+                                                       label='نرخ'>
+                                                <InputNumber
+                                                    addonAfter="ریال"
+                                                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                                                />
                                             </Form.Item>
                                             <Form.Item name={[subField.name, 'scale']} style={{width: 150}}
                                                        label='مقیاس'>
@@ -436,6 +459,8 @@ const ConsumeProductForm: React.FC = () => {
                 </Form.Item>
             </>
         </Form>
+        <TablePrint componentPDF={componentPDF} productSub={form.getFieldValue(['products']) !== undefined ? form.getFieldValue(['products']) : []}/>
+        </>
     );
 };
 
