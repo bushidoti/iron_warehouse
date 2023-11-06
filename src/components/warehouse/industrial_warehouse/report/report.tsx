@@ -430,14 +430,26 @@ const ReportIndustrialWareHouse: React.FC = () => {
 
     const optionsDoc = [
         {
-            value: 'حواله',
+            value: 'check',
             label: 'حواله',
         },
         {
-            value: 'فاکتور',
+            value: 'factor',
             label: 'فاکتور',
         }
     ]
+
+    const optionsMaterial = [
+        {
+            value: 'raw',
+            label: 'مواد اولیه',
+        },
+        {
+            value: 'consumable',
+            label: 'مواد مصرفی',
+        }
+    ]
+
 
     const onChangeRadio = (e: RadioChangeEvent) => {
         setRadioMaterial(e.target.value);
@@ -462,17 +474,17 @@ const ReportIndustrialWareHouse: React.FC = () => {
                         options={optionsDoc}
                     />
                     <Input placeholder={'شناسه مدرک'} disabled={selectedDoc === ''} onChange={(e) => {
-                        if (selectedDoc === 'فاکتور') {
+                        if (selectedDoc === 'factor') {
                             context.setCurrentProductFactor(Number(e.target.value))
-                        } else if (selectedDoc === 'حواله') {
+                        } else if (selectedDoc === 'check') {
                             context.setCurrentProductCheck(Number(e.target.value))
                         }
                     }}/>
                     <Button type={"primary"} loading={loading} disabled={selectedDoc === ''} onClick={() => {
-                        if (selectedDoc === 'فاکتور') {
-                            navigate(`/warhouse/product/factor/${context.currentProductFactor}`)
-                        } else if (selectedDoc === 'حواله') {
-                            navigate(`/warhouse/product/check/${context.currentProductCheck}`)
+                        if (selectedDoc === 'factor') {
+                            navigate(`/warehouse/industrial_warehouse/factor/${context.currentProductFactor}`)
+                        } else if (selectedDoc === 'check') {
+                            navigate(`/warehouse/industrial_warehouse/check/${context.currentProductCheck}`)
                         }
                     }}>مشاهده</Button>
                 </Space.Compact>

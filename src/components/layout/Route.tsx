@@ -23,6 +23,7 @@ import MainIndustrialWarehouse from "../warehouse/industrial_warehouse/main/page
 import CardConsumable from "../warehouse/industrial_warehouse/card/card_consumable";
 import {Context} from "../../context";
 import CardRaw from "../warehouse/industrial_warehouse/card/card_raw";
+import ProductFactor from "../warehouse/industrial_warehouse/report/factor";
 
 export const RouteLayout = () => {
     const context = useContext(Context)
@@ -37,6 +38,7 @@ export const RouteLayout = () => {
              <Route path={'/warehouse/industrial_warehouse/report'} element={<ReportIndustrialWareHouse/>}/>
              <Route path={`/warehouse/industrial_warehouse/raw/edit/${context.currentProduct}`} element={<CardRaw/>}/>
              <Route path={`/warehouse/industrial_warehouse/consumable/edit/${context.currentProduct}`} element={<CardConsumable/>}/>
+             <Route path={`/warehouse/industrial_warehouse/factor/${context.currentProductFactor}`} element={<ProductFactor/>}/>
              <Route path={'/warehouse/consumable_warehouse/register'} element={<RegisterConsumableWareHouse/>}/>
              <Route path={'/warehouse/consumable_warehouse/upload'} element={<UploadConsumableWareHouse/>}/>
              <Route path={'/warehouse/consumable_warehouse/report'} element={<ReportConsumableWareHouse/>}/>
@@ -45,6 +47,7 @@ export const RouteLayout = () => {
              <Route path={'/buy/register'} element={<RegisterBuy/>}/>
              <Route path={'/buy/report'} element={<ReportBuy/>}/>
              <Route path={'/sale/register'} element={<RegisterSale/>}/>
+
              <Route path={'/sale/report'} element={<ReportSale/>}/>
              <Route path={'/production_warehouse'} element={<ReportProductionWareHouse/>}/>
              <Route path={'/waste_warehouse'} element={<ReportWasteWareHouse/>}/>
