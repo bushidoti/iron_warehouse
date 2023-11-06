@@ -87,7 +87,7 @@ const CardRaw: React.FC = () => {
                 },
             });
         }).then(async () => {
-            return await axios.get(`${Url}/api/raw_material_detailed/?size=${pagination.pageSize}&page=${pagination.current}&fields=product,seller,address_seller,seller_national_id,systemID,input,output,document_code,ownership,date,operator,afterOperator,obsolete,consumable,buyer,receiver,amendment,id,scale,&product=${context.currentProduct}&${qs.stringify(filteredInfo, {
+            return await axios.get(`${Url}/api/raw_material_detailed/?size=${pagination.pageSize}&page=${pagination.current}&product=${context.currentProduct}&${qs.stringify(filteredInfo, {
                 encode: false,
                 arrayFormat: 'comma'
             })}`, {

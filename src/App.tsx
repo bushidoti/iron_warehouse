@@ -26,6 +26,8 @@ function App() {
     const [fullName, setFullName] = useState('');
     const [department, setDepartment] = useState('');
     const [compress, setCompress] = useState('');
+    const [currentProductFactor, setCurrentProductFactor] = useState<number>(0)
+    const [currentProductCheck, setCurrentProductCheck] = useState<number>(0)
     const [compressed, setCompressed] = useState('');
     useEffect(() => {
         if (document.readyState === "complete") {
@@ -152,6 +154,10 @@ function App() {
                     currentProduct,
                     setCurrentProduct,
                     fullName,
+                    currentProductFactor,
+                    currentProductCheck,
+                    setCurrentProductFactor,
+                    setCurrentProductCheck,
                     department,
                     compressed,
                     permission

@@ -4,7 +4,7 @@ import React, {useContext} from "react";
 import {Home} from "../home/home";
 import RegisterIndustrialWareHouse from "../warehouse/industrial_warehouse/register/page";
 import {UploadIndustrialWareHouse} from "../warehouse/industrial_warehouse/upload/upload";
-import {ReportIndustrialWareHouse} from "../warehouse/industrial_warehouse/report/report";
+import ReportIndustrialWareHouse from "../warehouse/industrial_warehouse/report/report";
 import {RegisterConsumableWareHouse} from "../warehouse/consumable_warehouse/register/register";
 import {ReportConsumableWareHouse} from "../warehouse/consumable_warehouse/report/report";
 import {UploadConsumableWareHouse} from "../warehouse/consumable_warehouse/upload/upload";

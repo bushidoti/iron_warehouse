@@ -310,8 +310,13 @@ const ConsumeProductForm: React.FC = () => {
                                        rules={[{required: true}]}>
                                 <Input placeholder='فروشنده'/>
                             </Form.Item>
-                            <Form.Item name={'seller_national_id'} className='w-[233px] inline-block m-2' label="کد ملی فروشنده">
-                                <Input placeholder='کد ملی فروشنده'/>
+                            <Form.Item
+                                hasFeedback
+                                name={'seller_national_id'}
+                                className='w-[233px] inline-block m-2'
+                                label="کد ملی"
+                                rules={[{len: 10}]}>
+                                <Input showCount maxLength={10}/>
                             </Form.Item>
                              <Form.Item name={'address_seller'} className='w-[233px] inline-block m-2' label="آدرس فروشنده">
                               <Input placeholder='آدرس فروشنده'/>
