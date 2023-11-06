@@ -76,9 +76,27 @@ const TablePrint = (props: {
                 ))
                 }
                     <tr>
-                        <td colSpan={5}>
+                        <td colSpan={7}>
+                            <Flex>
+                               <div className="w-[531px]">
+                               </div>
+                               <div className="w-[100px] ps-1 border-solid border text-center">
+                                    <Text className='text-[12px]' strong>
+                                      جمع کل
+                                    </Text>
+                               </div>
+                                <div className="w-[160px] ps-1 border-solid border">
+                                   <Text className='text-[12px]' strong>
+                                    {`${props.productSub.reduce((a, v) => a + (v.rate * v.input), 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                   </Text>
+                               </div>
+                            </Flex>
+                       </td>
+                    </tr>
+                    <tr>
+                        <td colSpan={7}>
                             <Text className='text-[10px]' strong>
-                              کالای فوق مطابق لیست تحویل گرفته شد.
+                                  کالای فوق مطابق لیست تحویل گرفته شد.
                             </Text>
                         </td>
                     </tr>
