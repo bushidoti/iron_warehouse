@@ -24,6 +24,7 @@ interface DataType {
     input: number;
     count: number;
     product: number;
+    rate: number;
     name: string;
     ownership: string;
     document_code: string;
@@ -284,6 +285,15 @@ const ReportIndustrialWareHouse: React.FC = () => {
             dataIndex: 'systemID',
             width: '5%',
             key: 'systemID',
+            render: (_value, record) => <Button type={"link"} onClick={() => {
+                if (record.operator === 'ورود'){
+                    context.setCurrentProductFactor(record.systemID)
+                }else if (record.operator === 'خروج'){
+                    context.setCurrentProductCheck(record.systemID)
+                }
+                context.setCurrentProductDoc(record.operator === 'ورود' ? 'factor' : 'check')
+                navigate(`/warehouse/industrial_warehouse/${radioMaterial === 'raw' ? 'raw' : 'consumable' }/edit_doc/${record.operator === 'ورود' ? 'factor' : 'check' }/${record.systemID}`)
+            }}>{record.systemID}</Button>,
         }, {
             align: "center",
             title: 'شناسه سند',
@@ -330,11 +340,25 @@ const ReportIndustrialWareHouse: React.FC = () => {
             filteredValue: filteredInfo.scale || null,
         }, {
             align: "center",
+            title: 'تعداد کارتن',
+            dataIndex: 'carton',
+            width: '5%',
+            key: 'carton',
+        }, {
+            align: "center",
             title: 'تعداد',
             dataIndex: 'count',
             width: '5%',
             key: 'count',
             render: (_value, record) => record.operator === 'خروج' ? record.output : record.input
+        }, {
+            align: "center",
+            title: 'نرخ',
+            dataIndex: 'rate',
+            width: '5%',
+            key: 'rate',
+            render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
         }, {
             align: "center",
             title: 'موجودی',
@@ -412,7 +436,6 @@ const ReportIndustrialWareHouse: React.FC = () => {
 
 
     const options = [
-        {label: 'گروه', value: 'category'},
         {label: 'نوع مالکیت', value: 'ownership'},
         {label: 'شماره ثبت سیستم', value: 'systemID'},
         {label: 'شناسه سند', value: 'document_code'},
@@ -436,17 +459,6 @@ const ReportIndustrialWareHouse: React.FC = () => {
         {
             value: 'factor',
             label: 'فاکتور',
-        }
-    ]
-
-    const optionsMaterial = [
-        {
-            value: 'raw',
-            label: 'مواد اولیه',
-        },
-        {
-            value: 'consumable',
-            label: 'مواد مصرفی',
         }
     ]
 

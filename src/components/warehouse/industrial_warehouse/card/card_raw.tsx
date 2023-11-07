@@ -24,6 +24,7 @@ interface DataType {
     output: number;
     input: number;
     count: number;
+    rate: number;
     ownership: string;
     document_code: string;
     date: string;
@@ -274,6 +275,15 @@ const CardRaw: React.FC = () => {
             dataIndex: 'systemID',
             width: '5%',
             key: 'systemID',
+            render: (_value, record) => <Button type={"link"} onClick={() => {
+                if (record.operator === 'ورود'){
+                    context.setCurrentProductFactor(record.systemID)
+                }else if (record.operator === 'خروج'){
+                    context.setCurrentProductCheck(record.systemID)
+                }
+                context.setCurrentProductDoc(record.operator === 'ورود' ? 'factor' : 'check')
+                navigate(`/warehouse/industrial_warehouse/raw/edit_doc/${record.operator === 'ورود' ? 'factor' : 'check' }/${record.systemID}`)
+            }}>{record.systemID}</Button>,
         }, {
             align: "center",
             title: 'شناسه سند',
@@ -320,11 +330,25 @@ const CardRaw: React.FC = () => {
             filteredValue: filteredInfo.scale || null,
         }, {
             align: "center",
+            title: 'تعداد کارتن',
+            dataIndex: 'carton',
+            width: '5%',
+            key: 'carton',
+        }, {
+            align: "center",
             title: 'تعداد',
             dataIndex: 'count',
             width: '5%',
             key: 'count',
             render: (_value, record) => record.operator === 'خروج' ? record.output : record.input
+        }, {
+            align: "center",
+            title: 'نرخ',
+            dataIndex: 'rate',
+            width: '5%',
+            key: 'rate',
+            render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
         }, {
             align: "center",
             title: 'موجودی',

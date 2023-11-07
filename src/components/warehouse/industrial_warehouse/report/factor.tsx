@@ -18,6 +18,7 @@ interface DataType {
     seller: string;
     buyer: string;
     product: number;
+    rate: number;
     input: number;
 }
 
@@ -59,11 +60,24 @@ const ProductFactor: React.FC = () => {
         dataIndex: 'name',
         key: 'name',
     }, {
+            align: "center",
+            title: 'تعداد کارتن',
+            dataIndex: 'carton',
+            width: '5%',
+            key: 'carton',
+        }, {
         title: 'تعداد',
         align: "center",
         dataIndex: 'input',
         key: 'input',
-    }, {
+    },{
+            align: "center",
+            title: 'نرخ',
+            dataIndex: 'rate',
+            width: '5%',
+            key: 'rate',
+            render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+        },{
         title: 'مقیاس',
         align: "center",
         dataIndex: 'scale',

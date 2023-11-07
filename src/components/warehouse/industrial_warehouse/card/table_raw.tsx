@@ -23,7 +23,9 @@ const TablePrint = (props: {
                     <th className='border-solid	border' scope="col">تاریخ</th>
                     <th className='border-solid	border' scope="col">عملیات</th>
                     <th className='border-solid	border' scope="col">مقیاس</th>
+                    <th className='border-solid	border' scope="col">تعداد کارتن</th>
                     <th className='border-solid	border' scope="col">تعداد</th>
+                    <th className='border-solid	border' scope="col">نرخ</th>
                     <th className='border-solid	border' scope="col">موجودی</th>
                     <th className='border-solid	border' scope="col">مورد مصرف</th>
                     <th className='border-solid	border' scope="col">خریدار</th>
@@ -38,13 +40,15 @@ const TablePrint = (props: {
                 <tbody>
                 {props.productSub.map((data, i) => (
                     <tr key={data.id}>
-                        <th className='border-solid	border' scope="row">{i}</th>
+                          <th className='border-solid	border' scope="row">{i}</th>
                         <td className='border-solid	border text-center'>{data.document_type}</td>
                         <td className='border-solid	border text-center'>{data.document_code}</td>
                         <td className='border-solid	border text-center'>{data.date}</td>
                         <td className='border-solid	border text-center'>{data.operator}</td>
                         <td className='border-solid	border text-center'>{data.scale}</td>
+                        <td className='border-solid	border text-center'>{data.carton}</td>
                         <td className='border-solid	border text-center'>{data.operator === 'خروج' ? data.output : data.input}</td>
+                        <td className='border-solid	border text-center'>{`${data.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                         <td className='border-solid	border text-center'>{data.afterOperator}</td>
                         <td className='border-solid	border text-center'>{data.consumable}</td>
                         <td className='border-solid	border text-center'>{data.buyer}</td>

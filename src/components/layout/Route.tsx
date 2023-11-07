@@ -24,6 +24,8 @@ import CardConsumable from "../warehouse/industrial_warehouse/card/card_consumab
 import {Context} from "../../context";
 import CardRaw from "../warehouse/industrial_warehouse/card/card_raw";
 import ProductFactor from "../warehouse/industrial_warehouse/report/factor";
+import {EditDocRaw} from "../warehouse/industrial_warehouse/register/edit_raw";
+import {EditDocConsumable} from "../warehouse/industrial_warehouse/register/edit_consumable";
 
 export const RouteLayout = () => {
     const context = useContext(Context)
@@ -37,7 +39,9 @@ export const RouteLayout = () => {
              <Route path={'/warehouse/industrial_warehouse/upload'} element={<UploadIndustrialWareHouse/>}/>
              <Route path={'/warehouse/industrial_warehouse/report'} element={<ReportIndustrialWareHouse/>}/>
              <Route path={`/warehouse/industrial_warehouse/raw/edit/${context.currentProduct}`} element={<CardRaw/>}/>
+             <Route path={`/warehouse/industrial_warehouse/raw/edit_doc/${context.currentProductDoc}/${context.currentProductDoc === 'factor' ? context.currentProductFactor : context.currentProductCheck }`} element={<EditDocRaw/>}/>
              <Route path={`/warehouse/industrial_warehouse/consumable/edit/${context.currentProduct}`} element={<CardConsumable/>}/>
+             <Route path={`/warehouse/industrial_warehouse/consumable/edit_doc/${context.currentProductDoc}/${context.currentProductDoc === 'factor' ? context.currentProductFactor : context.currentProductCheck }`} element={<EditDocConsumable/>}/>
              <Route path={`/warehouse/industrial_warehouse/factor/${context.currentProductFactor}`} element={<ProductFactor/>}/>
              <Route path={'/warehouse/consumable_warehouse/register'} element={<RegisterConsumableWareHouse/>}/>
              <Route path={'/warehouse/consumable_warehouse/upload'} element={<UploadConsumableWareHouse/>}/>

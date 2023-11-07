@@ -11,7 +11,7 @@ import 'dayjs/locale/fa';
 import {Context} from "../../../../context";
 import {useNavigate} from "react-router-dom";
 import {useReactToPrint} from "react-to-print";
-import TablePrint from "./table_raw";
+import TablePrint from "./table_consumable";
 import qs from "qs";
 import {DatePicker as DatePickerJalali, JalaliLocaleListener} from "antd-jalali";
 import dayjs from "dayjs";
@@ -21,6 +21,7 @@ interface DataType {
     key: React.Key;
     id: number;
     index: number;
+    rate: number;
     output: number;
     input: number;
     count: number;
@@ -274,6 +275,15 @@ const CardConsumable: React.FC = () => {
             dataIndex: 'systemID',
             width: '5%',
             key: 'systemID',
+            render: (_value, record) => <Button type={"link"} onClick={() => {
+                if (record.operator === 'ورود'){
+                    context.setCurrentProductFactor(record.systemID)
+                }else if (record.operator === 'خروج'){
+                    context.setCurrentProductCheck(record.systemID)
+                }
+                context.setCurrentProductDoc(record.operator === 'ورود' ? 'factor' : 'check')
+                navigate(`/warehouse/industrial_warehouse/consumable/edit_doc/${record.operator === 'ورود' ? 'factor' : 'check' }/${record.systemID}`)
+            }}>{record.systemID}</Button>,
         }, {
             align: "center",
             title: 'شناسه سند',
@@ -320,11 +330,25 @@ const CardConsumable: React.FC = () => {
             filteredValue: filteredInfo.scale || null,
         }, {
             align: "center",
+            title: 'تعداد کارتن',
+            dataIndex: 'carton',
+            width: '5%',
+            key: 'carton',
+        }, {
+            align: "center",
             title: 'تعداد',
             dataIndex: 'count',
             width: '5%',
             key: 'count',
             render: (_value, record) => record.operator === 'خروج' ? record.output : record.input
+        }, {
+            align: "center",
+            title: 'نرخ',
+            dataIndex: 'rate',
+            width: '5%',
+            key: 'rate',
+            render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
         }, {
             align: "center",
             title: 'موجودی',
