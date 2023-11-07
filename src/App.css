@@ -1,7 +1,7 @@
 body {
     background-color: #cdeee6;
+    counter-reset: page_number;
 }
-
 .App {
   text-align: center;
 }

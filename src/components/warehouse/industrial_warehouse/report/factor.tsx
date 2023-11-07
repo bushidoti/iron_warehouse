@@ -63,7 +63,7 @@ const ProductFactor: React.FC = () => {
             align: "center",
             title: 'تعداد کارتن',
             dataIndex: 'carton',
-            width: '5%',
+            width: '6%',
             key: 'carton',
         }, {
         title: 'تعداد',
