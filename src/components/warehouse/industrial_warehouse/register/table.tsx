@@ -1,18 +1,13 @@
 import React from "react";
 import {Flex, Space, Typography} from 'antd';
+import dayjs from "dayjs";
 const { Text } = Typography;
 
-interface Factor {
-    code: number;
-    factor: string;
-    inventory: string;
-    date: string;
-    jsonData: any[];
-}
+
 
 const TablePrint = (props: {
     componentPDF: React.LegacyRef<HTMLTableElement> | undefined,
-    productSub: Factor,
+    productSub: any[]
 }) => {
     return (
         <div style={{display: 'none'}}>
@@ -37,14 +32,15 @@ const TablePrint = (props: {
                         </th>
                         <th colSpan={1} className="ps-4 border-solid border text-right">
                                <Space size={10} direction="vertical">
-                                     <Text className='text-[12px] font-extrabold'> شماره: {props.productSub.jsonData[0]?.systemID} </Text>
-                                     <Text className='text-[12px] font-extrabold'>تاریخ : {props.productSub.date.split('-').reverse().join('-')}</Text>
+                                     <Text className='text-[12px] font-extrabold'>صفحه 1</Text>
+                                     <Text className='text-[12px] font-extrabold'> شماره: {props.productSub[0]?.systemID} </Text>
+                                     <Text className='text-[12px] font-extrabold'>تاریخ : {dayjs().locale('fa').format('DD-MM-YYYY')}</Text>
                                </Space>
                         </th>
                     </tr>
                     <tr>
-                        <th colSpan={3} className='text-[10px] p-2 font-extrabold'>نام طرف حساب : {props.productSub.jsonData[0]?.seller}</th>
-                        <th colSpan={1} className='text-[10px] p-2 font-extrabold'>شماره فاکتور : {props.productSub.jsonData[0]?.document_code}</th>
+                        <th colSpan={3} className='text-[10px] p-2 font-extrabold'>نام طرف حساب : {props.productSub[0]?.seller}</th>
+                        <th colSpan={1} className='text-[10px] p-2 font-extrabold'>شماره فاکتور : {props.productSub[0]?.document_code}</th>
                     </tr>
                     <tr>
                         <th colSpan={5} className='border-solid border text-center font-extrabold'>
@@ -71,7 +67,7 @@ const TablePrint = (props: {
                     </tr>
                 </thead>
                 <tbody>
-                {props.productSub.jsonData.map((data, i) => (
+                {props.productSub.map((data, i) => (
                     <tr key={data.product}>
                         <th className='text-[12px] border-solid	border font-extrabold' scope="row">{i+1}</th>
                         <td className='text-[12px] border-solid	border text-center font-extrabold'>{data.product}</td>
@@ -83,115 +79,6 @@ const TablePrint = (props: {
                     </tr>
                 ))
                 }
-                    <tr>
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-
                 </tbody>
                <tfoot>
                     <tr>
@@ -206,7 +93,7 @@ const TablePrint = (props: {
                                </div>
                                 <div className="w-[203px] ps-1 border-solid border text-center">
                                    <Text className='text-[12px]' strong>
-                                    {`${props.productSub.jsonData.reduce((a, v) => a + (v.rate * v.input), 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    {`${props.productSub.reduce((a, v) => a + (v.rate * v.input), 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                    </Text>
                                </div>
                             </Flex>

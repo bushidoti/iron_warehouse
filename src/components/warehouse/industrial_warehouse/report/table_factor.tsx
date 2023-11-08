@@ -37,6 +37,7 @@ const TableFactorPrint = (props: {
                         </th>
                         <th colSpan={1} className="ps-4 border-solid border text-right">
                                <Space size={10} direction="vertical">
+                                     <Text className='text-[12px] font-extrabold'>صفحه 1</Text>
                                      <Text className='text-[12px] font-extrabold'> شماره: {props.Factor.jsonData[0]?.systemID} </Text>
                                      <Text className='text-[12px] font-extrabold'>تاریخ : {props.Factor.date.split('-').reverse().join('-')}</Text>
                                </Space>
@@ -83,115 +84,6 @@ const TableFactorPrint = (props: {
                     </tr>
                 ))
                 }
-                    <tr>
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-                <tr >
-                        <th className='text-[12px] border-solid	border font-extrabold' scope="row">12</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                        <td className='text-[12px] border-solid	border text-center'></td>
-                    </tr>
-
                 </tbody>
                <tfoot>
                     <tr>
