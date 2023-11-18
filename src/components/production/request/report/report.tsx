@@ -30,6 +30,15 @@ interface DataType {
     consuming_material_jsonData: JSON;
 }
 
+interface Request {
+    id: number;
+    request_id: number;
+    applicant: string;
+    purpose: string;
+    raw_material_jsonData: any[];
+    consuming_material_jsonData: any[];
+}
+
 
 type DataIndex = keyof DataType;
 
@@ -52,11 +61,13 @@ const ReportRequestProduction: React.FC = () => {
     const navigate = useNavigate();
     const componentPDF = useRef(null);
     const [productSub, setProductSub] = useState<TypeProduct>()
+    const [requestProductTable, setRequestProductTable] = useState<Request>()
     const [filteredColumns, setFilteredColumns] = useState<string[]>([])
     const generatePDF = useReactToPrint({
         content: () => componentPDF.current,
         documentTitle: "کالا ها",
     });
+
 
     const fetchData = async () => {
                     setLoading(true)
@@ -234,6 +245,21 @@ const ReportRequestProduction: React.FC = () => {
             key: 'id',
             ...getColumnSearchProps('id'),
             filteredValue: filteredInfo.id || null,
+            render: (_value, record) => <Button type={"link"} onClick={async () => {
+                setLoading(true)
+                await axios.get(`${Url}/api/request_supply/${record.id}/`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                    }
+                }).then(response => {
+                    return response
+                }).then(async data => {
+                    setRequestProductTable(data.data)
+                }).finally(() => {
+                    setLoading(false)
+                    setTimeout(generatePDF , 100)
+                })
+            }}>{record.id}</Button>,
         }, {
             align: "center",
             title: 'درخواست کننده',
@@ -371,7 +397,6 @@ const ReportRequestProduction: React.FC = () => {
             <Space style={{marginBottom: 16}}>
                 <Button onClick={clearFilters}>پاک کردن فیتلر ها</Button>
                 <Button onClick={clearAll}>پاک کردن فیلتر و مرتب کننده ها</Button>
-                <Button onClick={generatePDF}>چاپ</Button>
             </Space>
             <Space style={{marginBottom: 16, marginRight: 16}}>
                 <Select
@@ -395,7 +420,11 @@ const ReportRequestProduction: React.FC = () => {
                 loading={loading}
                 pagination={{position: ["bottomCenter"],total:productSub?.count,showSizeChanger:true}}
             />
-            <TablePrint componentPDF={componentPDF} productSub={productSub !== undefined ? productSub?.results : []}/>
+             {requestProductTable !== undefined ?
+                     <TablePrint componentPDF={componentPDF} productSub={requestProductTable}/>
+                :
+                null
+            }
         </>
     )
 };
