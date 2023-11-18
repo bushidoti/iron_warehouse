@@ -14,7 +14,7 @@ import {ReportSale} from "../sale/report/report";
 import {RegisterSale} from "../sale/register/register";
 import {ReportProductionWareHouse} from "../warehouse/production_warehouse/report";
 import {ReportWasteWareHouse} from "../warehouse/waste_warehouse/report";
-import {RegisterRequestProduction} from "../production/request/register/register";
+import RegisterRequestProduction from "../production/request/register/register";
 import {ReportRequestProduction} from "../production/request/report/report";
 import {ReportPendingProduction} from "../production/pending/report/report";
 import {RegisterPendingProduction} from "../production/pending/register/register";

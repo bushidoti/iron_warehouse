@@ -28,7 +28,7 @@ const ConsumeProductForm: React.FC = () => {
     const [productScale, setProductScale] = useState('');
     const [productCategory, setProductCategory] = useState('');
     const [loading, setLoading] = useState<boolean>(false);
-    const [listProduct, setListProduct] = useState<any[]>([]);
+    const [listProduct, setListProduct] = useState<any[]>([{}]);
     const [allProduct, setAllProduct] = useState<any[]>([]);
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
@@ -389,7 +389,6 @@ const ConsumeProductForm: React.FC = () => {
                                                                         products: {
                                                                             [i]: {
                                                                                 scale: data.data[0].scale,
-                                                                                category: data.data[0].category,
                                                                                 name: data.data[0].name,
                                                                             }
                                                                         }

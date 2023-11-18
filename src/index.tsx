@@ -53,13 +53,11 @@ root.render(
         }
     }}>
         <BrowserRouter>
-          <React.StrictMode>
               <CacheProvider value={cacheRtl}>
                   <LocalizationProvider dateAdapter={AdapterDateFnsJalali}>
                         <App />
                   </LocalizationProvider>
               </CacheProvider>
-          </React.StrictMode>
         </BrowserRouter>
     </ConfigProvider>
 

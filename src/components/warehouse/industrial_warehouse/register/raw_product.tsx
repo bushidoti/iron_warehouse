@@ -380,7 +380,6 @@ const RawProductForm: React.FC = () => {
                                                                         products: {
                                                                             [i]: {
                                                                                 scale: data.data[0].scale,
-                                                                                category: data.data[0].category,
                                                                                 name: data.data[0].name,
                                                                             }
                                                                         }

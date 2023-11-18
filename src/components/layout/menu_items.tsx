@@ -66,7 +66,7 @@ export const MenuLayout = () => {
     ]),
     getItem("تولید", 'sub5', <ConstructionIcon/>, [
         getItem('مدیریت تولید', 'sub6', null, [
-            getItem(<Link to='../production/request/register'>ثبت</Link>, '15'),
+            getItem(<Link to='../production/request/register'>درخواست</Link>, '15'),
             getItem(<Link to='../production/request/report'>گزارش</Link>, '16'),
         ]),
 
