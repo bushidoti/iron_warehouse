@@ -116,8 +116,7 @@ const RegisterRequestProduction: React.FC = () => {
 
     const onFinish = async () => {
         new Promise(resolve => resolve(
-            form.getFieldValue(['products']).map(async (product: { product: number; }, i: number) => {
-            })
+            form.getFieldValue(['products'])
         )).then(
         ).then(() => setLoading(true)).then(
                  async () => {
