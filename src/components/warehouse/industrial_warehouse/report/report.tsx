@@ -24,6 +24,7 @@ interface DataType {
     input: number;
     count: number;
     product: number;
+    average_rate: number;
     rate: number;
     name: string;
     ownership: string;
@@ -323,9 +324,6 @@ const ReportIndustrialWareHouse: React.FC = () => {
                 }, {
                     text: 'خروج',
                     value: 'خروج',
-                }, {
-                    text: 'ثبت اولیه',
-                    value: 'ثبت اولیه',
                 }
             ],
             onFilter: (value, record) => record.operator === value,
@@ -359,6 +357,21 @@ const ReportIndustrialWareHouse: React.FC = () => {
             key: 'rate',
             render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+        }, {
+            align: "center",
+            title: 'مبلغ',
+            dataIndex: 'amount',
+            width: '5%',
+            key: 'amount',
+            render: (_value, record) => `${record.rate * record.input}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+        }, {
+            align: "center",
+            title: 'ارزش',
+            dataIndex: 'average_rate',
+            width: '5%',
+            key: 'average_rate',
+            render: (_value, record) => `${record.average_rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         }, {
             align: "center",
             title: 'موجودی',
@@ -465,6 +478,10 @@ const ReportIndustrialWareHouse: React.FC = () => {
 
     const onChangeRadio = (e: RadioChangeEvent) => {
         setRadioMaterial(e.target.value);
+          setPagination({
+           current:1,
+           pageSize:10
+        })
     };
 
     return (

@@ -17,9 +17,9 @@ const TablePrint = (props: {
                     <th className='border-solid	border' scope="col">ورود</th>
                     <th className='border-solid	border' scope="col">خروج</th>
                     <th className='border-solid	border' scope="col">مانده</th>
+                    <th className='border-solid	border' scope="col">ارزش</th>
                 </tr>
                 </thead>
-
                 <tbody>
                 {props.product.map((data) => (
                     <tr className='table-row' key={data.code}>
@@ -29,6 +29,9 @@ const TablePrint = (props: {
                         <td className='border-solid	border text-center'>{(props.productSub.filter(products => products.product === data.code).reduce((a, v) => a + v.output, 0))}</td>
                         <td className='border-solid	border text-center'>{(props.productSub.filter(products => products.product === data.code).reduce((a, v) => a + v.input, 0))
                             - (props.productSub.filter(products => products.product === data.code).reduce((a, v) => a + v.output, 0))}</td>
+                        <td className='border-solid	border text-center'>{`${props.productSub.filter((products: {
+                            product: number;
+                        }) => products.product === data.code).slice(-1)[0]?.average_rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                     </tr>
                 ))
                 }

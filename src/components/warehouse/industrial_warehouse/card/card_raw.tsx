@@ -24,6 +24,7 @@ interface DataType {
     output: number;
     input: number;
     count: number;
+    average_rate: number;
     rate: number;
     ownership: string;
     document_code: string;
@@ -349,6 +350,21 @@ const CardRaw: React.FC = () => {
             key: 'rate',
             render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+        }, {
+            align: "center",
+            title: 'مبلغ',
+            dataIndex: 'amount',
+            width: '5%',
+            key: 'amount',
+            render: (_value, record) => `${record.rate * record.input}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+        }, {
+            align: "center",
+            title: 'ارزش',
+            dataIndex: 'average_rate',
+            width: '5%',
+            key: 'average_rate',
+            render: (_value, record) => `${record.average_rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         }, {
             align: "center",
             title: 'موجودی',

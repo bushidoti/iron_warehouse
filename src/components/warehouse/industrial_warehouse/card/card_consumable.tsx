@@ -24,6 +24,7 @@ interface DataType {
     rate: number;
     output: number;
     input: number;
+    average_rate: number;
     count: number;
     ownership: string;
     document_code: string;
@@ -349,6 +350,21 @@ const CardConsumable: React.FC = () => {
             key: 'rate',
             render: (_value, record) => `${record.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 
+        }, {
+            align: "center",
+            title: 'مبلغ',
+            dataIndex: 'amount',
+            width: '5%',
+            key: 'amount',
+            render: (_value, record) => `${record.rate * record.input}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+
+        }, {
+            align: "center",
+            title: 'ارزش',
+            dataIndex: 'average_rate',
+            width: '5%',
+            key: 'average_rate',
+            render: (_value, record) => `${record.average_rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         }, {
             align: "center",
             title: 'موجودی',

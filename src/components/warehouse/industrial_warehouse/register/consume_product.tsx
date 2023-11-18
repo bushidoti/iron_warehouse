@@ -58,7 +58,7 @@ const ConsumeProductForm: React.FC = () => {
         }).then(async data => {
             setListProduct(data.data)
         }).then(async () => {
-            return await axios.get(`${Url}/api/consuming_material_detailed/?fields=product,input,output`, {
+            return await axios.get(`${Url}/api/consuming_material_detailed/?fields=product,average_rate,rate,input,output`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -162,6 +162,13 @@ const ConsumeProductForm: React.FC = () => {
                                 }) => products.product === product.product).reduce((a: any, v: {
                                     output: any;
                                 }) => a + v.output, 0)) + form.getFieldValue(['products'])[i].input,
+
+                            average_rate: allProduct.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((allProduct.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).slice(-1)[0].average_rate)
+                                + form.getFieldValue(['products'])[i].rate) / 2 ,
                         }
                     }
                 });

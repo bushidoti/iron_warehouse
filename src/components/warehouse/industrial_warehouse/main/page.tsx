@@ -23,6 +23,7 @@ interface DataType {
     input: string;
     scale: string;
     output: string;
+    average_rate: string;
     left: string;
 }
 
@@ -71,7 +72,7 @@ const MainIndustrialWarehouse: React.FC = () => {
             }).then(async data => {
                 setProduct(data.data)
             }).then(async () => {
-                return await axios.get(`${Url}/api/${radioMaterial === 'raw' ? 'raw_material_detailed' : 'consuming_material_detailed' }/?fields=product,input,output,id`, {
+                return await axios.get(`${Url}/api/${radioMaterial === 'raw' ? 'raw_material_detailed' : 'consuming_material_detailed' }/?fields=product,average_rate,input,output,id`, {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                     }
@@ -264,6 +265,15 @@ const MainIndustrialWarehouse: React.FC = () => {
             width: '4.55%',
             dataIndex: 'scale',
             key: 'scale',
+        }, {
+            align: "center",
+            title: 'ارزش',
+            width: '4.55%',
+            dataIndex: 'average_rate',
+            key: 'average_rate',
+            render: (_value, record) => `${productSub.filter((products: {
+                product: number;
+            }) => products.product === record.code).slice(-1)[0]?.average_rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
         }
     ];
 
@@ -284,6 +294,10 @@ const MainIndustrialWarehouse: React.FC = () => {
 
     const onChangeRadio = (e: RadioChangeEvent) => {
         setRadioMaterial(e.target.value);
+        setPagination({
+           current:1,
+           pageSize:10
+        })
       };
 
     return (

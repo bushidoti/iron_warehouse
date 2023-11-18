@@ -68,14 +68,14 @@ const TablePrint = (props: {
                 </thead>
                 <tbody>
                 {props.productSub.map((data, i) => (
-                    <tr key={data.product}>
+                    <tr key={data?.product}>
                         <th className='text-[12px] border-solid	border font-extrabold' scope="row">{i+1}</th>
-                        <td className='text-[12px] border-solid	border text-center font-extrabold'>{data.product}</td>
-                        <td className='text-[12px] border-solid	border text-center'>{data.name}</td>
-                        <td className='text-[12px] border-solid	border text-center'>{data.carton}</td>
-                        <td className='text-[12px] border-solid	border text-center'>{data.input}</td>
-                        <td className='text-[12px] border-solid	border text-center'>{`${data.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
-                        <td className='text-[12px] border-solid	border text-center'>{`${data.rate * data.input}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                        <td className='text-[12px] border-solid	border text-center font-extrabold'>{data?.product}</td>
+                        <td className='text-[12px] border-solid	border text-center'>{data?.name}</td>
+                        <td className='text-[12px] border-solid	border text-center'>{data?.carton}</td>
+                        <td className='text-[12px] border-solid	border text-center'>{data?.input}</td>
+                        <td className='text-[12px] border-solid	border text-center'>{`${data?.rate}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
+                        <td className='text-[12px] border-solid	border text-center'>{`${data?.rate * data?.input}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</td>
                     </tr>
                 ))
                 }
@@ -93,7 +93,7 @@ const TablePrint = (props: {
                                </div>
                                 <div className="w-[203px] ps-1 border-solid border text-center">
                                    <Text className='text-[12px]' strong>
-                                    {`${props.productSub.reduce((a, v) => a + (v.rate * v.input), 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    {`${props.productSub.reduce((a, v) => a + (v?.rate * v?.input), 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                    </Text>
                                </div>
                             </Flex>
