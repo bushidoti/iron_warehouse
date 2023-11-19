@@ -1,5 +1,5 @@
 import {SearchOutlined} from '@ant-design/icons';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import Highlighter from "react-highlight-words";
 import type {InputRef, TableProps} from 'antd';
 import {Badge, Button, Input, Popconfirm, Select, Space, Table , message} from 'antd';
@@ -15,6 +15,7 @@ import qs from "qs";
 import {DatePicker as DatePickerJalali, JalaliLocaleListener} from "antd-jalali";
 import dayjs from "dayjs";
 import { QuestionCircleOutlined } from '@ant-design/icons';
+import {Context} from "../../../../context";
 
 interface DataType {
     key: React.Key;
@@ -26,8 +27,8 @@ interface DataType {
     date: string;
     purpose: string;
     applicant: string;
-    raw_material_jsonData: JSON;
-    consuming_material_jsonData: JSON;
+    raw_material_jsonData: any[];
+    consuming_material_jsonData: any[];
 }
 
 
@@ -48,6 +49,9 @@ const ReportRequestProduction: React.FC = () => {
         current:1,
         pageSize:10
     })
+    const [allProductRaw, setAllProductRaw] = useState<any[]>([]);
+    const [allProductConsumable, setAllProductConsumable] = useState<any[]>([]);
+    const context = useContext(Context)
     const [loading, setLoading] = useState<boolean>();
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const navigate = useNavigate();
@@ -60,27 +64,46 @@ const ReportRequestProduction: React.FC = () => {
         documentTitle: "کالا ها",
     });
 
-
     const fetchData = async () => {
-                    setLoading(true)
-                    await axios.get(`${Url}/api/request_supply/?size=${pagination.pageSize}&page=${pagination.current}&${qs.stringify(filteredInfo, {
-                        encode: false,
-                        arrayFormat: 'comma'
-                    })}`, {
-                        headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                        }
-                    }).then(response => {
-                        return response
-                    }).then(async data => {
-                        setProductSub(data.data)
-                    }).finally(() => {
-                        setLoading(false)
-                    }).catch((error) => {
-                        if (error.request.status === 403) {
-                            navigate('/no_access')
-                        }
-                    })
+            setLoading(true)
+            await axios.get(`${Url}/api/request_supply/?size=${pagination.pageSize}&page=${pagination.current}&${qs.stringify(filteredInfo, {
+                encode: false,
+                arrayFormat: 'comma'
+            })}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                }
+            }).then(response => {
+                return response
+            }).then(async data => {
+                setProductSub(data.data)
+            }).then(async () => {
+                return await axios.get(`${Url}/api/raw_material_detailed/?fields=product,average_rate,rate,input,output`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                    }
+                })
+            }).then(response => {
+                return response
+            }).then(async data => {
+                setAllProductRaw(data.data)
+            }).then(async () => {
+                return await axios.get(`${Url}/api/consuming_material_detailed/?fields=product,average_rate,rate,input,output`, {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                    }
+                })
+            }).then(response => {
+                return response
+            }).then(async data => {
+                setAllProductConsumable(data.data)
+            }).finally(() => {
+                setLoading(false)
+            }).catch((error) => {
+                if (error.request.status === 403) {
+                    navigate('/no_access')
+                }
+            })
     }
 
     useEffect(() => {
@@ -304,53 +327,232 @@ const ReportRequestProduction: React.FC = () => {
             key: 'operator',
             render: (_value, record) => {
                 return (
-                    <Space>
-                        <Popconfirm
-                            title="رد کردن کالا"
-                            description="آیا از رد کردن کالا و حذف مطمئنید ؟"
-                            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
-                            onConfirm={async () => {
-                                await axios.delete(`${Url}/api/request_supply/${record.id}/`, {
-                                    headers: {
-                                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                                    }
-                                }).then(response => {
-                                    return response
-                                }).then(async data => {
-                                    if (data.status === 204) {
-                                        message.error('رد شد');
-                                        await fetchData()
-                                    }
-                                })
-                            }}
-                            okText="بله"
-                            cancelText="خیر"
-                         >
-                            <Button disabled={record.is_delivered} htmlType={"button"} danger type={"primary"}>رد</Button>
-                        </Popconfirm>
-                          <Popconfirm
-                            title="دریافت کالا"
-                            description="آیا از صحت اطلاعات و دریافت کالا مطمئنید ؟"
-                            onConfirm={async () => {
-                                await axios.put(`${Url}/api/request_supply/${record.id}/`, {
-                                    is_delivered: true,
-                                }, {
-                                    headers: {
-                                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                                    }
-                                }).then(response => {
-                                    return response
-                                }).then(async data => {
-                                    if (data.status === 200) {
-                                        message.success('دریافت شد');
-                                        await fetchData()
-                                    }
-                                })
-                            }}
-                          >
-                           <Button disabled={record.is_delivered}  htmlType={"button"} type={"primary"}>تایید</Button>
-                      </Popconfirm>
-                    </Space>
+                    context.department === 'مدیریت تولید' ?
+                                <Space>
+                                    <Popconfirm
+                                        title="رد کردن کالا"
+                                        description="آیا از رد کردن کالا و حذف مطمئنید ؟"
+                                        icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+                                        onConfirm={async () => {
+                                            await axios.delete(`${Url}/api/request_supply/${record.id}/`, {
+                                                headers: {
+                                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                }
+                                            }).then(response => {
+                                                return response
+                                            }).then(async data => {
+                                                if (data.status === 204) {
+                                                    message.error('رد شد');
+                                                    await fetchData()
+                                                }
+                                            })
+                                        }}
+                                        okText="بله"
+                                        cancelText="خیر"
+                                     >
+                                        <Button disabled={record.is_delivered} htmlType={"button"} danger type={"primary"}>رد</Button>
+                                    </Popconfirm>
+                                      <Popconfirm
+                                        title="دریافت کالا"
+                                        description="آیا از صحت اطلاعات و دریافت کالا مطمئنید ؟"
+                                        onConfirm={async () => {
+                                            await axios.put(`${Url}/api/request_supply/${record.id}/`, {
+                                                is_delivered: true,
+                                            }, {
+                                                headers: {
+                                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                }
+                                            }).then(response => {
+                                                return response
+                                            }).then(async data => {
+                                                if (data.status === 200) {
+                                                    message.success('دریافت شد');
+                                                    await fetchData()
+                                                }
+                                            }).catch((error) => {
+                                                if (error.request.status === 403) {
+                                                    navigate('/no_access')
+                                                }
+                                            }).then(async () => {
+                                                await axios.post(`${Url}/api/pending_produce/`, {
+                                                    request: record.id,
+                                                    raw_material_jsonData: record.raw_material_jsonData,
+                                                    consuming_material_jsonData: record.consuming_material_jsonData,
+                                                    purpose: record.purpose,
+                                                    status: 'در حال تولید',
+                                                }, {
+                                                    headers: {
+                                                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                    }
+                                                }).then(response => {
+                                                    return response
+                                                }).then(async data => {
+                                                    if (data.status === 201) {
+                                                        message.success('در انبار تولید ثبت شد');
+                                                        await fetchData()
+                                                    }
+                                                })
+                                            })
+                                        }}
+                                      >
+                                       <Button disabled={record.is_delivered}  htmlType={"button"} type={"primary"}>تایید</Button>
+                                  </Popconfirm>
+                                </Space>
+                        :
+
+                        <Space>
+                              <Popconfirm
+                                title="دریافت کالا"
+                                description="آیا از صحت اطلاعات و دریافت کالا مطمئنید ؟"
+                                onConfirm={async () => {
+                                    new Promise(resolve => resolve(
+                                        record.raw_material_jsonData.map(async (product: { id: number; } , i : number) => {
+                                           record.raw_material_jsonData.map((obj:
+                                                          {
+                                                              document_code: number,
+                                                              receiver: string;
+                                                              systemID: string;
+                                                              request: number;
+                                                              checkCode: number;
+                                                              afterOperator: number;
+                                                              operator: string;
+                                                              }) => {
+                                            obj.operator = 'خروج'
+                                            obj.receiver = record.applicant
+                                            obj.request = record.raw_material_jsonData[i].output
+                                            obj.document_code = record.id
+                                            obj.afterOperator = (allProductRaw.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).reduce((a: any, v: {
+                                                        input: any;
+                                                    }) => a + v.input, 0)) - (allProductRaw.filter((products: {
+                                                    product: number;
+                                                }) => products.product === product.id).reduce((a: any, v: {
+                                                    output: any;
+                                                }) => a + v.output, 0)) - record.raw_material_jsonData[i].output
+                                                return obj;
+                                            })
+                                        })
+                                    )).then(() => {
+                                        record.consuming_material_jsonData.map(async (product: { id: number; } , i : number) => {
+                                           record.consuming_material_jsonData.map((obj:
+                                                          {
+                                                              document_code: number,
+                                                              receiver: string;
+                                                              systemID: string;
+                                                              request: number;
+                                                              checkCode: number;
+                                                              afterOperator: number;
+                                                              operator: string;
+                                                              }) => {
+                                            obj.operator = 'خروج'
+                                            obj.receiver = record.applicant
+                                            obj.request = record.consuming_material_jsonData[i].output
+                                            obj.document_code = record.id
+                                            obj.afterOperator = (allProductRaw.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).reduce((a: any, v: {
+                                                        input: any;
+                                                    }) => a + v.input, 0)) - (allProductRaw.filter((products: {
+                                                    product: number;
+                                                }) => products.product === product.id).reduce((a: any, v: {
+                                                    output: any;
+                                                }) => a + v.output, 0)) - record.consuming_material_jsonData[i].output
+                                                return obj;
+                                            })
+                                        })
+                                    }).then(() => setLoading(true)).then(
+                                            async () => {
+                                                await axios.post(
+                                                    `${Url}/api/consuming_material_check/`, {
+                                                                jsonData: record.consuming_material_jsonData,
+                                                            }, {
+                                                        headers: {
+                                                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                        }
+                                                    }).then(
+                                                        response => {
+                                                    return response
+                                                }).then(async data => {
+                                                    if (data.status === 201) {
+                                                        message.success('فاکتور ثبت شد.');
+
+                                                    }
+                                                }).catch(async (error) => {
+                                                    if (error.request.status === 403) {
+                                                        navigate('/no_access')
+                                                    } else if (error.request.status === 400) {
+                                                        message.error('عدم ثبت');
+                                                        setLoading(false)
+                                                    }
+                                                })
+                                            }
+                                        ).then(
+                                                async () => {
+                                                    await axios.post(
+                                                        `${Url}/api/raw_material_check/`, {
+                                                                    jsonData: record.raw_material_jsonData,
+                                                                }, {
+                                                            headers: {
+                                                                'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                            }
+                                                        }).then(
+                                                            response => {
+                                                        return response
+                                                    }).then(async data => {
+                                                        if (data.status === 201) {
+                                                            message.success('فاکتور ثبت شد.');
+
+                                                        }
+                                                    }).catch(async (error) => {
+                                                        if (error.request.status === 403) {
+                                                            navigate('/no_access')
+                                                        } else if (error.request.status === 400) {
+                                                            message.error('عدم ثبت');
+                                                            setLoading(false)
+                                                        }
+                                                    })
+                                                }
+                                            )
+                                    await axios.post(`${Url}/api/raw_material_detailed/${record.id}/`, record.raw_material_jsonData, {
+                                        headers: {
+                                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                        }
+                                    }).then(response => {
+                                        return response
+                                    }).then(async data => {
+                                        if (data.status === 201) {
+                                            message.success('دریافت شد');
+                                            await fetchData()
+                                        }
+                                    }).catch((error) => {
+                                        if (error.request.status === 403) {
+                                            navigate('/no_access')
+                                        }
+                                    }).then(async () => {
+                                        await axios.post(`${Url}/api/consuming_material_detailed/`, record.consuming_material_jsonData, {
+                                            headers: {
+                                                'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                            }
+                                        }).then(response => {
+                                            return response
+                                        }).then(async data => {
+                                            if (data.status === 201) {
+                                                message.success('در انبار تولید ثبت شد');
+                                                await fetchData()
+                                            }
+                                        }).catch((error) => {
+                                            if (error.request.status === 403) {
+                                                navigate('/no_access')
+                                            }
+                                        })
+                                    })
+                                }}
+                              >
+                               <Button disabled={record.is_delivered}  htmlType={"button"} type={"primary"}>ارسال اقلام</Button>
+                          </Popconfirm>
+                        </Space>
+
                 )
             }
         }

@@ -38,6 +38,7 @@ export const RouteLayout = () => {
              <Route path={'/warehouse/industrial_warehouse/register'} element={<RegisterIndustrialWareHouse/>}/>
              <Route path={'/warehouse/industrial_warehouse/upload'} element={<UploadIndustrialWareHouse/>}/>
              <Route path={'/warehouse/industrial_warehouse/report'} element={<ReportIndustrialWareHouse/>}/>
+             <Route path={'/warehouse/industrial_warehouse/request'} element={<ReportRequestProduction/>}/>
              <Route path={`/warehouse/industrial_warehouse/raw/edit/${context.currentProduct}`} element={<CardRaw/>}/>
              <Route path={`/warehouse/industrial_warehouse/raw/edit_doc/${context.currentProductDoc}/${context.currentProductDoc === 'factor' ? context.currentProductFactor : context.currentProductCheck }`} element={<EditDocRaw/>}/>
              <Route path={`/warehouse/industrial_warehouse/consumable/edit/${context.currentProduct}`} element={<CardConsumable/>}/>

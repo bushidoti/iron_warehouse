@@ -48,6 +48,7 @@ export const MenuLayout = () => {
         getItem(<Link  style={!['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element)) ? {pointerEvents:'none'} : {}} to='../warehouse/industrial_warehouse'>انبار صنعتی</Link>, 'sub2', undefined , [
             getItem(<Link to='../warehouse/industrial_warehouse/register'>ثبت</Link>, '4',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element)) ),
             getItem(<Link to='../warehouse/industrial_warehouse/report'>گزارش</Link>, '5' , undefined , undefined,!['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element))),
+            getItem(<Link to='../warehouse/industrial_warehouse/request'>درخواست ها</Link>, '25',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element))),
             getItem(<Link to='../warehouse/industrial_warehouse/upload'>باگذاری</Link>, '6',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element))),
         ], !['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element))),
 

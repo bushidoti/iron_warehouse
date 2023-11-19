@@ -1,6 +1,5 @@
 import React from "react";
 import {Flex, Space, Typography} from 'antd';
-import dayjs from "dayjs";
 const { Text } = Typography;
 
 
