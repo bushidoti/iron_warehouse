@@ -30,6 +30,7 @@ interface DataType {
     document_code: string;
     date: string;
     systemID: number;
+    request: number;
     scale: string;
     operator: string;
     address_seller: string;
@@ -323,6 +324,12 @@ const CardRaw: React.FC = () => {
             filteredValue: filteredInfo.operator || null,
         }, {
             align: "center",
+            title: 'شماره درخواست',
+            dataIndex: 'request',
+            width: '7%',
+            key: 'request',
+        }, {
+            align: "center",
             title: 'مقیاس',
             dataIndex: 'scale',
             width: '7%',
@@ -459,7 +466,7 @@ const CardRaw: React.FC = () => {
                 rowKey="id"
                 onChange={handleChange}
                 loading={loading}
-                pagination={{position: ["bottomCenter"]}}
+                pagination={{position: ["bottomCenter"],total:productSub?.count,showSizeChanger:true}}
             />
             <TablePrint componentPDF={componentPDF} productSub={productSub !== undefined ? productSub?.results : []} form={form}/>
 

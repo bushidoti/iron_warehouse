@@ -16,6 +16,7 @@ import {DatePicker as DatePickerJalali, JalaliLocaleListener} from "antd-jalali"
 import dayjs from "dayjs";
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import {Context} from "../../../../context";
+import TableCheckPrint from "./table_check";
 
 interface DataType {
     key: React.Key;
@@ -56,14 +57,20 @@ const ReportRequestProduction: React.FC = () => {
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const navigate = useNavigate();
     const componentPDF = useRef(null);
+    const componentPDFCheck = useRef(null);
     const [productSub, setProductSub] = useState<TypeProduct>()
     const [requestProductTable, setRequestProductTable] = useState<number>(0)
+    const [requestProductCheck, setRequestProductCheck] = useState<number>(0)
+    const [autoIncrementConsumable, setAutoIncrementConsumable] = useState<number>(0)
     const [filteredColumns, setFilteredColumns] = useState<string[]>([])
     const generatePDF = useReactToPrint({
         content: () => componentPDF.current,
         documentTitle: "کالا ها",
     });
-
+     const generatePDFCheck = useReactToPrint({
+        content: () => componentPDFCheck.current,
+        documentTitle: "کالا ها",
+    });
     const fetchData = async () => {
             setLoading(true)
             await axios.get(`${Url}/api/request_supply/?size=${pagination.pageSize}&page=${pagination.current}&${qs.stringify(filteredInfo, {
@@ -97,7 +104,17 @@ const ReportRequestProduction: React.FC = () => {
                 return response
             }).then(async data => {
                 setAllProductConsumable(data.data)
-            }).finally(() => {
+            }).then(async () => {
+            return await axios.get(`${Url}/auto_increment/industrial_warehouse_consumingmaterialcheck`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                }
+            })
+        }).then(response => {
+            return response
+        }).then(async data => {
+            setAutoIncrementConsumable(data.data.content)
+        }).finally(() => {
                 setLoading(false)
             }).catch((error) => {
                 if (error.request.status === 403) {
@@ -161,7 +178,6 @@ const ReportRequestProduction: React.FC = () => {
                             onPressEnter={() => handleSearch(selectedKeys as string[], confirm, dataIndex)}
                         />
                     </>
-
                     :
                     <Input
                         ref={searchInput}
@@ -402,9 +418,15 @@ const ReportRequestProduction: React.FC = () => {
 
                         <Space>
                               <Popconfirm
-                                title="دریافت کالا"
-                                description="آیا از صحت اطلاعات و دریافت کالا مطمئنید ؟"
+                                title="ارسال کالا"
+                                description="آیا از صحت اطلاعات و ارسال کالا مطمئنید ؟"
                                 onConfirm={async () => {
+                                     const promise1 = Promise.resolve(record.id);
+                                                    promise1.then((value) => {
+                                                        setRequestProductCheck(value)
+                                                    }).then(
+                                                        generatePDFCheck
+                                                    )
                                     new Promise(resolve => resolve(
                                         record.raw_material_jsonData.map(async (product: { id: number; } , i : number) => {
                                            record.raw_material_jsonData.map((obj:
@@ -412,14 +434,21 @@ const ReportRequestProduction: React.FC = () => {
                                                               document_code: number,
                                                               receiver: string;
                                                               systemID: string;
+                                                              product: number;
+                                                              consumable: string;
                                                               request: number;
                                                               checkCode: number;
+                                                              output: number;
                                                               afterOperator: number;
                                                               operator: string;
                                                               }) => {
                                             obj.operator = 'خروج'
                                             obj.receiver = record.applicant
-                                            obj.request = record.raw_material_jsonData[i].output
+                                            obj.consumable = record.purpose
+                                            obj.checkCode = autoIncrementConsumable
+                                            obj.request = record.raw_material_jsonData[i].request_id
+                                            obj.product = record.raw_material_jsonData[i].id
+                                            obj.output = record.raw_material_jsonData[i].output
                                             obj.document_code = record.id
                                             obj.afterOperator = (allProductRaw.filter((products: {
                                                         product: number;
@@ -440,20 +469,27 @@ const ReportRequestProduction: React.FC = () => {
                                                               document_code: number,
                                                               receiver: string;
                                                               systemID: string;
+                                                              consumable: string;
                                                               request: number;
+                                                              product: number;
                                                               checkCode: number;
+                                                              output: number;
                                                               afterOperator: number;
                                                               operator: string;
                                                               }) => {
                                             obj.operator = 'خروج'
                                             obj.receiver = record.applicant
-                                            obj.request = record.consuming_material_jsonData[i].output
+                                            obj.consumable = record.purpose
+                                            obj.checkCode = autoIncrementConsumable
+                                            obj.output = record.consuming_material_jsonData[i].output
+                                            obj.request = record.consuming_material_jsonData[i].request_id
+                                            obj.product = record.consuming_material_jsonData[i].id
                                             obj.document_code = record.id
-                                            obj.afterOperator = (allProductRaw.filter((products: {
+                                            obj.afterOperator = (allProductConsumable.filter((products: {
                                                         product: number;
                                                     }) => products.product === product.id).reduce((a: any, v: {
                                                         input: any;
-                                                    }) => a + v.input, 0)) - (allProductRaw.filter((products: {
+                                                    }) => a + v.input, 0)) - (allProductConsumable.filter((products: {
                                                     product: number;
                                                 }) => products.product === product.id).reduce((a: any, v: {
                                                     output: any;
@@ -465,7 +501,8 @@ const ReportRequestProduction: React.FC = () => {
                                             async () => {
                                                 await axios.post(
                                                     `${Url}/api/consuming_material_check/`, {
-                                                                jsonData: record.consuming_material_jsonData,
+                                                                jsonData_Consumable: record.consuming_material_jsonData,
+                                                                jsonData_raw: record.raw_material_jsonData,
                                                             }, {
                                                         headers: {
                                                             'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
@@ -475,7 +512,7 @@ const ReportRequestProduction: React.FC = () => {
                                                     return response
                                                 }).then(async data => {
                                                     if (data.status === 201) {
-                                                        message.success('فاکتور ثبت شد.');
+                                                        message.success('حواله ثبت شد.');
 
                                                     }
                                                 }).catch(async (error) => {
@@ -487,50 +524,8 @@ const ReportRequestProduction: React.FC = () => {
                                                     }
                                                 })
                                             }
-                                        ).then(
-                                                async () => {
-                                                    await axios.post(
-                                                        `${Url}/api/raw_material_check/`, {
-                                                                    jsonData: record.raw_material_jsonData,
-                                                                }, {
-                                                            headers: {
-                                                                'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                                                            }
-                                                        }).then(
-                                                            response => {
-                                                        return response
-                                                    }).then(async data => {
-                                                        if (data.status === 201) {
-                                                            message.success('فاکتور ثبت شد.');
-
-                                                        }
-                                                    }).catch(async (error) => {
-                                                        if (error.request.status === 403) {
-                                                            navigate('/no_access')
-                                                        } else if (error.request.status === 400) {
-                                                            message.error('عدم ثبت');
-                                                            setLoading(false)
-                                                        }
-                                                    })
-                                                }
-                                            )
-                                    await axios.post(`${Url}/api/raw_material_detailed/${record.id}/`, record.raw_material_jsonData, {
-                                        headers: {
-                                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                                        }
-                                    }).then(response => {
-                                        return response
-                                    }).then(async data => {
-                                        if (data.status === 201) {
-                                            message.success('دریافت شد');
-                                            await fetchData()
-                                        }
-                                    }).catch((error) => {
-                                        if (error.request.status === 403) {
-                                            navigate('/no_access')
-                                        }
-                                    }).then(async () => {
-                                        await axios.post(`${Url}/api/consuming_material_detailed/`, record.consuming_material_jsonData, {
+                                        ).then(async () => {
+                                        await axios.post(`${Url}/api/raw_material_detailed/`, record.raw_material_jsonData, {
                                             headers: {
                                                 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                                             }
@@ -538,13 +533,30 @@ const ReportRequestProduction: React.FC = () => {
                                             return response
                                         }).then(async data => {
                                             if (data.status === 201) {
-                                                message.success('در انبار تولید ثبت شد');
+                                                message.success('خروج ثبت شد');
                                                 await fetchData()
                                             }
                                         }).catch((error) => {
                                             if (error.request.status === 403) {
                                                 navigate('/no_access')
                                             }
+                                        }).then(async () => {
+                                            await axios.post(`${Url}/api/consuming_material_detailed/`, record.consuming_material_jsonData, {
+                                                headers: {
+                                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                }
+                                            }).then(response => {
+                                                return response
+                                            }).then(async data => {
+                                                if (data.status === 201) {
+                                                    message.success('خروج ثبت شد');
+                                                    await fetchData()
+                                                }
+                                            }).catch((error) => {
+                                                if (error.request.status === 403) {
+                                                    navigate('/no_access')
+                                                }
+                                            })
                                         })
                                     })
                                 }}
@@ -610,6 +622,7 @@ const ReportRequestProduction: React.FC = () => {
                 pagination={{position: ["bottomCenter"],total:productSub?.count,showSizeChanger:true}}
             />
              <TablePrint componentPDF={componentPDF}  productSub={productSub !== undefined ? productSub?.results : []}  filterable={requestProductTable}/>
+             <TableCheckPrint componentPDF={componentPDFCheck} autoIncrement={autoIncrementConsumable} productSub={productSub !== undefined ? productSub?.results : []}  filterable={requestProductCheck}/>
         </>
     )
 };

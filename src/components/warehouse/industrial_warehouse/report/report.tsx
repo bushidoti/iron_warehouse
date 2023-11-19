@@ -26,6 +26,7 @@ interface DataType {
     product: number;
     average_rate: number;
     rate: number;
+    request: number;
     name: string;
     ownership: string;
     document_code: string;
@@ -328,6 +329,12 @@ const ReportIndustrialWareHouse: React.FC = () => {
             ],
             onFilter: (value, record) => record.operator === value,
             filteredValue: filteredInfo.operator || null,
+        }, {
+            align: "center",
+            title: 'شماره درخواست',
+            dataIndex: 'request',
+            width: '7%',
+            key: 'request',
         }, {
             align: "center",
             title: 'مقیاس',

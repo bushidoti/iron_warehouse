@@ -24,6 +24,7 @@ interface DataType {
     rate: number;
     output: number;
     input: number;
+    request: number;
     average_rate: number;
     count: number;
     ownership: string;
@@ -321,6 +322,12 @@ const CardConsumable: React.FC = () => {
             ],
             onFilter: (value, record) => record.operator === value,
             filteredValue: filteredInfo.operator || null,
+        }, {
+            align: "center",
+            title: 'شماره درخواست',
+            dataIndex: 'request',
+            width: '7%',
+            key: 'request',
         }, {
             align: "center",
             title: 'مقیاس',
