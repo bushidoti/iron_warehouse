@@ -2,7 +2,7 @@ import {SearchOutlined} from '@ant-design/icons';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Highlighter from "react-highlight-words";
 import type {InputRef, TableProps} from 'antd';
-import {Badge, Button, Input, Popconfirm, Select, Space, Table , message} from 'antd';
+import {Badge, Button, Input, Popconfirm, Select, Space, Table, message, TableColumnsType} from 'antd';
 import axios from "axios";
 import type {ColumnsType, ColumnType} from 'antd/es/table';
 import type {FilterConfirmProps, FilterValue} from 'antd/es/table/interface';
@@ -32,13 +32,24 @@ interface DataType {
     consuming_material_jsonData: any[];
 }
 
-
+interface ExpandedDataType {
+  key: React.Key;
+  id: number;
+  scale: string;
+  name: string;
+  request_id: number;
+  category: string;
+  applicant: string;
+  description: string;
+  purpose: string;
+  output: string;
+}
 
 type DataIndex = keyof DataType;
 
 interface TypeProduct {
     count:number
-    results:[]
+    results:DataType[]
 }
 
 
@@ -264,14 +275,12 @@ const ReportRequestProduction: React.FC = () => {
             title: 'ردیف',
             dataIndex: 'index',
             fixed: "left",
-            width: '.5%',
             key: 'index',
             render: (_value, _record, index) => index + 1,
         }, {
             align: "center",
             title: 'شماره درخواست',
             dataIndex: 'id',
-            width: '1%',
             fixed: "left",
             key: 'id',
             ...getColumnSearchProps('id'),
@@ -290,7 +299,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'درخواست کننده',
             dataIndex: 'applicant',
-            width: '1%',
             key: 'applicant',
             ...getColumnSearchProps('applicant'),
             filteredValue: filteredInfo.applicant || null,
@@ -298,7 +306,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'دلیل',
             dataIndex: 'purpose',
-            width: '1%',
             key: 'purpose',
             ...getColumnSearchProps('purpose'),
             filteredValue: filteredInfo.purpose || null,
@@ -306,7 +313,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'تاریخ',
             dataIndex: 'date',
-            width: '1%',
             key: 'date',
             ...getColumnSearchProps('date'),
             filteredValue: filteredInfo.date || null,
@@ -314,7 +320,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'متمم برای ادامه سفارش',
             dataIndex: 'supplement',
-            width: '1%',
             key: 'supplement',
             render: (_value, record) => record.supplement ?
                 <Badge color="red" status="processing"/> :  <Badge color="red" status="processing"/>
@@ -322,7 +327,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'متمم سفارش مربوطه',
             dataIndex: 'which_request',
-            width: '1%',
             key: 'which_request',
             ...getColumnSearchProps('which_request'),
             filteredValue: filteredInfo.which_request || null,
@@ -330,7 +334,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'وضعیت تحویل',
             dataIndex: 'is_delivered',
-            width: '1%',
             key: 'is_delivered',
             render: (_value, record) => record.is_delivered ?
                 <Badge color="red" status="processing"/> :  <Badge color="red" status="processing"/>
@@ -338,7 +341,6 @@ const ReportRequestProduction: React.FC = () => {
             align: "center",
             title: 'عملیات',
             dataIndex: 'operator',
-            width: '1%',
             fixed: "right",
             key: 'operator',
             render: (_value, record) => {
@@ -415,7 +417,6 @@ const ReportRequestProduction: React.FC = () => {
                                   </Popconfirm>
                                 </Space>
                         :
-
                         <Space>
                               <Popconfirm
                                 title="ارسال کالا"
@@ -593,6 +594,19 @@ const ReportRequestProduction: React.FC = () => {
         {label: 'متمم سفارش مربوطه', value: 'which_request'},
     ];
 
+      const expandedRowRender = (record: any, i: number) => {
+        const columns: TableColumnsType<ExpandedDataType> = [
+          { title: 'ردیف', dataIndex: 'index', key: 'index', render: (_value, _record, index) => index + 1 },
+          { title: 'کد کالا', dataIndex: 'id', key: 'id' },
+          { title: 'نام کالا', dataIndex: 'name', key: 'name' },
+          { title: 'دسته', dataIndex: 'category', key: 'category' },
+          { title: 'تعداد', dataIndex: 'output', key: 'output' },
+          { title: 'مقیاس', dataIndex: 'scale', key: 'scale' },
+          { title: 'توضیحات', dataIndex: 'description', key: 'description' },
+        ];
+        return <Table rowKey="id" columns={columns} dataSource={productSub?.results[i].raw_material_jsonData.concat(productSub?.results[i].consuming_material_jsonData)} pagination={false} />;
+      };
+
     return (
         <>
             <Space style={{marginBottom: 16}}>
@@ -612,6 +626,7 @@ const ReportRequestProduction: React.FC = () => {
             </Space>
             <Table
                 bordered
+                expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 columns={columns.filter(col => !filteredColumns.includes(col.key as string))}
                 dataSource={productSub?.results}
                 tableLayout={"fixed"}
