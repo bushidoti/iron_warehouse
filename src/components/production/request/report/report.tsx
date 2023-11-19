@@ -326,7 +326,7 @@ const ReportRequestProduction: React.FC = () => {
                             okText="بله"
                             cancelText="خیر"
                          >
-                            <Button htmlType={"button"} danger type={"primary"}>رد</Button>
+                            <Button disabled={record.is_delivered} htmlType={"button"} danger type={"primary"}>رد</Button>
                         </Popconfirm>
                           <Popconfirm
                             title="دریافت کالا"
@@ -348,7 +348,7 @@ const ReportRequestProduction: React.FC = () => {
                                 })
                             }}
                           >
-                           <Button htmlType={"button"} type={"primary"}>تایید</Button>
+                           <Button disabled={record.is_delivered}  htmlType={"button"} type={"primary"}>تایید</Button>
                       </Popconfirm>
                     </Space>
                 )
