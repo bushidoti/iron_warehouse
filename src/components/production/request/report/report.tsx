@@ -322,7 +322,7 @@ const ReportRequestProduction: React.FC = () => {
             dataIndex: 'supplement',
             key: 'supplement',
             render: (_value, record) => record.supplement ?
-                <Badge color="red" status="processing"/> :  <Badge color="red" status="processing"/>
+                <Badge color="green" status="processing"/> :  <Badge color="red" status="processing"/>
         }, {
             align: "center",
             title: 'متمم سفارش مربوطه',
@@ -336,7 +336,7 @@ const ReportRequestProduction: React.FC = () => {
             dataIndex: 'is_delivered',
             key: 'is_delivered',
             render: (_value, record) => record.is_delivered ?
-                <Badge color="red" status="processing"/> :  <Badge color="red" status="processing"/>
+                <Badge color="green" status="processing"/> :  <Badge color="red" status="processing"/>
         }, {
             align: "center",
             title: 'عملیات',
@@ -374,30 +374,87 @@ const ReportRequestProduction: React.FC = () => {
                                         title="دریافت کالا"
                                         description="آیا از صحت اطلاعات و دریافت کالا مطمئنید ؟"
                                         onConfirm={async () => {
-                                            await axios.put(`${Url}/api/request_supply/${record.id}/`, {
-                                                is_delivered: true,
-                                            }, {
-                                                headers: {
-                                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                                                }
-                                            }).then(response => {
-                                                return response
-                                            }).then(async data => {
-                                                if (data.status === 200) {
-                                                    message.success('دریافت شد');
-                                                    await fetchData()
-                                                }
-                                            }).catch((error) => {
-                                                if (error.request.status === 403) {
-                                                    navigate('/no_access')
-                                                }
-                                            }).then(async () => {
-                                                await axios.post(`${Url}/api/pending_produce/`, {
-                                                    request: record.id,
-                                                    raw_material_jsonData: record.raw_material_jsonData,
-                                                    consuming_material_jsonData: record.consuming_material_jsonData,
-                                                    purpose: record.purpose,
-                                                    status: 'در حال تولید',
+                                            new Promise(resolve => resolve(
+                                        record.raw_material_jsonData.map(async (product: { id: number; } , i : number) => {
+                                           record.raw_material_jsonData.map((obj:
+                                                          {
+                                                              document_code: number,
+                                                              receiver: string;
+                                                              systemID: string;
+                                                              product: number;
+                                                              consumable: string;
+                                                              request: number;
+                                                              checkCode: number;
+                                                              average_rate: number;
+                                                              output: number;
+                                                              afterOperator: number;
+                                                              operator: string;
+                                                              }) => {
+                                            obj.operator = 'خروج'
+                                            obj.receiver = record.applicant
+                                            obj.consumable = record.purpose
+                                            obj.checkCode = autoIncrementConsumable
+                                            obj.request = record.raw_material_jsonData[i].request_id
+                                            obj.product = record.raw_material_jsonData[i].id
+                                            obj.output = record.raw_material_jsonData[i].output
+                                            obj.document_code = record.id
+                                            obj.afterOperator = (allProductRaw.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).reduce((a: any, v: {
+                                                        input: any;
+                                                    }) => a + v.input, 0)) - (allProductRaw.filter((products: {
+                                                    product: number;
+                                                }) => products.product === product.id).reduce((a: any, v: {
+                                                    output: any;
+                                                }) => a + v.output, 0)) - record.raw_material_jsonData[i].output
+                                            obj.average_rate = (allProductRaw.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).slice(-1)[0]?.average_rate)
+                                                return obj;
+                                            })
+                                        })
+                                    )).then(() => {
+                                        record.consuming_material_jsonData.map(async (product: { id: number; } , i : number) => {
+                                           record.consuming_material_jsonData.map((obj:
+                                                          {
+                                                              document_code: number,
+                                                              receiver: string;
+                                                              systemID: string;
+                                                              consumable: string;
+                                                              request: number;
+                                                              product: number;
+                                                              checkCode: number;
+                                                              average_rate: number;
+                                                              output: number;
+                                                              afterOperator: number;
+                                                              operator: string;
+                                                              }) => {
+                                            obj.operator = 'خروج'
+                                            obj.receiver = record.applicant
+                                            obj.consumable = record.purpose
+                                            obj.checkCode = autoIncrementConsumable
+                                            obj.output = record.consuming_material_jsonData[i].output
+                                            obj.request = record.consuming_material_jsonData[i].request_id
+                                            obj.product = record.consuming_material_jsonData[i].id
+                                            obj.document_code = record.id
+                                            obj.afterOperator = (allProductConsumable.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).reduce((a: any, v: {
+                                                        input: any;
+                                                    }) => a + v.input, 0)) - (allProductConsumable.filter((products: {
+                                                    product: number;
+                                                }) => products.product === product.id).reduce((a: any, v: {
+                                                    output: any;
+                                                }) => a + v.output, 0)) - record.consuming_material_jsonData[i].output
+                                            obj.average_rate = (allProductConsumable.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).slice(-1)[0]?.average_rate)
+                                                return obj;
+                                            })
+                                        })
+                                    }).then(() => setLoading(true)).then(async () => {
+                                                await axios.put(`${Url}/api/request_supply/${record.id}/`, {
+                                                    is_delivered: true,
                                                 }, {
                                                     headers: {
                                                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
@@ -405,10 +462,33 @@ const ReportRequestProduction: React.FC = () => {
                                                 }).then(response => {
                                                     return response
                                                 }).then(async data => {
-                                                    if (data.status === 201) {
-                                                        message.success('در انبار تولید ثبت شد');
+                                                    if (data.status === 200) {
+                                                        message.success('دریافت شد');
                                                         await fetchData()
                                                     }
+                                                }).catch((error) => {
+                                                    if (error.request.status === 403) {
+                                                        navigate('/no_access')
+                                                    }
+                                                }).then(async () => {
+                                                    await axios.post(`${Url}/api/pending_produce/`, {
+                                                        request: record.id,
+                                                        raw_material_jsonData: record.raw_material_jsonData,
+                                                        consuming_material_jsonData: record.consuming_material_jsonData,
+                                                        purpose: record.purpose,
+                                                        status: 'در حال تولید',
+                                                    }, {
+                                                        headers: {
+                                                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                                        }
+                                                    }).then(response => {
+                                                        return response
+                                                    }).then(async data => {
+                                                        if (data.status === 201) {
+                                                            message.success('اقلام تایید شد مرحله تولید');
+                                                            await fetchData()
+                                                        }
+                                                    })
                                                 })
                                             })
                                         }}
@@ -439,6 +519,7 @@ const ReportRequestProduction: React.FC = () => {
                                                               consumable: string;
                                                               request: number;
                                                               checkCode: number;
+                                                              average_rate: number;
                                                               output: number;
                                                               afterOperator: number;
                                                               operator: string;
@@ -460,6 +541,9 @@ const ReportRequestProduction: React.FC = () => {
                                                 }) => products.product === product.id).reduce((a: any, v: {
                                                     output: any;
                                                 }) => a + v.output, 0)) - record.raw_material_jsonData[i].output
+                                            obj.average_rate = (allProductRaw.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).slice(-1)[0]?.average_rate)
                                                 return obj;
                                             })
                                         })
@@ -474,6 +558,7 @@ const ReportRequestProduction: React.FC = () => {
                                                               request: number;
                                                               product: number;
                                                               checkCode: number;
+                                                              average_rate: number;
                                                               output: number;
                                                               afterOperator: number;
                                                               operator: string;
@@ -495,6 +580,9 @@ const ReportRequestProduction: React.FC = () => {
                                                 }) => products.product === product.id).reduce((a: any, v: {
                                                     output: any;
                                                 }) => a + v.output, 0)) - record.consuming_material_jsonData[i].output
+                                            obj.average_rate = (allProductConsumable.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === product.id).slice(-1)[0]?.average_rate)
                                                 return obj;
                                             })
                                         })
