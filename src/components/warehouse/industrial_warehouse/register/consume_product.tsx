@@ -228,6 +228,45 @@ const ConsumeProductForm: React.FC = () => {
                 })
             }
         ).then(
+                    async () => {
+                        form.getFieldValue(['products']).map(async (data: { product: any; } , i: number) => (
+                            await axios.put(`${Url}/api/consuming_material/${data.product}/`, {
+                                left: (allProduct.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).reduce((a: any, v: {
+                                    input: any;
+                                }) => a + v.input, 0))
+                                - (allProduct.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).reduce((a: any, v: {
+                                    output: any;
+                                }) => a + v.output, 0)) + form.getFieldValue(['products'])[i].input,
+
+                            average_rate: allProduct.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((allProduct.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).slice(-1)[0].average_rate)
+                                + form.getFieldValue(['products'])[i].rate) / 2 ,
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                }
+                            }).then(
+                                response => {
+                                    return response
+                                }
+                            ).then(
+                                async data => {
+                                    if (data.status === 200) {
+                                        message.success('ویرایش شد.');
+                                    }
+                                }
+                            )
+                        ))
+
+                    }
+                ).then(
                  async () => {
                             return await axios.post(`${Url}/api/consuming_material_detailed/`, form.getFieldValue(['products']), {
                                 headers: {

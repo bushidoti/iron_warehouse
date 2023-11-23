@@ -587,6 +587,76 @@ const ReportRequestProduction: React.FC = () => {
                                             })
                                         })
                                     }).then(() => setLoading(true)).then(
+                    async () => {
+                        record.consuming_material_jsonData.map(async (data: { id: any; } , i: number) => (
+                            await axios.put(`${Url}/api/consuming_material/${data.id}/`, {
+                                left: (allProductConsumable.filter((products: {
+                                        product: number;
+                                    }) => products.product === data.id).reduce((a: any, v: {
+                                        input: any;
+                                    }) => a + v.input, 0)) - (allProductConsumable.filter((products: {
+                                    product: number;
+                                }) => products.product === data.id).reduce((a: any, v: {
+                                    output: any;
+                                }) => a + v.output, 0)) - record.consuming_material_jsonData[i].output,
+
+                            average_rate: (allProductConsumable.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === data.id).slice(-1)[0]?.average_rate) ,
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                }
+                            }).then(
+                                response => {
+                                    return response
+                                }
+                            ).then(
+                                async data => {
+                                    if (data.status === 200) {
+                                        message.success('ویرایش شد.');
+                                    }
+                                }
+                            )
+                        ))
+
+                    }
+                ).then(
+                    async () => {
+                        record.raw_material_jsonData.map(async (data: { id: any; } , i: number) => (
+                            await axios.put(`${Url}/api/raw_material/${data.id}/`, {
+                                left: (allProductRaw.filter((products: {
+                                        product: number;
+                                    }) => products.product === data.id).reduce((a: any, v: {
+                                        input: any;
+                                    }) => a + v.input, 0)) - (allProductRaw.filter((products: {
+                                    product: number;
+                                }) => products.product === data.id).reduce((a: any, v: {
+                                    output: any;
+                                }) => a + v.output, 0)) - record.raw_material_jsonData[i].output,
+
+                            average_rate: (allProductRaw.filter((products: {
+                                                        product: number;
+                                                    }) => products.product === data.id).slice(-1)[0]?.average_rate) ,
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                }
+                            }).then(
+                                response => {
+                                    return response
+                                }
+                            ).then(
+                                async data => {
+                                    if (data.status === 200) {
+                                        message.success('ویرایش شد.');
+                                    }
+                                }
+                            )
+                        ))
+
+                    }
+                ).then(
                                             async () => {
                                                 await axios.post(
                                                     `${Url}/api/consuming_material_check/`, {
