@@ -117,8 +117,7 @@ const RegisterRequestProduction: React.FC = () => {
     const onFinish = async () => {
         new Promise(resolve => resolve(
             form.getFieldValue(['products'])
-        )).then(
-        ).then(() => setLoading(true)).then(
+        )).then(() => setLoading(true)).then(
                  async () => {
                             return await axios.post(
                     `${Url}/api/request_supply/`, {
