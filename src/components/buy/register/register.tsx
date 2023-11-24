@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {CloseOutlined} from '@ant-design/icons';
 import {
     Button,
@@ -14,6 +14,8 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import TextArea from "antd/es/input/TextArea";
 import Url from "../../api-configue";
+import {useReactToPrint} from "react-to-print";
+import TablePrint from "./table";
 
 const RegisterBuy: React.FC = () => {
     const [form] = Form.useForm();
@@ -22,6 +24,8 @@ const RegisterBuy: React.FC = () => {
     const navigate = useNavigate();
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
+    const componentPDF = useRef(null);
+    const [autoIncrement, setAutoIncrement] = useState<number>(0)
 
 
 
@@ -77,8 +81,21 @@ const RegisterBuy: React.FC = () => {
         )
     }
 
+    const fetchData = async () => {
+            await axios.get(`${Url}/auto_increment/buy_applybuy`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                }
+            }).then(response => {
+            return response
+        }).then(async data => {
+            setAutoIncrement(data.data.content)
+        })
+    }
+
     useEffect(() => {
             void onFocus()
+            void fetchData()
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [])
@@ -95,7 +112,9 @@ const RegisterBuy: React.FC = () => {
         )).then(() => setLoading(true)).then(
                  async () => {
                             return await axios.post(
-                    `${Url}/api/apply_buy/`, form.getFieldValue(['products']), {
+                    `${Url}/api/apply_buy/`, {
+                        jsonData:form.getFieldValue(['products'])
+                        }, {
                         headers: {
                             'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                         }
@@ -109,6 +128,7 @@ const RegisterBuy: React.FC = () => {
                         async data => {
                             if (data.status === 201) {
                                 message.success('درخواست ثبت شد.');
+                                generatePDF()
                                 setLoading(false)
                             }
                         }
@@ -117,6 +137,11 @@ const RegisterBuy: React.FC = () => {
                     }
                 )
     };
+
+    const generatePDF = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "کالا ها",
+    });
 
 
     return (
@@ -166,6 +191,8 @@ const RegisterBuy: React.FC = () => {
                                                                                 name: data.data[0].name,
                                                                                 left: data.data[0].left,
                                                                                 applicant: form.getFieldValue(['applicant']),
+                                                                                category: listProduct.filter(material => material.code === product.product)[0].category === 'مواد اولیه' ? 'مواد اولیه' : 'مواد مصرفی',
+
                                                                             }
                                                                         }
                                                                     });
@@ -217,6 +244,7 @@ const RegisterBuy: React.FC = () => {
                 </Form.Item>
             </>
         </Form>
+        <TablePrint componentPDF={componentPDF} autoIncrement={autoIncrement} productSub={form.getFieldValue(['products']) !== undefined ? form.getFieldValue(['products']) : []}/>
         </>
     );
 };

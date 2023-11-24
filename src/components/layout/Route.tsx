@@ -9,7 +9,7 @@ import {RegisterConsumableWareHouse} from "../warehouse/consumable_warehouse/reg
 import {ReportConsumableWareHouse} from "../warehouse/consumable_warehouse/report/report";
 import {UploadConsumableWareHouse} from "../warehouse/consumable_warehouse/upload/upload";
 import RegisterBuy from "../buy/register/register";
-import {ReportBuy} from "../buy/report/report";
+import ReportBuy from "../buy/report/report";
 import {ReportSale} from "../sale/report/report";
 import {RegisterSale} from "../sale/register/register";
 import {ReportProductionWareHouse} from "../warehouse/production_warehouse/report";

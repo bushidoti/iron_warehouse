@@ -81,7 +81,7 @@ export const MenuLayout = () => {
             getItem(<Link to='../sale/report'>گزارش</Link>, '20'),
         ]  , !context.permission.includes('Can view sale')),
     getItem('درخواست خرید', 'sub9', <ShoppingCartIcon/>, [
-            getItem(<Link to='../buy/register'>ثبت</Link>, '21'),
+            getItem(<Link to='../buy/register'>ثبت</Link>, '21', null,undefined,!context.permission.includes('Can add apply buy')),
             getItem(<Link to='../buy/report'>گزارش</Link>, '22'),
         ] , !context.permission.includes('Can view apply buy')),
     getItem(<Link style={!(context.department === 'مدیریت مالی' || context.department === 'مدیر کارخانه') ? {pointerEvents:'none'} : {}} to='/finance/main'>مالی</Link>, '23', <CalculateIcon/> , undefined , !(context.department === 'مدیریت مالی' || context.department === 'مدیر کارخانه')),
