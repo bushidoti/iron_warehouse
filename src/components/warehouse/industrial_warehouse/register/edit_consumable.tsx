@@ -66,7 +66,7 @@ export const EditDocConsumable = () => {
         }).then(async data => {
             setAllProducts(data.data)
         }).then(async () => {
-            return await axios.get(`${Url}/api/consuming_material_detailed/?fields=id,systemID,product,input,output&`, {
+            return await axios.get(`${Url}/api/consuming_material_detailed`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -94,7 +94,6 @@ export const EditDocConsumable = () => {
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
-
 
 
 
@@ -230,6 +229,13 @@ export const EditDocConsumable = () => {
                                 }) => products.systemID === product.systemID && products.product === product.product).reduce((a: any, v: {
                                     input: any;
                                 }) => a + v.input, 0)) + form.getFieldValue(['products'])[i].input,
+
+                            average_rate: consumeDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((consumeDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).slice(-2)[0].average_rate)
+                                + form.getFieldValue(['products'])[i].rate) / 2 ,
                         }
                     }
                 });
@@ -275,6 +281,7 @@ export const EditDocConsumable = () => {
                                 async data => {
                                     if (data.status === 200) {
                                         message.success('ویرایش شد');
+                                        await fetchData()
                                     }
                                 }
                             )
