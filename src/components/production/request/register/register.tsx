@@ -132,6 +132,7 @@ const RegisterRequestProduction: React.FC = () => {
                     `${Url}/api/request_supply/`, {
                                 applicant: form.getFieldValue(['applicant']),
                                 purpose: form.getFieldValue(['purpose']),
+                                amount: form.getFieldValue(['amount']),
                                 raw_material_jsonData: form.getFieldValue(['products']).filter((product: { category: string; }) => product.category === 'مواد اولیه'),
                                 consuming_material_jsonData: form.getFieldValue(['products']).filter((product: { category: string; }) => product.category === 'مواد مصرفی'),
                             }, {
