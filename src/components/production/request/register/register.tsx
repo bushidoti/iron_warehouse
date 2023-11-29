@@ -118,6 +118,15 @@ const RegisterRequestProduction: React.FC = () => {
         new Promise(resolve => resolve(
             form.getFieldValue(['products'])
         )).then(() => setLoading(true)).then(
+            form.getFieldValue(['products']).map((obj:
+                                                      {
+                                                          output: number,
+                                                          amount: number,
+                                                      }, i : number) => {
+                obj.output = form.getFieldValue(['products'])[i].output * form.getFieldValue(['amount'])
+                return obj;
+            })
+        ).then(
                  async () => {
                             return await axios.post(
                     `${Url}/api/request_supply/`, {
@@ -179,7 +188,11 @@ const RegisterRequestProduction: React.FC = () => {
                      <Form.Item name={'purpose'} className='w-[233px] inline-block m-2' label="دلیل"
                                rules={[{required: true}]}>
                         <Input placeholder='دلیل'/>
-                    </Form.Item>
+                     </Form.Item>
+                    <Form.Item name={'amount'} className='w-[233px] inline-block m-2' label="تعداد"
+                               rules={[{required: true}]}>
+                        <InputNumber/>
+                     </Form.Item>
                 </Form.Item>
                 <Form.Item>
                     <Form.List name={['products']}>
