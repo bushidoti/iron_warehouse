@@ -22,6 +22,8 @@ interface DataType {
     key: React.Key;
     id: number;
     index: number;
+    amount: number;
+    average_rate: number;
     which_request: number;
     supplement: boolean;
     is_delivered: boolean;
@@ -311,6 +313,11 @@ const ReportRequestProduction: React.FC = () => {
             filteredValue: filteredInfo.purpose || null,
         }, {
             align: "center",
+            title: 'تعداد',
+            dataIndex: 'amount',
+            key: 'amount',
+        }, {
+            align: "center",
             title: 'تاریخ',
             dataIndex: 'date',
             key: 'date',
@@ -385,32 +392,22 @@ const ReportRequestProduction: React.FC = () => {
                                                               consumable: string;
                                                               request: number;
                                                               checkCode: number;
+                                                              left: number;
                                                               average_rate: number;
                                                               output: number;
+                                                              amount: number;
                                                               afterOperator: number;
                                                               operator: string;
                                                               }) => {
                                             obj.operator = 'خروج'
                                             obj.receiver = record.applicant
                                             obj.consumable = record.purpose
+                                            obj.amount = record.amount
                                             obj.checkCode = autoIncrementConsumable
                                             obj.request = record.raw_material_jsonData[i].request_id
                                             obj.product = record.raw_material_jsonData[i].id
-                                            obj.output = record.raw_material_jsonData[i].output
                                             obj.document_code = record.id
                                             obj.systemID = autoIncrementConsumable
-                                            obj.afterOperator = (allProductRaw.filter((products: {
-                                                        product: number;
-                                                    }) => products.product === product.id).reduce((a: any, v: {
-                                                        input: any;
-                                                    }) => a + v.input, 0)) - (allProductRaw.filter((products: {
-                                                    product: number;
-                                                }) => products.product === product.id).reduce((a: any, v: {
-                                                    output: any;
-                                                }) => a + v.output, 0)) - record.raw_material_jsonData[i].output
-                                            obj.average_rate = (allProductRaw.filter((products: {
-                                                        product: number;
-                                                    }) => products.product === product.id).slice(-1)[0]?.average_rate)
                                                 return obj;
                                             })
                                         })
@@ -425,32 +422,21 @@ const ReportRequestProduction: React.FC = () => {
                                                               request: number;
                                                               product: number;
                                                               checkCode: number;
+                                                              amount: number;
                                                               average_rate: number;
                                                               output: number;
-                                                              afterOperator: number;
+                                                              left: number;
                                                               operator: string;
                                                               }) => {
                                             obj.operator = 'خروج'
                                             obj.receiver = record.applicant
                                             obj.consumable = record.purpose
+                                            obj.amount = record.amount
                                             obj.checkCode = autoIncrementConsumable
-                                            obj.output = record.consuming_material_jsonData[i].output
                                             obj.request = record.consuming_material_jsonData[i].request_id
                                             obj.product = record.consuming_material_jsonData[i].id
                                             obj.document_code = record.id
                                             obj.systemID = autoIncrementConsumable
-                                            obj.afterOperator = (allProductConsumable.filter((products: {
-                                                        product: number;
-                                                    }) => products.product === product.id).reduce((a: any, v: {
-                                                        input: any;
-                                                    }) => a + v.input, 0)) - (allProductConsumable.filter((products: {
-                                                    product: number;
-                                                }) => products.product === product.id).reduce((a: any, v: {
-                                                    output: any;
-                                                }) => a + v.output, 0)) - record.consuming_material_jsonData[i].output
-                                            obj.average_rate = (allProductConsumable.filter((products: {
-                                                        product: number;
-                                                    }) => products.product === product.id).slice(-1)[0]?.average_rate)
                                                 return obj;
                                             })
                                         })
@@ -478,6 +464,7 @@ const ReportRequestProduction: React.FC = () => {
                                                         raw_material_jsonData: record.raw_material_jsonData,
                                                         consuming_material_jsonData: record.consuming_material_jsonData,
                                                         purpose: record.purpose,
+                                                        amount: record.amount,
                                                         status: 'در حال تولید',
                                                     }, {
                                                         headers: {

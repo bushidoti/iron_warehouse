@@ -20,7 +20,9 @@ interface DataType {
     id: number;
     request: number;
     index: number;
+    amount: number;
     which_request: number;
+    output: number;
     supplement: boolean;
     status: string;
     date: string;
@@ -258,6 +260,13 @@ const ReportPendingProduction: React.FC = () => {
             filteredValue: filteredInfo.purpose || null,
         }, {
             align: "center",
+            title: 'تعداد',
+            dataIndex: 'amount',
+            key: 'amount',
+            ...getColumnSearchProps('purpose'),
+            filteredValue: filteredInfo.purpose || null,
+        }, {
+            align: "center",
             title: 'تاریخ',
             dataIndex: 'date',
             key: 'date',
@@ -311,12 +320,14 @@ const ReportPendingProduction: React.FC = () => {
                                         navigate('/no_access')
                                     }
                                 }).then(async () => {
-                                    await axios.post(`${Url}/api/request_supply/`, {
-                                        request: record.id,
+                                    await axios.post(`${Url}/api/production/`, {
+                                        request: record.request,
                                         raw_material_jsonData: record.raw_material_jsonData,
                                         consuming_material_jsonData: record.consuming_material_jsonData,
-                                        purpose: record.purpose,
-                                        status: 'در حال تولید',
+                                        name: record.purpose,
+                                        cost: record.consuming_material_jsonData.reduce((a: number, v: { average_rate: number; output: number;  amount: number;  }) => a + (v?.average_rate * (v?.output / v?.amount)), 0) + record.raw_material_jsonData.reduce((a: number, v: { average_rate: number; output: number;  amount: number;  }) => a + (v?.average_rate * (v?.output / v?.amount)), 0),
+                                        amount: record.amount,
+                                        operator: 'ورود',
                                     }, {
                                         headers: {
                                             'Authorization': 'Bearer ' + localStorage.getItem('access_token'),

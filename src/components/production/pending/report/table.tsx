@@ -38,7 +38,7 @@ const TablePrint = (props: {
                         </th>
                     </tr>
                     <tr>
-                        <th colSpan={7} className='text-[12px] border border-solid p-2 text-right font-extrabold'>خواهشمند است اقلام مشروحه زیل را جهت {props.productSub.filter((product: { request: number; }) => product.request === props.filterable)[0]?.purpose} تحویل فرمایید</th>
+                        <th colSpan={7} className='text-[12px] border border-solid p-2 text-right font-extrabold'>خواهشمند است اقلام مشروحه زیل را جهت {props.productSub.filter((product: { request: number; }) => product.request === props.filterable)[0]?.purpose} به تعداد {props.productSub.filter((product: { request: number; }) => product.request === props.filterable)[0]?.amount}  عدد تحویل فرمایید</th>
                     </tr>
                 </thead>
                 <thead>

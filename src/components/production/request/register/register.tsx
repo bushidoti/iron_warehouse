@@ -225,6 +225,7 @@ const RegisterRequestProduction: React.FC = () => {
                                                                                 scale: data.data[0].scale,
                                                                                 name: data.data[0].name,
                                                                                 left: data.data[0].left,
+                                                                                average_rate: data.data[0].average_rate,
                                                                                 purpose: form.getFieldValue(['purpose']),
                                                                                 request_id: form.getFieldValue(['code']),
                                                                                 applicant: form.getFieldValue(['applicant']),
