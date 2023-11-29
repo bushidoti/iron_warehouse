@@ -66,7 +66,7 @@ export const EditDocRaw = () => {
         }).then(async data => {
             setAllProducts(data.data)
         }).then(async () => {
-            return await axios.get(`${Url}/api/raw_material_detailed/?fields=id,systemID,product,input,output&`, {
+            return await axios.get(`${Url}/api/raw_material_detailed`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -136,6 +136,13 @@ export const EditDocRaw = () => {
                                 }) => products.systemID === product.systemID && products.product === product.product).reduce((a: any, v: {
                                     input: any;
                                 }) => a + v.input, 0))  - form.getFieldValue(['products'])[i].output,
+
+                            average_rate: context.department !== 'مدیریت مالی' ? undefined : rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).slice(-2)[0].average_rate)
+                                + form.getFieldValue(['products'])[i].rate) / 2 ,
                         }
                     }
                 });
@@ -230,6 +237,13 @@ export const EditDocRaw = () => {
                                 }) => products.systemID === product.systemID && products.product === product.product).reduce((a: any, v: {
                                     input: any;
                                 }) => a + v.input, 0)) + form.getFieldValue(['products'])[i].input,
+
+                            average_rate: context.department !== 'مدیریت مالی' ? undefined : rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === product.product).slice(-2)[0].average_rate)
+                                + form.getFieldValue(['products'])[i].rate) / 2 ,
                         }
                     }
                 });
@@ -248,7 +262,7 @@ export const EditDocRaw = () => {
                     return response
                 }).then(async data => {
                     if (data.status === 200) {
-                        message.success('ویرایش شد');
+                        message.success('فاکتور ویرایش شد');
                         setLoading(false)
                     }
                 }).catch(async (error) => {
@@ -274,7 +288,51 @@ export const EditDocRaw = () => {
                             ).then(
                                 async data => {
                                     if (data.status === 200) {
-                                        message.success('ویرایش شد');
+                                        message.success(`گزارش ویرایش شد`);
+                                    }
+                                }
+                            )
+                        ))
+
+                    }
+                ).then(
+                    async () => {
+                        form.getFieldValue(['products']).map(async (data: { product: any, systemID: number; } , i: number) => (
+                            await axios.put(`${Url}/api/raw_material/${data.product}/`, {
+                            left: (rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).reduce((a: any, v: {
+                                    input: any;
+                                }) => a + v.input, 0))
+                                - (rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).reduce((a: any, v: {
+                                    output: any;
+                                }) => a + v.output, 0)) - (rawDetailed.filter((products: {
+                                    systemID: number;
+                                    product: number;
+                                }) => products.systemID === data.systemID && products.product === data.product).reduce((a: any, v: {
+                                    input: any;
+                                }) => a + v.input, 0)) + form.getFieldValue(['products'])[i].input,
+
+                            average_rate: context.department !== 'مدیریت مالی' ? undefined :  rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).slice(-2)[0].length === 0 ? form.getFieldValue(['products'])[i].rate : ((rawDetailed.filter((products: {
+                                    product: number;
+                                }) => products.product === data.product).slice(-2)[0].average_rate)
+                                + form.getFieldValue(['products'])[i].rate) / 2 ,
+                            }, {
+                                headers: {
+                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                                }
+                            }).then(
+                                response => {
+                                    return response
+                                }
+                            ).then(
+                                async data => {
+                                    if (data.status === 200) {
+                                        message.success('موجودی و ارزش بروز شد.');
                                     }
                                 }
                             )
@@ -473,6 +531,7 @@ export const EditDocRaw = () => {
                                             <Form.Item name={[subField.name, 'rate']} rules={[{required: true}]}
                                                        label='نرخ'>
                                                 <InputNumber
+                                                    disabled={context.department !== 'مدیریت مالی'}
                                                     addonAfter="ریال"
                                                     formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                                     parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}

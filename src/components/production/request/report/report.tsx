@@ -398,7 +398,7 @@ const ReportRequestProduction: React.FC = () => {
                                             obj.product = record.raw_material_jsonData[i].id
                                             obj.output = record.raw_material_jsonData[i].output
                                             obj.document_code = record.id
-                                            obj.systemID = record.id
+                                            obj.systemID = autoIncrementConsumable
                                             obj.afterOperator = (allProductRaw.filter((products: {
                                                         product: number;
                                                     }) => products.product === product.id).reduce((a: any, v: {
@@ -438,7 +438,7 @@ const ReportRequestProduction: React.FC = () => {
                                             obj.request = record.consuming_material_jsonData[i].request_id
                                             obj.product = record.consuming_material_jsonData[i].id
                                             obj.document_code = record.id
-                                            obj.systemID = record.id
+                                            obj.systemID = autoIncrementConsumable
                                             obj.afterOperator = (allProductConsumable.filter((products: {
                                                         product: number;
                                                     }) => products.product === product.id).reduce((a: any, v: {
@@ -534,7 +534,7 @@ const ReportRequestProduction: React.FC = () => {
                                             obj.product = record.raw_material_jsonData[i].id
                                             obj.output = record.raw_material_jsonData[i].output
                                             obj.document_code = record.id
-                                            obj.systemID = record.id
+                                            obj.systemID = autoIncrementConsumable
                                             obj.afterOperator = (allProductRaw.filter((products: {
                                                         product: number;
                                                     }) => products.product === product.id).reduce((a: any, v: {
@@ -574,7 +574,7 @@ const ReportRequestProduction: React.FC = () => {
                                             obj.request = record.consuming_material_jsonData[i].request_id
                                             obj.product = record.consuming_material_jsonData[i].id
                                             obj.document_code = record.id
-                                            obj.systemID = record.id
+                                            obj.systemID = autoIncrementConsumable
                                             obj.afterOperator = (allProductConsumable.filter((products: {
                                                         product: number;
                                                     }) => products.product === product.id).reduce((a: any, v: {

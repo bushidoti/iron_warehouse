@@ -287,7 +287,7 @@ const ReportIndustrialWareHouse: React.FC = () => {
             dataIndex: 'systemID',
             width: '5%',
             key: 'systemID',
-            render: (_value, record) => <Button type={"link"} onClick={() => {
+            render: (_value, record) => record.operator === 'ورود' ? <Button type={"link"} onClick={() => {
                 if (record.operator === 'ورود'){
                     context.setCurrentProductFactor(record.systemID)
                 }else if (record.operator === 'خروج'){
@@ -295,7 +295,7 @@ const ReportIndustrialWareHouse: React.FC = () => {
                 }
                 context.setCurrentProductDoc(record.operator === 'ورود' ? 'factor' : 'check')
                 navigate(`/warehouse/industrial_warehouse/${radioMaterial === 'raw' ? 'raw' : 'consumable' }/edit_doc/${record.operator === 'ورود' ? 'factor' : 'check' }/${record.systemID}`)
-            }}>{record.systemID}</Button>,
+            }}>{record.systemID}</Button> : record.systemID,
         }, {
             align: "center",
             title: 'شناسه سند',

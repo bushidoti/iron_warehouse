@@ -43,7 +43,7 @@ export const MenuLayout = () => {
 
   const items: MenuItem[] = [
     getItem(<Link to='/'>خانه</Link>, '1', <HomeSharpIcon/>),
-    getItem(<Link target={"_blank"} to='http://127.0.0.1:8000/admin/'>پنل مدیریت</Link>, '2', <PieChartOutlined/> ,  undefined , context.department !== 'مدیر کارخانه'),
+    getItem(<Link style={!(context.department === 'مدیر کارخانه') ? {pointerEvents:'none'} : {}} target={"_blank"} to='http://127.0.0.1:8000/admin/'>پنل مدیریت</Link>, '2', <PieChartOutlined/> ,  undefined , context.department !== 'مدیر کارخانه'),
     getItem('انبارداری', 'sub1', <WarehouseIcon/>, [
         getItem(<Link  style={!['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element)) ? {pointerEvents:'none'} : {}} to='../warehouse/industrial_warehouse'>انبار صنعتی</Link>, 'sub2', undefined , [
             getItem(<Link to='../warehouse/industrial_warehouse/register'>ثبت</Link>, '4',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element)) ),

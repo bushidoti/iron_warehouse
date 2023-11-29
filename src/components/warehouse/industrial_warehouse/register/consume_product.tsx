@@ -162,13 +162,6 @@ const ConsumeProductForm: React.FC = () => {
                                 }) => products.product === product.product).reduce((a: any, v: {
                                     output: any;
                                 }) => a + v.output, 0)) + form.getFieldValue(['products'])[i].input,
-
-                            average_rate: allProduct.filter((products: {
-                                    product: number;
-                                }) => products.product === product.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((allProduct.filter((products: {
-                                    product: number;
-                                }) => products.product === product.product).slice(-1)[0].average_rate)
-                                + form.getFieldValue(['products'])[i].rate) / 2 ,
                         }
                     }
                 });
@@ -241,13 +234,6 @@ const ConsumeProductForm: React.FC = () => {
                                 }) => products.product === data.product).reduce((a: any, v: {
                                     output: any;
                                 }) => a + v.output, 0)) + form.getFieldValue(['products'])[i].input,
-
-                            average_rate: allProduct.filter((products: {
-                                    product: number;
-                                }) => products.product === data.product).length === 0 ? form.getFieldValue(['products'])[i].rate : ((allProduct.filter((products: {
-                                    product: number;
-                                }) => products.product === data.product).slice(-1)[0].average_rate)
-                                + form.getFieldValue(['products'])[i].rate) / 2 ,
                             }, {
                                 headers: {
                                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
@@ -360,7 +346,7 @@ const ConsumeProductForm: React.FC = () => {
                                 hasFeedback
                                 name={'seller_national_id'}
                                 className='w-[233px] inline-block m-2'
-                                label="کد ملی"
+                                label="کد ملی فروشنده"
                                 rules={[{len: 10}]}>
                                 <Input showCount maxLength={10}/>
                             </Form.Item>
@@ -470,14 +456,6 @@ const ConsumeProductForm: React.FC = () => {
                                             <Form.Item name={[subField.name, 'input']} rules={[{required: true}]}
                                                        label='تعداد'>
                                                 <InputNumber min={1} placeholder="تعداد"/>
-                                            </Form.Item>
-                                            <Form.Item name={[subField.name, 'rate']} rules={[{required: true}]}
-                                                       label='نرخ'>
-                                                <InputNumber
-                                                    addonAfter="ریال"
-                                                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
-                                                />
                                             </Form.Item>
                                             <Form.Item name={[subField.name, 'scale']} style={{width: 150}}
                                                        label='مقیاس'>
