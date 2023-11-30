@@ -12,12 +12,11 @@ import RegisterBuy from "../buy/register/register";
 import ReportBuy from "../buy/report/report";
 import {ReportSale} from "../sale/report/report";
 import {RegisterSale} from "../sale/register/register";
-import {ReportProductionWareHouse} from "../warehouse/production_warehouse/report";
+import ReportProductionWareHouse from "../warehouse/production_warehouse/report";
 import {ReportWasteWareHouse} from "../warehouse/waste_warehouse/report";
 import RegisterRequestProduction from "../production/request/register/register";
 import ReportRequestProduction from "../production/request/report/report";
 import ReportPendingProduction from "../production/pending/report/report";
-import {RegisterPendingProduction} from "../production/pending/register/register";
 import {FinanceMain} from "../finance/main";
 import MainIndustrialWarehouse from "../warehouse/industrial_warehouse/main/page";
 import CardConsumable from "../warehouse/industrial_warehouse/card/card_consumable";
@@ -58,7 +57,6 @@ export const RouteLayout = () => {
              <Route path={'/waste_warehouse'} element={<ReportWasteWareHouse/>}/>
              <Route path={'/production/request/register'} element={<RegisterRequestProduction/>}/>
              <Route path={'/production/request/report'} element={<ReportRequestProduction/>}/>
-             <Route path={'/production/pending_production/register'} element={<RegisterPendingProduction/>}/>
              <Route path={'/production/pending_production/report'} element={<ReportPendingProduction/>}/>
              <Route path={'/finance/main'} element={<FinanceMain/>}/>
          </Routes>

@@ -72,7 +72,6 @@ export const MenuLayout = () => {
         ]),
 
         getItem('انبار تولید', 'sub7', null, [
-            getItem(<Link to='../production/pending_production/register'>ثبت</Link>, '17'),
             getItem(<Link to='../production/pending_production/report'>گزارش</Link>, '18'),
         ]),
     ], !context.permission.includes('Can view pending produce')),
