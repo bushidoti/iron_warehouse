@@ -11,13 +11,13 @@ import {UploadConsumableWareHouse} from "../warehouse/consumable_warehouse/uploa
 import RegisterBuy from "../buy/register/register";
 import ReportBuy from "../buy/report/report";
 import {ReportSale} from "../sale/report/report";
-import {RegisterSale} from "../sale/register/register";
+import RegisterSale from "../sale/register/register";
 import ReportProductionWareHouse from "../warehouse/production_warehouse/report";
 import {ReportWasteWareHouse} from "../warehouse/waste_warehouse/report";
 import RegisterRequestProduction from "../production/request/register/register";
 import ReportRequestProduction from "../production/request/report/report";
 import ReportPendingProduction from "../production/pending/report/report";
-import {FinanceMain} from "../finance/main";
+import FinanceMain from "../finance/main";
 import MainIndustrialWarehouse from "../warehouse/industrial_warehouse/main/page";
 import CardConsumable from "../warehouse/industrial_warehouse/card/card_consumable";
 import {Context} from "../../context";

@@ -2,7 +2,7 @@ import {SearchOutlined} from '@ant-design/icons';
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import Highlighter from "react-highlight-words";
 import type {InputRef, TableProps} from 'antd';
-import {Button, Input, Select, Space, Table} from 'antd';
+import {Button, Input, Space, Table, TableColumnsType} from 'antd';
 import axios from "axios";
 import type {ColumnsType, ColumnType} from 'antd/es/table';
 import type {FilterConfirmProps, FilterValue} from 'antd/es/table/interface';
@@ -17,13 +17,15 @@ interface DataType {
     key: React.Key;
     code: number;
     index: number;
+    saleFactorCode: number;
     name: string;
     amount: string;
-    operator: number;
+    operator: string;
     cost: number;
     checkCode: number;
     request: number;
 }
+
 
 
 type DataIndex = keyof DataType;
@@ -36,7 +38,6 @@ interface TypeProduct {
 
 const ReportProductionWareHouse: React.FC = () => {
     const [searchText, setSearchText] = useState('');
-    const [selectedDoc, setSelectedDoc] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef<InputRef>(null);
     const [pagination, setPagination] = useState<any>({
@@ -216,20 +217,9 @@ const ReportProductionWareHouse: React.FC = () => {
             filteredValue: filteredInfo.name || null,
         }, {
             align: "center",
-            title: 'عملیات',
-            dataIndex: 'operator',
-            key: 'operator',
-            filters: [
-                {
-                    text: 'ورود',
-                    value: 'ورود',
-                }, {
-                    text: 'خروج',
-                    value: 'خروج',
-                }
-            ],
-            onFilter: (value, record) => record.operator === value,
-            filteredValue: filteredInfo.operator || null,
+            title: 'موجودی',
+            dataIndex: 'amount',
+            key: 'amount',
         }, {
             align: "center",
             title: 'ارزش',
@@ -269,18 +259,18 @@ const ReportProductionWareHouse: React.FC = () => {
 
 
 
-    const optionsDoc = [
-        {
-            value: 'check',
-            label: 'حواله',
-        },
-        {
-            value: 'factor',
-            label: 'فاکتور',
-        }
-    ]
-
-
+     const expandedRowRender = (record: any, i: number) => {
+        const columns: TableColumnsType<DataType> = [
+          { title: 'ردیف', dataIndex: 'index', key: 'index', render: (_value, _record, index) => index + 1 },
+          { title: 'شماره حواله', dataIndex: 'checkCode', key: 'checkCode' },
+          { title: 'شماره فاکتور فروش', dataIndex: 'saleFactorCode', key: 'saleFactorCode' },
+          { title: 'تعداد', dataIndex: 'amount', key: 'amount' },
+        ];
+        return <Table rowKey="index" columns={columns} dataSource={productSub?.results.filter((product: {
+            operator: string;
+            code: number;
+        }) => product.operator === 'خروج' && product.code === record.code)} pagination={false} />;
+      };
 
     return (
         <>
@@ -289,36 +279,22 @@ const ReportProductionWareHouse: React.FC = () => {
                 <Button onClick={clearAll}>پاک کردن فیلتر و مرتب کننده ها</Button>
                 <Button onClick={generatePDF}>چاپ</Button>
                 <Space.Compact>
-                    <Select
-                        style={{width: 170}}
-                        loading={loading}
-                        onChange={value => setSelectedDoc(value)}
-                        placeholder="مدرک مورد نظر"
-                        options={optionsDoc}
-                    />
-                    <Input placeholder={'شناسه مدرک'} disabled={selectedDoc === ''} onChange={(e) => {
-                        if (selectedDoc === 'factor') {
-                            context.setCurrentProductFactor(Number(e.target.value))
-                        } else if (selectedDoc === 'check') {
+                    <Input placeholder={'شناسه مدرک'} onChange={(e) => {
                             context.setCurrentProductCheck(Number(e.target.value))
-                        }
                     }}/>
-                    <Button type={"primary"} loading={loading} disabled={selectedDoc === ''} onClick={() => {
-                        if (selectedDoc === 'factor') {
-                            navigate(`/warehouse/industrial_warehouse/factor/${context.currentProductFactor}`)
-                        } else if (selectedDoc === 'check') {
+                    <Button type={"primary"} loading={loading} onClick={() => {
                             navigate(`/warehouse/industrial_warehouse/check/${context.currentProductCheck}`)
-                        }
                     }}>مشاهده</Button>
                 </Space.Compact>
             </Space>
             <Table
                 bordered
                 columns={columns}
+                expandable={{ expandedRowRender, defaultExpandedRowKeys: ['0'] }}
                 dataSource={productSub?.results}
                 tableLayout={"fixed"}
                 scroll={{y: '60vh'}}
-                rowKey="id"
+                rowKey="code"
                 onChange={handleChange}
                 loading={loading}
                 pagination={{position: ["bottomCenter"],total:productSub?.count,showSizeChanger:true}}
