@@ -49,6 +49,7 @@ const ReportProductionWareHouse: React.FC = () => {
     const navigate = useNavigate();
     const componentPDF = useRef(null);
     const [productSub, setProductSub] = useState<TypeProduct>()
+    const [productionDetail, setProductionDetail] = useState<any>([])
     const context = useContext(Context)
 
     const generatePDF = useReactToPrint({
@@ -69,6 +70,16 @@ const ReportProductionWareHouse: React.FC = () => {
                   return response
               }).then(async data => {
                   setProductSub(data.data)
+              }).then(async () => {
+                  await axios.get(`${Url}/api/production_detail`, {
+                      headers: {
+                          'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                      }
+                  }).then(response => {
+                      return response
+                  }).then(async data => {
+                      setProductionDetail(data.data)
+                  })
               }).finally(() => {
                   setLoading(false)
               }).catch((error) => {
@@ -258,7 +269,6 @@ const ReportProductionWareHouse: React.FC = () => {
 
 
 
-
      const expandedRowRender = (record: any, i: number) => {
         const columns: TableColumnsType<DataType> = [
           { title: 'ردیف', dataIndex: 'index', key: 'index', render: (_value, _record, index) => index + 1 },
@@ -266,10 +276,10 @@ const ReportProductionWareHouse: React.FC = () => {
           { title: 'شماره فاکتور فروش', dataIndex: 'saleFactorCode', key: 'saleFactorCode' },
           { title: 'تعداد', dataIndex: 'amount', key: 'amount' },
         ];
-        return <Table rowKey="index" columns={columns} dataSource={productSub?.results.filter((product: {
+        return <Table rowKey="id" columns={columns} dataSource={productionDetail.filter((product: {
             operator: string;
-            code: number;
-        }) => product.operator === 'خروج' && product.code === record.code)} pagination={false} />;
+            product: number;
+        }) => product.product === record.code)} pagination={false} />;
       };
 
     return (
