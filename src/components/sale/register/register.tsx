@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import {CloseOutlined} from '@ant-design/icons';
 import {
     Button, Checkbox,
@@ -12,16 +12,16 @@ import {
 } from 'antd';
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
-import {useReactToPrint} from "react-to-print";
 import Url from "../../api-configue";
+import dayjs from "dayjs";
 
 const RegisterSale: React.FC = () => {
     const [form] = Form.useForm();
     const [loading, setLoading] = useState<boolean>(false);
     const [listProduct, setListProduct] = useState<any[]>([{}]);
     const navigate = useNavigate();
-    const componentPDF = useRef(null);
     const [discountType, setDiscountType] = useState<string>('');
+    const [factorIncrement, setFactorIncrement] = useState<number>(0);
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -48,8 +48,23 @@ const RegisterSale: React.FC = () => {
         }).then(response => {
             return response
         }).then(async data => {
+            setFactorIncrement(data.data[0].increment)
             form.setFieldsValue({
-                FactorID: data.data[0].increment,
+                FactorID: dayjs().locale('fa').format('YYYYMMDD') + data.data[0].increment,
+
+            });
+        }).then(async () => {
+            return await axios.get(`${Url}/auto_increment/industrial_warehouse_productioncheck`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                }
+            })
+        }).then(response => {
+            return response
+        }).then(async data => {
+             form.setFieldsValue({
+                CheckID: data.data.content,
+
             });
         }).catch((error) => {
             if (error.request.status === 403) {
@@ -86,6 +101,8 @@ const RegisterSale: React.FC = () => {
                                                           phone_buyer: string;
                                                           discount: string;
                                                           factorCode: number;
+                                                          checkCode: number;
+                                                          saleFactorCode: number;
                                                           totalFactor: number;
                                                           total: number;
                                                       }, index : number) => {
@@ -94,6 +111,8 @@ const RegisterSale: React.FC = () => {
                 obj.address_buyer = form.getFieldValue(['address_buyer'])
                 obj.phone_buyer = form.getFieldValue(['phone_buyer'])
                 obj.factorCode = form.getFieldValue(['FactorID'])
+                obj.saleFactorCode = form.getFieldValue(['FactorID'])
+                obj.checkCode = form.getFieldValue(['CheckID'])
                 obj.total = form.getFieldValue(['products'])[index].output * (
                     form.getFieldValue(['products'])[index].total
                     + (form.getFieldValue(['products'])[index].type_increase === 'percent' ?
@@ -119,15 +138,14 @@ const RegisterSale: React.FC = () => {
                                                           discount: number;
                                                       }) => {
                 obj.tax = Math.round(form.getFieldValue(['tax']) ? (9 * form.getFieldValue(['products'])[0].totalFactor) / 100 : 0)
-                obj.discount = Math.round((
-                                    form.getFieldValue(['discount']) !== null ?
-                                        ( discountType === 'percent' ?
+                obj.discount = Math.round(
+                                    form.getFieldValue(['discount']) !== undefined ?
+                                         discountType === 'percent' ?
                                             (form.getFieldValue(['discount']) * form.getFieldValue(['products'])[0].totalFactor ) / 100
                                                 :
                                             form.getFieldValue(['discount'])
-                                        )
                                         : 0
-                                  ))
+                                  )
                 return obj;
             })
         ).then(() => setLoading(true)).then(
@@ -135,6 +153,7 @@ const RegisterSale: React.FC = () => {
                 await axios.post(
                     `${Url}/api/sale_factor/`, {
                                 code: form.getFieldValue(['FactorID']),
+                                paid: form.getFieldValue(['paid']),
                                 tax:  Math.round(form.getFieldValue(['products'])[0].tax),
                                 discount:  Math.round(form.getFieldValue(['products'])[0].discount),
                                 total:
@@ -150,7 +169,7 @@ const RegisterSale: React.FC = () => {
                     return response
                 }).then(async data => {
                     if (data.status === 201) {
-                        message.success('فاکتور فروش ثبت شد.');
+                        message.success('فاکتور فروش ثبت شد');
 
                     }
                 }).catch(async (error) => {
@@ -164,9 +183,61 @@ const RegisterSale: React.FC = () => {
                 })
             }
         ).then(
+            async () => {
+                await axios.post(
+                    `${Url}/api/production_check/`, {
+                                jsonData: form.getFieldValue(['products']),
+                            }, {
+                        headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                        }
+                    }).then(
+                        response => {
+                    return response
+                }).then(async data => {
+                    if (data.status === 201) {
+                        message.success('حواله خروج ثبت شد');
+                    }
+                }).catch(async (error) => {
+                    if (error.request.status === 403) {
+                        navigate('/no_access')
+                    } else if (error.request.status === 400) {
+                        message.error('عدم ثبت');
+                        setLoading(false)
+                        await handleResetSubmit()
+                    }
+                })
+            }
+        ).then(
+            form.getFieldValue(['products']).map(async (product: { code: number; fee: number; output: number; amount: number;  request: string;}) => {
+                await axios.put(`${Url}/api/production/${product.code}/`, {
+                      code: product.code,
+                      amount: product.amount - product.output,
+                }, {
+                      headers: {
+                            'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                      }
+                }).then(
+                    response => {
+                          return response
+                    }).then(async data => {
+                      if (data.status === 200) {
+                            message.success(`${product.output} عدد از محصول ${product.code} کم شد `);
+                      }
+                }).catch(async (error) => {
+                      if (error.request.status === 403) {
+                            navigate('/no_access')
+                      } else if (error.request.status === 400) {
+                            message.error('عدم ثبت');
+                            setLoading(false)
+                            await handleResetSubmit()
+                      }
+                })
+          })
+        ).then(
                  async () => {
-                            return await axios.post(`${Url}/api/sale/`, {
-                                factorCode : form.getFieldValue(['FactorID'])
+                            return await axios.put(`${Url}/api/auto_increment_sale_factor/1/`, {
+                                increment : factorIncrement + 1
                             }, {
                                 headers: {
                                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
@@ -179,8 +250,8 @@ const RegisterSale: React.FC = () => {
                         }
                 ).then(
                         async data => {
-                            if (data.status === 201) {
-                                message.success('ثبت شد.');
+                            if (data.status === 200) {
+                                message.success('شمارنده بروز شد');
                                 setLoading(false)
                             }
                         }
@@ -193,14 +264,33 @@ const RegisterSale: React.FC = () => {
                         await handleResetSubmit()
                     }
                 }).then(async () => {
+                await axios.post(`${Url}/api/production_detail/`, form.getFieldValue(['products']), {
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+                    }
+                }).then(
+                    response => {
+                        return response
+                    }).then(async data => {
+                    if (data.status === 201) {
+                        message.success(`در گزارش ثبت شد`);
+                    }
+                }).catch(async (error) => {
+                    if (error.request.status === 403) {
+                        navigate('/no_access')
+                    } else if (error.request.status === 400) {
+                        message.error('عدم ثبت');
+                        setLoading(false)
+                        await handleResetSubmit()
+                    }
+                })
+            }
+        ).then(async () => {
                         await handleResetSubmit()
                     }
                 )
     };
-    const generatePDF = useReactToPrint({
-        content: () => componentPDF.current,
-        documentTitle: "کالا ها",
-    });
+
 
     return (
         <>
@@ -215,6 +305,10 @@ const RegisterSale: React.FC = () => {
                 <Form.Item>
                     <Form.Item name={'FactorID'} className='inline-block m-2'
                                label="شماره ثبت فاکتور فروش">
+                        <InputNumber className='w-[150px]' disabled/>
+                    </Form.Item>
+                     <Form.Item name={'CheckID'} className='inline-block m-2'
+                               label="شماره حواله خروج">
                         <InputNumber className='w-[150px]' disabled/>
                     </Form.Item>
                     <Form.Item name={'buyer'} className='w-[233px] inline-block m-2' label="نام خریدار"
@@ -268,6 +362,14 @@ const RegisterSale: React.FC = () => {
 
                             </Form.Item>
                        </Space.Compact>
+                      <Form.Item name={'paid'} className='w-[233px] inline-block m-2'
+                                       label='مبلغ قابل پرداخت'>
+                              <InputNumber
+                                    addonAfter={'ریال'}
+                                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
+                              />
+                        </Form.Item>
                         <Form.Item name={'tax'} label={' '} valuePropName="checked" className='w-[233px] inline-block m-2'>
                               <Checkbox>مالیات لحاظ شود ؟</Checkbox>
                         </Form.Item>
@@ -302,8 +404,11 @@ const RegisterSale: React.FC = () => {
                                                                         products: {
                                                                             [i]: {
                                                                                 amount: data.data[0].amount,
+                                                                                code: data.data[0].code,
+                                                                                product: data.data[0].code,
                                                                                 name: data.data[0].name,
                                                                                 total: data.data[0].total,
+                                                                                request: data.data[0].request,
                                                                             }
                                                                         }
                                                                     });
