@@ -10,7 +10,7 @@ import {ReportConsumableWareHouse} from "../warehouse/consumable_warehouse/repor
 import {UploadConsumableWareHouse} from "../warehouse/consumable_warehouse/upload/upload";
 import RegisterBuy from "../buy/register/register";
 import ReportBuy from "../buy/report/report";
-import {ReportSale} from "../sale/report/report";
+import ReportSale from "../sale/report/report";
 import RegisterSale from "../sale/register/register";
 import ReportProductionWareHouse from "../warehouse/production_warehouse/report";
 import {ReportWasteWareHouse} from "../warehouse/waste_warehouse/report";
@@ -51,7 +51,6 @@ export const RouteLayout = () => {
              <Route path={'/buy/register'} element={<RegisterBuy/>}/>
              <Route path={'/buy/report'} element={<ReportBuy/>}/>
              <Route path={'/sale/register'} element={<RegisterSale/>}/>
-
              <Route path={'/sale/report'} element={<ReportSale/>}/>
              <Route path={'/production_warehouse'} element={<ReportProductionWareHouse/>}/>
              <Route path={'/waste_warehouse'} element={<ReportWasteWareHouse/>}/>

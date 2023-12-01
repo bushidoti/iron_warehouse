@@ -13,7 +13,6 @@ import {
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Url from "../../api-configue";
-import dayjs from "dayjs";
 
 const RegisterSale: React.FC = () => {
     const [form] = Form.useForm();
@@ -21,7 +20,6 @@ const RegisterSale: React.FC = () => {
     const [listProduct, setListProduct] = useState<any[]>([{}]);
     const navigate = useNavigate();
     const [discountType, setDiscountType] = useState<string>('');
-    const [factorIncrement, setFactorIncrement] = useState<number>(0);
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -40,7 +38,7 @@ const RegisterSale: React.FC = () => {
         }).then(async data => {
             setListProduct(data.data)
         }).then(async () => {
-            return await axios.get(`${Url}/api/auto_increment_sale_factor`, {
+            return await axios.get(`${Url}/auto_increment/sale_salefactor`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -48,9 +46,8 @@ const RegisterSale: React.FC = () => {
         }).then(response => {
             return response
         }).then(async data => {
-            setFactorIncrement(data.data[0].increment)
-            form.setFieldsValue({
-                FactorID: dayjs().locale('fa').format('YYYYMMDD') + data.data[0].increment,
+             form.setFieldsValue({
+                FactorID: data.data.content,
 
             });
         }).then(async () => {
@@ -73,9 +70,6 @@ const RegisterSale: React.FC = () => {
         }).finally(() => setLoading(false)
         )
     }
-
-
-
 
 
     useEffect(() => {
@@ -152,7 +146,6 @@ const RegisterSale: React.FC = () => {
             async () => {
                 await axios.post(
                     `${Url}/api/sale_factor/`, {
-                                code: form.getFieldValue(['FactorID']),
                                 paid: form.getFieldValue(['paid']),
                                 tax:  Math.round(form.getFieldValue(['products'])[0].tax),
                                 discount:  Math.round(form.getFieldValue(['products'])[0].discount),
@@ -234,36 +227,7 @@ const RegisterSale: React.FC = () => {
                       }
                 })
           })
-        ).then(
-                 async () => {
-                            return await axios.put(`${Url}/api/auto_increment_sale_factor/1/`, {
-                                increment : factorIncrement + 1
-                            }, {
-                                headers: {
-                                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                                }
-                            })
-                        }
-                ).then(
-                        response => {
-                            return response
-                        }
-                ).then(
-                        async data => {
-                            if (data.status === 200) {
-                                message.success('شمارنده بروز شد');
-                                setLoading(false)
-                            }
-                        }
-                ).catch(async (error) => {
-                    if (error.request.status === 403) {
-                        navigate('/no_access')
-                    } else if (error.request.status === 400) {
-                        message.error('عدم ثبت');
-                        setLoading(false)
-                        await handleResetSubmit()
-                    }
-                }).then(async () => {
+        ).then(async () => {
                 await axios.post(`${Url}/api/production_detail/`, form.getFieldValue(['products']), {
                     headers: {
                         'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
