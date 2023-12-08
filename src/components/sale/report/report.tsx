@@ -12,6 +12,8 @@ import qs from "qs";
 import {DatePicker as DatePickerJalali, JalaliLocaleListener} from "antd-jalali";
 import dayjs from "dayjs";
 import Url from "../../api-configue";
+import TablePrint from "./table";
+import {useReactToPrint} from "react-to-print";
 
 interface DataType {
     key: React.Key;
@@ -55,6 +57,8 @@ const ReportSale: React.FC = () => {
     const [filteredInfo, setFilteredInfo] = useState<Record<string, FilterValue | null>>({});
     const navigate = useNavigate();
     const [productSub, setProductSub] = useState<TypeProduct>()
+    const componentPDF = useRef(null);
+    const [factorTable, setFactorTable] = useState<number>(0)
 
 
     const fetchData = async () => {
@@ -219,6 +223,16 @@ const ReportSale: React.FC = () => {
             key: 'code',
             ...getColumnSearchProps('code'),
             filteredValue: filteredInfo.code || null,
+            render: (_value, record) => <Button type={"link"} onClick={async () => {
+                const promise1 = Promise.resolve(record.code);
+                promise1.then((value) => {
+                    setFactorTable(value)
+
+                }).then(
+                    generatePDF
+                )
+
+            }}>{record.code}</Button>,
         }, {
             align: "center",
             title: 'تاریخ',
@@ -284,6 +298,11 @@ const ReportSale: React.FC = () => {
         return <Table rowKey="code" columns={columns} dataSource={productSub?.results[i].jsonData} pagination={false} />;
       };
 
+    const generatePDF = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "کالا ها",
+    });
+
     return (
         <>
             <Space style={{marginBottom: 16}}>
@@ -302,6 +321,7 @@ const ReportSale: React.FC = () => {
                 loading={loading}
                 pagination={{position: ["bottomCenter"],total:productSub?.count,showSizeChanger:true}}
             />
+             <TablePrint componentPDF={componentPDF}  productSub={productSub !== undefined ? productSub?.results : []}  filterable={factorTable}/>
         </>
     )
 };
