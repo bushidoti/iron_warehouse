@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {CloseOutlined} from '@ant-design/icons';
 import {
     Button, Checkbox,
@@ -13,6 +13,8 @@ import {
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import Url from "../../api-configue";
+import TablePrint from "./table";
+import {useReactToPrint} from "react-to-print";
 
 const RegisterSale: React.FC = () => {
     const [form] = Form.useForm();
@@ -20,6 +22,7 @@ const RegisterSale: React.FC = () => {
     const [listProduct, setListProduct] = useState<any[]>([{}]);
     const navigate = useNavigate();
     const [discountType, setDiscountType] = useState<string>('');
+    const componentPDF = useRef(null);
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -96,17 +99,23 @@ const RegisterSale: React.FC = () => {
                                                           discount: string;
                                                           factorCode: number;
                                                           checkCode: number;
+                                                          paid: number;
                                                           saleFactorCode: number;
                                                           totalFactor: number;
+                                                          pretotal: number;
                                                           total: number;
                                                       }, index : number) => {
                 obj.buyer_national_id = form.getFieldValue(['buyer_national_id'])
                 obj.buyer = form.getFieldValue(['buyer'])
                 obj.address_buyer = form.getFieldValue(['address_buyer'])
                 obj.phone_buyer = form.getFieldValue(['phone_buyer'])
+                obj.paid = form.getFieldValue(['paid'])
                 obj.factorCode = form.getFieldValue(['FactorID'])
                 obj.saleFactorCode = form.getFieldValue(['FactorID'])
                 obj.checkCode = form.getFieldValue(['CheckID'])
+                obj.pretotal = form.getFieldValue(['products'])[index].total   + (form.getFieldValue(['products'])[index].type_increase === 'percent' ?
+                        (form.getFieldValue(['products'])[index].increase * form.getFieldValue(['products'])[index].total) / 100 :
+                        form.getFieldValue(['products'])[index].increase)
                 obj.total = form.getFieldValue(['products'])[index].output * (
                     form.getFieldValue(['products'])[index].total
                     + (form.getFieldValue(['products'])[index].type_increase === 'percent' ?
@@ -163,7 +172,7 @@ const RegisterSale: React.FC = () => {
                 }).then(async data => {
                     if (data.status === 201) {
                         message.success('فاکتور فروش ثبت شد');
-
+                        generatePDF()
                     }
                 }).catch(async (error) => {
                     if (error.request.status === 403) {
@@ -254,6 +263,12 @@ const RegisterSale: React.FC = () => {
                     }
                 )
     };
+
+    const generatePDF = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "کالا ها",
+    });
+
 
 
     return (
@@ -469,6 +484,7 @@ const RegisterSale: React.FC = () => {
                 </Form.Item>
             </>
         </Form>
+        <TablePrint componentPDF={componentPDF} productSub={form.getFieldValue(['products']) !== undefined ? form.getFieldValue(['products']) : []}/>
         </>
     );
 };

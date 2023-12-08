@@ -269,7 +269,7 @@ const ReportProductionWareHouse: React.FC = () => {
 
 
 
-     const expandedRowRender = (record: any, i: number) => {
+     const expandedRowRender = (record: any) => {
         const columns: TableColumnsType<DataType> = [
           { title: 'ردیف', dataIndex: 'index', key: 'index', render: (_value, _record, index) => index + 1 },
           { title: 'شماره حواله', dataIndex: 'checkCode', key: 'checkCode' },
