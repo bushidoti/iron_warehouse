@@ -121,6 +121,20 @@ const TablePrint = (props: {
                                </div>
                                <div className="w-[150px] ps-1 border-solid border text-center">
                                     <Text className='text-[12px]' strong>
+                                      جمع کل
+                                    </Text>
+                               </div>
+                                <div className="w-[203px] ps-1 border-solid border text-center">
+                                   <Text className='text-[12px]' strong>
+                                    {`${props.productSub.filter((product: { code: number; }) => product.code === props.filterable)[0]?.jsonData.reduce((a: any, v: { total: any; }) => a + v.total, 0)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                   </Text>
+                                </div>
+                            </Flex>
+                            <Flex>
+                               <div className="w-[450px]">
+                               </div>
+                               <div className="w-[150px] ps-1 border-solid border text-center">
+                                    <Text className='text-[12px]' strong>
                                       اضافات
                                     </Text>
                                </div>
@@ -158,20 +172,7 @@ const TablePrint = (props: {
                                    </Text>
                                </div>
                             </Flex>
-                            <Flex>
-                               <div className="w-[450px]">
-                               </div>
-                               <div className="w-[150px] ps-1 border-solid border text-center">
-                                    <Text className='text-[12px]' strong>
-                                      جمع کل
-                                    </Text>
-                               </div>
-                                <div className="w-[203px] ps-1 border-solid border text-center">
-                                   <Text className='text-[12px]' strong>
-                                    {`${props.productSub.filter((product: { code: number; }) => product.code === props.filterable)[0]?.total}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                   </Text>
-                                </div>
-                            </Flex>
+
                             <Flex>
                                <div className="w-[450px]">
                                </div>
@@ -182,7 +183,7 @@ const TablePrint = (props: {
                                </div>
                                 <div className="w-[203px] ps-1 border-solid border text-center">
                                    <Text className='text-[12px]' strong>
-                                    {`${props.productSub.filter((product: { code: number; }) => product.code === props.filterable)[0]?.paid}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                    {`${props.productSub.filter((product: { code: number; }) => product.code === props.filterable)[0]?.total}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                    </Text>
                                </div>
                             </Flex>
