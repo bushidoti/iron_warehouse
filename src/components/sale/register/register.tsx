@@ -99,7 +99,6 @@ const RegisterSale: React.FC = () => {
                                                           discount: string;
                                                           factorCode: number;
                                                           checkCode: number;
-                                                          paid: number;
                                                           saleFactorCode: number;
                                                           totalFactor: number;
                                                           pretotal: number;
@@ -109,7 +108,6 @@ const RegisterSale: React.FC = () => {
                 obj.buyer = form.getFieldValue(['buyer'])
                 obj.address_buyer = form.getFieldValue(['address_buyer'])
                 obj.phone_buyer = form.getFieldValue(['phone_buyer'])
-                obj.paid = form.getFieldValue(['paid'])
                 obj.factorCode = form.getFieldValue(['FactorID'])
                 obj.saleFactorCode = form.getFieldValue(['FactorID'])
                 obj.checkCode = form.getFieldValue(['CheckID'])
@@ -155,7 +153,6 @@ const RegisterSale: React.FC = () => {
             async () => {
                 await axios.post(
                     `${Url}/api/sale_factor/`, {
-                                paid: form.getFieldValue(['paid']),
                                 tax:  Math.round(form.getFieldValue(['products'])[0].tax),
                                 discount:  Math.round(form.getFieldValue(['products'])[0].discount),
                                 total:
@@ -341,14 +338,6 @@ const RegisterSale: React.FC = () => {
 
                             </Form.Item>
                        </Space.Compact>
-                      <Form.Item name={'paid'} className='w-[233px] inline-block m-2'
-                                       label='مبلغ قابل پرداخت'>
-                              <InputNumber
-                                    addonAfter={'ریال'}
-                                    formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    parser={(value) => value!.replace(/\$\s?|(,*)/g, '')}
-                              />
-                        </Form.Item>
                         <Form.Item name={'tax'} label={' '} valuePropName="checked" className='w-[233px] inline-block m-2'>
                               <Checkbox>مالیات لحاظ شود ؟</Checkbox>
                         </Form.Item>
