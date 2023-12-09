@@ -5,9 +5,9 @@ import {Home} from "../home/home";
 import RegisterIndustrialWareHouse from "../warehouse/industrial_warehouse/register/page";
 import {UploadIndustrialWareHouse} from "../warehouse/industrial_warehouse/upload/upload";
 import ReportIndustrialWareHouse from "../warehouse/industrial_warehouse/report/report";
-import {RegisterConsumableWareHouse} from "../warehouse/consumable_warehouse/register/register";
-import {ReportConsumableWareHouse} from "../warehouse/consumable_warehouse/report/report";
-import {UploadConsumableWareHouse} from "../warehouse/consumable_warehouse/upload/upload";
+import RegisterProduct from "../warehouse/consumable_warehouse/register/page";
+import ReportProduct from "../warehouse/consumable_warehouse/report/page";
+import {UploadProductDocs} from "../warehouse/consumable_warehouse/upload/upload";
 import RegisterBuy from "../buy/register/register";
 import ReportBuy from "../buy/report/report";
 import ReportSale from "../sale/report/report";
@@ -43,11 +43,9 @@ export const RouteLayout = () => {
              <Route path={`/warehouse/industrial_warehouse/consumable/edit/${context.currentProduct}`} element={<CardConsumable/>}/>
              <Route path={`/warehouse/industrial_warehouse/consumable/edit_doc/${context.currentProductDoc}/${context.currentProductDoc === 'factor' ? context.currentProductFactor : context.currentProductCheck }`} element={<EditDocConsumable/>}/>
              <Route path={`/warehouse/industrial_warehouse/factor/${context.currentProductFactor}`} element={<ProductFactor/>}/>
-             <Route path={'/warehouse/consumable_warehouse/register'} element={<RegisterConsumableWareHouse/>}/>
-             <Route path={'/warehouse/consumable_warehouse/upload'} element={<UploadConsumableWareHouse/>}/>
-             <Route path={'/warehouse/consumable_warehouse/report'} element={<ReportConsumableWareHouse/>}/>
-             <Route path={'/warehouse/consumable_warehouse/report'} element={<ReportConsumableWareHouse/>}/>
-             <Route path={'/warehouse/consumable_warehouse/report'} element={<ReportConsumableWareHouse/>}/>
+             <Route path={'/warehouse/consumable_warehouse/register'} element={<RegisterProduct/>}/>
+             <Route path={'/warehouse/consumable_warehouse/upload'} element={<UploadProductDocs/>}/>
+             <Route path={'/warehouse/consumable_warehouse/report'} element={<ReportProduct/>}/>
              <Route path={'/buy/register'} element={<RegisterBuy/>}/>
              <Route path={'/buy/report'} element={<ReportBuy/>}/>
              <Route path={'/sale/register'} element={<RegisterSale/>}/>
