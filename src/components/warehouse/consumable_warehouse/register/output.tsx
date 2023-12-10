@@ -32,7 +32,6 @@ const OutputForm: React.FC = () => {
     const [visible, setVisible] = useState(false);
     const [isCheck, setIsCheck] = useState(false);
     const context = useContext(Context)
-    const [autoIncrementFactor, setAutoIncrementFactor] = useState<number>()
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
@@ -84,8 +83,6 @@ const OutputForm: React.FC = () => {
             form.setFieldsValue({
                 CheckID: data.data.content,
             });
-            setAutoIncrementFactor(data.data.content)
-
         }).catch((error) => {
             if (error.request.status === 403) {
                 navigate('/no_access')
@@ -258,7 +255,7 @@ const OutputForm: React.FC = () => {
                     {isCheck ?
                         <Form.Item name={'CheckID'} style={{margin: 8, display: 'inline-block'}}
                                    label="شماره ثبت حواله">
-                            <InputNumber disabled/>
+                            <InputNumber className='w-[100px]' disabled/>
                         </Form.Item>
                         : null}
 

@@ -350,7 +350,7 @@ const ReportProduct: React.FC = () => {
                     context.setCurrentProductCheck(record.systemID)
                 }
                 context.setCurrentProductDoc(record.document_type)
-                navigate(`/warhouse/product/editDoc/${record.document_type}/${record.systemID}`)
+                navigate(`/warehouse/consumable_warehouse/editDoc/${record.document_type}/${record.systemID}`)
             }}>{record.systemID}</Button>,
         }, {
             align: "center",
@@ -532,9 +532,9 @@ const ReportProduct: React.FC = () => {
                     />
                     <Button type={"primary"} loading={loading} disabled={selectedDoc === ''} onClick={() => {
                         if (selectedDoc === 'فاکتور') {
-                            navigate(`/warhouse/product/factor/${context.currentProductFactor}`)
+                            navigate(`/warehouse/consumable_warehouse/factor/${context.currentProductFactor}`)
                         } else if (selectedDoc === 'حواله') {
-                            navigate(`/warhouse/product/check/${context.currentProductCheck}`)
+                            navigate(`/warehouse/consumable_warehouse/check/${context.currentProductCheck}`)
                         }
                     }}>مشاهده</Button>
                 </Space.Compact>

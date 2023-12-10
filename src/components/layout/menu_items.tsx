@@ -52,7 +52,7 @@ export const MenuLayout = () => {
             getItem(<Link to='../warehouse/industrial_warehouse/upload'>باگذاری</Link>, '6',undefined , undefined ,!['Can add consuming material', 'Can add raw material'].some((element: any) => context.permission.includes(element))),
         ], !['Can view consuming material', 'Can view raw material'].some((element: any) => context.permission.includes(element))),
 
-        getItem('انبار مصرفی', 'sub3', undefined, [
+        getItem(<Link to='../warehouse/consumable_warehouse'>انبار مصرفی</Link>, 'sub3', undefined, [
             getItem(<Link to='../warehouse/consumable_warehouse/register'>ثبت</Link>, '7'),
             getItem(<Link to='../warehouse/consumable_warehouse/report'>گزارش</Link>, '8'),
             getItem(<Link to='../warehouse/consumable_warehouse/upload'>باگذاری</Link>, '9'),

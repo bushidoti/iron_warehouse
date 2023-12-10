@@ -239,7 +239,7 @@ const MainProduct: React.FC = () => {
             filteredValue: filteredInfo.name || null,
             render: (_value, record) => <Button type={"link"} onClick={() => {
                 context.setCurrentProduct(record.code)
-                navigate(`/warhouse/product/edit/${record.code}`)
+                navigate(`/warehouse/consumable_warehouse/edit/${record.code}`)
             }}>{record.name}</Button>,
 
         }, {

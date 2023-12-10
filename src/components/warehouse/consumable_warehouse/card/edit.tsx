@@ -37,7 +37,7 @@ const Edit = (props: { form: any; }) => {
             if (data.status === 200) {
                 message.success('ویرایش شد');
                 setLoading(false)
-                navigate('/warhouse/product')
+                navigate('/warehouse/consumable_warehouse')
             }
         }).catch((error) => {
             if (error.request.status === 403) {

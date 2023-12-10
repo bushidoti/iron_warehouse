@@ -34,8 +34,6 @@ const InputForm: React.FC = () => {
     const navigate = useNavigate();
     const [visible, setVisible] = useState(false);
     const context = useContext(Context)
-    const [autoIncrement, setAutoIncrement] = useState<number>()
-    const [autoIncrementFactor, setAutoIncrementFactor] = useState<number>()
     const [isFactor, setIsFactor] = useState(false);
 
     const filterOption = (input: string, option?: { label: string; value: string }) =>
@@ -96,8 +94,6 @@ const InputForm: React.FC = () => {
             form.setFieldsValue({
                 code: data.data.content,
             });
-            setAutoIncrement(data.data.content)
-
         }).then(async () => {
             return await axios.get(`${Url}/auto_increment/consumable_warehouse_productfactor`, {
                 headers: {
@@ -110,8 +106,6 @@ const InputForm: React.FC = () => {
             form.setFieldsValue({
                 FactorID: data.data.content,
             });
-            setAutoIncrementFactor(data.data.content)
-
         }).catch((error) => {
             if (error.request.status === 403) {
                 navigate('/no_access')
@@ -321,13 +315,13 @@ const InputForm: React.FC = () => {
             <>
                 <Form.Item>
                     <Form.Item name={'code'} style={{margin: 8, display: 'inline-block'}} label="کد کالای جدید">
-                        <InputNumber disabled/>
+                        <InputNumber className='w-[100px]' disabled/>
                     </Form.Item>
 
                     {isFactor ?
                         <Form.Item name={'FactorID'} style={{margin: 8, display: 'inline-block'}}
                                    label="شماره ثبت فاکتور">
-                            <InputNumber disabled/>
+                            <InputNumber className='w-[100px]' disabled/>
                         </Form.Item>
                         : null}
 

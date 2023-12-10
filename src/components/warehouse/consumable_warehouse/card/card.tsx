@@ -291,7 +291,7 @@ const Card: React.FC = () => {
                     context.setCurrentProductCheck(record.systemID)
                 }
                 context.setCurrentProductDoc(record.document_type)
-                navigate(`/warhouse/product/editDoc/${record.document_type}/${record.systemID}`)
+                navigate(`/warehouse/consumable_warehouse/editDoc/${record.document_type}/${record.systemID}`)
             }}>{record.systemID}</Button>,
         }, {
             align: "center",
