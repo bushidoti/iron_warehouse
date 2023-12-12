@@ -29,8 +29,17 @@ function App() {
     const [currentProductFactor, setCurrentProductFactor] = useState<number>(0)
     const [currentProductCheck, setCurrentProductCheck] = useState<number>(0)
     const [currentProductDoc, setCurrentProductDoc] = useState<string>('');
-
+    const [listPropertyFactor, setListPropertyFactor] = useState<any>([]);
     const [compressed, setCompressed] = useState('');
+    const [currentPropertyForm, setCurrentPropertyForm] = useState<string>('');
+    const [propertyCapsule, setPropertyCapsule] = useState<any>([]);
+    const [propertyTab, setPropertyTab] = useState<string>('ثبت اولیه / خرید');
+    const [loadingAjax, setLoadingAjax] = useState(false)
+    const [currentProperty, setCurrentProperty] = useState<number>(0)
+    const [currentPropertyTable, setCurrentPropertyTable] = useState<string>('');
+    const [currentPropertyFactor, setCurrentPropertyFactor] = useState<number>(0)
+
+
     useEffect(() => {
         if (document.readyState === "complete") {
             setTimeout(() => setLoading(false), 3000)
@@ -44,6 +53,32 @@ function App() {
             navigate('/login');
         }
     }, [isLogged, navigate]);
+
+    const fetchData = async () => {
+        setLoading(true)
+        await axios.get(`${Url}/api/factor_property/?fields=code,jsonData`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
+            }
+        }).then(response => {
+            return response
+        }).then(async data => {
+            setListPropertyFactor(data.data)
+        }).catch((error) => {
+            if (error.request.status === 403) {
+                navigate('/')
+            }
+        }).finally(() => setLoading(false)
+        )
+    }
+
+    useEffect(() => {
+                if (isLogged) {
+                    void fetchData()
+                }
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [isLogged])
 
     useEffect(() => {
         if (isLogged) {
@@ -157,9 +192,24 @@ function App() {
                     setCurrentProduct,
                     fullName,
                     currentProductDoc,
+                    listPropertyFactor,
+                    setPropertyTab,
+                    propertyTab,
+                    setCurrentPropertyFactor,
+                    currentPropertyFactor,
                     setCurrentProductDoc,
+                    setCurrentProperty,
+                    currentProperty,
                     currentProductFactor,
+                    setCurrentPropertyTable,
+                    currentPropertyTable,
                     currentProductCheck,
+                    setPropertyCapsule,
+                    propertyCapsule,
+                    currentPropertyForm,
+                    loadingAjax,
+                    setLoadingAjax,
+                    setCurrentPropertyForm,
                     setCurrentProductFactor,
                     setCurrentProductCheck,
                     department,

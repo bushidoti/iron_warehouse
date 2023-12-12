@@ -59,11 +59,11 @@ export const MenuLayout = () => {
         ], !context.permission.includes('Can view product')),
         getItem(<Link to='../production_warehouse'>انبار محصول</Link>, '10', undefined, undefined,!context.permission.includes('Can view production')),
         getItem(<Link to='../waste_warehouse'>انبار ضایعات</Link>, '11', undefined, undefined,!context.permission.includes('Can view waste')),
-        getItem('اموال', 'sub4', undefined, [
+        getItem(<Link to='../property'>اموال</Link>, 'sub4', undefined, [
             getItem(<Link to='../property/register'>ثبت</Link>, '12'),
             getItem(<Link to='../property/report'>گزارش</Link>, '13'),
-            getItem(<Link to='../property/upload'>باگذاری</Link>, '14'),
-        ],true),
+            getItem(<Link to='../property/upload'>بارگذاری</Link>, '14'),
+        ],!context.permission.includes('Can view property')),
     ]),
     getItem("تولید", 'sub5', <ConstructionIcon/>, [
         getItem('مدیریت تولید', 'sub6', null, [

@@ -29,6 +29,22 @@ import MainProduct from "../warehouse/consumable_warehouse/main/page";
 import ProductCheck from "../warehouse/consumable_warehouse/report/check";
 import Card from "../warehouse/consumable_warehouse/card/card";
 import {EditDoc} from "../warehouse/consumable_warehouse/register/edit";
+import {UploadPropertyFactor} from "../property/upload/upload";
+import RegisterProperty from "../property/register/page";
+import PropertyFactor from "../property/main/factor";
+import MainProperty from "../property/main/page";
+import EditAirportEquipment from "../property/register/edit/airport-equipment";
+import EditAirportFurniture from "../property/register/edit/airport-furniture";
+import EditBenefit from "../property/register/edit/benefit";
+import EditDigitalFurniture from "../property/register/edit/digital-furniture";
+import EditElectronicFurniture from "../property/register/edit/electronic-furniture";
+import EditFacilityFurniture from "../property/register/edit/facility-furniture";
+import EditIndustrial from "../property/register/edit/industrial";
+import EditNoneIndustrial from "../property/register/edit/none_industrial";
+import EditOfficeFurniture from "../property/register/edit/office-furniture";
+import EditSafetyEquipment from "../property/register/edit/safety-equipment";
+import EditSupportItem from "../property/register/edit/support-items";
+import EditVehicle from "../property/register/edit/vehicle";
 
 export const RouteLayout = () => {
     const context = useContext(Context)
@@ -67,6 +83,24 @@ export const RouteLayout = () => {
              <Route path={'/production/request/report'} element={<ReportRequestProduction/>}/>
              <Route path={'/production/pending_production/report'} element={<ReportPendingProduction/>}/>
              <Route path={'/finance/main'} element={<FinanceMain/>}/>
+             <Route path={'/property/upload'} element={<UploadPropertyFactor/>}/>
+             <Route path={'/property/register'} element={<RegisterProperty/>}/>
+             <Route path={'/property/report'} element={<MainProperty/>}/>
+             <Route path={`/property/factor/${context.currentPropertyFactor}`}
+                           element={<PropertyFactor/>}/>
+             <Route path={'/property'} element={<MainProperty/>}/>
+            <Route path={`/property/airport-equipment/edit/${context.currentProperty}`} element={<EditAirportEquipment/>}/>
+            <Route path={`/property/airport-furniture/edit/${context.currentProperty}`} element={<EditAirportFurniture/>}/>
+            <Route path={`/property/benefit/edit/${context.currentProperty}`} element={<EditBenefit/>}/>
+            <Route path={`/property/digital-furniture/edit/${context.currentProperty}`} element={<EditDigitalFurniture/>}/>
+            <Route path={`/property/electronic-furniture/edit/${context.currentProperty}`} element={<EditElectronicFurniture/>}/>
+            <Route path={`/property/facility-furniture/edit/${context.currentProperty}`} element={<EditFacilityFurniture/>}/>
+            <Route path={`/property/industrial/edit/${context.currentProperty}`} element={<EditIndustrial/>}/>
+            <Route path={`/property/none_industrial/edit/${context.currentProperty}`} element={<EditNoneIndustrial/>}/>
+            <Route path={`/property/office-furniture/edit/${context.currentProperty}`} element={<EditOfficeFurniture/>}/>
+            <Route path={`/property/safety-equipment/edit/${context.currentProperty}`} element={<EditSafetyEquipment/>}/>
+            <Route path={`/property/support-item/edit/${context.currentProperty}`} element={<EditSupportItem/>}/>
+            <Route path={`/property/vehicle/edit/${context.currentProperty}`} element={<EditVehicle/>}/>
          </Routes>
     )
 }
