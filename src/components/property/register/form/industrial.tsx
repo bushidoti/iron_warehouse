@@ -17,28 +17,13 @@ const Industrial = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const context = useContext(Context)
-    const [autoIncrement, setAutoIncrement] = useState<number>()
-    const [autoIncrementFactor, setAutoIncrementFactor] = useState<number>()
     const [visible, setVisible] = useState(false);
     const [listProperty, setListProperty] = useState<any[]>([]);
 
 
     const subObjAdd = async () => {
         if (context.propertyTab === 'ثبت اولیه / خرید'){
-           await axios.put(`${Url}/api/autoincrement_property/${autoIncrement}/`, {
-                increment: form.getFieldValue(['property', 'code']) + 1
-            }, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                }
-            }).then(response => {
-                return response
-            }).then(async data => {
-                if (data.status === 200) {
-                    message.success('کد کالا بروز شد');
-                }
-            }).then(async () => {
-                context.setPropertyCapsule(oldArray => [...oldArray, {
+            context.setPropertyCapsule(oldArray => [...oldArray, {
                             code : form.getFieldValue(['property','code']),
                             category : context.currentPropertyForm,
                             factorCode:  form.getFieldValue(['property','factorCode']),
@@ -50,9 +35,6 @@ const Industrial = () => {
                             year_buy: form.getFieldValue(['property','year_buy']),
                             using_location: form.getFieldValue(['property','using_location']),
                    }])
-               await handleResetSubmit()
-
-           })
       }else if (context.propertyTab === 'تعمیرات'){
              context.setPropertyCapsule(oldArray => [...oldArray, {
                                 property : form.getFieldValue(['property','property']),
@@ -60,7 +42,6 @@ const Industrial = () => {
                                 document_code:  form.getFieldValue(['property','document_code']),
                                 description:  form.getFieldValue(['property','description']),
              }])
-            await handleResetSubmit()
         }
     }
 
@@ -107,22 +88,6 @@ const Industrial = () => {
                        message.success('ثبت شد');
                        await handleResetSubmit()
                        context.setLoadingAjax(false)
-                   }
-               }).then(async () => {
-                   return await axios.put(`${Url}/api/autoincrement_property_factor/${autoIncrementFactor}/`, {
-                       increment: form.getFieldValue(['property','factorCode']) + 1
-                   }, {
-                       headers: {
-                           'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                       }
-                   })
-               }).then(response => {
-                   return response
-               }).then(async data => {
-                   if (data.status === 200) {
-                       message.success('کد فاکتور بروز شد');
-                       await fetchData()
-                       context.setPropertyCapsule(() => [])
                    }
                }).catch(async (error) => {
                    if (error.request.status === 403) {
@@ -176,22 +141,6 @@ const Industrial = () => {
                        await handleResetSubmit()
                        context.setLoadingAjax(false)
                    }
-               }).then(async () => {
-                   return await axios.put(`${Url}/api/autoincrement_property_factor/${autoIncrementFactor}/`, {
-                       increment: form.getFieldValue(['property','factorCode']) + 1
-                   }, {
-                       headers: {
-                           'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                       }
-                   })
-               }).then(response => {
-                   return response
-               }).then(async data => {
-                   if (data.status === 200) {
-                       message.success('کد فاکتور بروز شد');
-                       await fetchData()
-                       context.setPropertyCapsule(() => [])
-                   }
                }).catch(async (error) => {
                    if (error.request.status === 403) {
                        navigate('/no_access')
@@ -208,10 +157,12 @@ const Industrial = () => {
     const handleResetSubmit = async () => {
         form.resetFields()
         await fetchData()
+        context.setPropertyCapsule(() => [])
+
     }
 
     const fetchData = async () => {
-        await axios.get(`${Url}/api/autoincrement_property_factor`, {
+        await axios.get(`${Url}/auto_increment/property_factorproperty`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -220,13 +171,12 @@ const Industrial = () => {
         }).then(async data => {
             form.setFieldsValue({
                 property : {
-                    factorCode: data.data[0].increment,
+                    factorCode: data.data.content,
                 }
             });
-            setAutoIncrementFactor(data.data[0].id)
         })
         if (context.propertyTab === 'ثبت اولیه / خرید'){
-                  await axios.get(`${Url}/api/autoincrement_property/?name=${context.currentPropertyForm}`, {
+                  await axios.get(`${Url}/auto_increment/property_property`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
             }
@@ -236,10 +186,9 @@ const Industrial = () => {
         }).then(async data => {
             form.setFieldsValue({
                 property : {
-                    code: data.data[0].increment,
+                    code: data.data.content,
                 }
             });
-            setAutoIncrement(data.data[0].id)
         }).catch((error) => {
             if (error.request.status === 403) {
                 navigate('/no_access')

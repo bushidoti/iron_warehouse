@@ -20,7 +20,6 @@ interface DataType {
     code: number;
     factorCode: number;
     category: number;
-    inventory: number;
     name: number;
     property_number: number;
     movement_status: string;
@@ -63,7 +62,7 @@ const SafetyEquipmentTable: React.FC = () => {
 
     const fetchData = async () => {
        setLoading(true)
-        await axios.get(`${Url}/api/property/?size=${pagination.pageSize}&page=${pagination.current}&fields=code,movement_status,category,factorCode,inventory,name,property_number,document_code,use_for,user,install_location,movement_message&${qs.stringify(filteredInfo, {
+        await axios.get(`${Url}/api/property/?size=${pagination.pageSize}&page=${pagination.current}&fields=code,movement_status,category,factorCode,name,property_number,document_code,use_for,user,install_location,movement_message&${qs.stringify(filteredInfo, {
                 encode: false,
                 arrayFormat: 'comma'
             })}&category=${context.currentPropertyTable}`, {

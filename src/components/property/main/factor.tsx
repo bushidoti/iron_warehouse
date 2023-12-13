@@ -24,7 +24,6 @@ interface Factor {
     code: number;
     factor: string;
     factor_type: string;
-    inventory: string;
     jsonData: any[];
 }
 

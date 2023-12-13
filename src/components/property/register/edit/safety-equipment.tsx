@@ -29,7 +29,7 @@ const EditSafetyEquipment  = () => {
                 if (data.status === 200) {
                     message.success('اموال بروز شد');
                     await fetchData()
-                    navigate('/warhouse/property/report')
+                    navigate('/property/report')
 
                 }
             })
@@ -56,7 +56,6 @@ const EditSafetyEquipment  = () => {
                 property: {
                     code: data.data.code,
                     factorCode: data.data.factorCode,
-                    inventory: data.data.inventory,
                     name: data.data.name,
                     property_number: data.data.property_number,
                     document_code: data.data.document_code,
@@ -82,7 +81,7 @@ const EditSafetyEquipment  = () => {
         <>
         <Form form={form}
               autoComplete="off"
-              name="property"
+              name="propertyRep"
               layout="vertical"
               onFinish={subObjAdd}
               validateMessages={validateMessages}

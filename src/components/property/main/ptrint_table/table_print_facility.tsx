@@ -22,7 +22,6 @@ const TablePrint = (props: {
                     <th className='th' scope="col">سال خرید</th>
                     <th className='th' scope="col">یوزر</th>
                     <th className='th' scope="col">محل نصب</th>
-                    <th className='th' scope="col">انبار</th>
                 </tr>
                 </thead>
 
@@ -40,7 +39,6 @@ const TablePrint = (props: {
                         <td className='td'>{data.year_buy}</td>
                         <td className='td'>{data.user}</td>
                         <td className='td'>{data.install_location}</td>
-                        <td className='td'>{data.inventory}</td>
                     </tr>
                 ))
                 }

@@ -17,25 +17,10 @@ const SupportItem = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const context = useContext(Context)
-    const [autoIncrement, setAutoIncrement] = useState<number>()
-    const [autoIncrementFactor, setAutoIncrementFactor] = useState<number>()
     const [visible, setVisible] = useState(false);
 
     const subObjAdd = async () => {
-        await axios.put(`${Url}/api/autoincrement_property/${autoIncrement}/`, {
-            increment: form.getFieldValue(['property', 'code']) + 1
-        }, {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-            }
-        }).then(response => {
-            return response
-        }).then(async data => {
-            if (data.status === 200) {
-                message.success('کد کالا بروز شد');
-            }
-        }).then(() => {
-              context.setPropertyCapsule(oldArray => [...oldArray, {
+        context.setPropertyCapsule(oldArray => [...oldArray, {
                             code : form.getFieldValue(['property','code']),
                             category : context.currentPropertyForm,
                             factorCode:  form.getFieldValue(['property','factorCode']),
@@ -48,7 +33,6 @@ const SupportItem = () => {
                             using_location: form.getFieldValue(['property','using_location']),
                             description: form.getFieldValue(['property','description']),
                    }])
-        })
     }
 
     const onFinish = async () => {
@@ -93,22 +77,6 @@ const SupportItem = () => {
                        await handleResetSubmit()
                        context.setLoadingAjax(false)
                    }
-               }).then(async () => {
-                   return await axios.put(`${Url}/api/autoincrement_property_factor/${autoIncrementFactor}/`, {
-                       increment: form.getFieldValue(['property','factorCode']) + 1
-                   }, {
-                       headers: {
-                           'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
-                       }
-                   })
-               }).then(response => {
-                   return response
-               }).then(async data => {
-                   if (data.status === 200) {
-                       message.success('کد فاکتور بروز شد');
-                       await fetchData()
-                       context.setPropertyCapsule(oldArray => [])
-                   }
                }).catch(async (error) => {
                    if (error.request.status === 403) {
                        navigate('/no_access')
@@ -125,10 +93,12 @@ const SupportItem = () => {
     const handleResetSubmit = async () => {
         form.resetFields()
         await fetchData()
+        context.setPropertyCapsule(() => [])
+
     }
 
     const fetchData = async () => {
-        await axios.get(`${Url}/api/autoincrement_property/?name=${context.currentPropertyForm}`, {
+        await axios.get(`${Url}/auto_increment/property_property`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
             }
@@ -137,12 +107,11 @@ const SupportItem = () => {
         }).then(async data => {
             form.setFieldsValue({
                 property : {
-                    code: data.data[0].increment,
+                    code: data.data.content,
                 }
             });
-            setAutoIncrement(data.data[0].id)
         }).then(async () => {
-            return await axios.get(`${Url}/api/autoincrement_property_factor`, {
+            return await axios.get(`${Url}/auto_increment/property_factorproperty`, {
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('access_token'),
                 }
@@ -152,11 +121,9 @@ const SupportItem = () => {
         }).then(async data => {
             form.setFieldsValue({
                 property : {
-                    factorCode: data.data[0].increment,
+                    factorCode: data.data.content,
                 }
             });
-            setAutoIncrementFactor(data.data[0].id)
-
         }).catch((error) => {
             if (error.request.status === 403) {
                 navigate('/no_access')

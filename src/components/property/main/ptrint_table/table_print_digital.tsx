@@ -28,7 +28,6 @@ const TablePrint = (props: {
                     <th className='th' scope="col">مادربرد</th>
                     <th className='th' scope="col">ویژگی تلفن</th>
                     <th className='th' scope="col">محل نصب</th>
-                    <th className='th' scope="col">انبار</th>
                 </tr>
                 </thead>
 
@@ -52,7 +51,6 @@ const TablePrint = (props: {
                         <td className='td'>{data.cpu}</td>
                         <td className='td'>{data.phone_feature}</td>
                         <td className='td'>{data.install_location}</td>
-                        <td className='td'>{data.inventory}</td>
                     </tr>
                 ))
                 }

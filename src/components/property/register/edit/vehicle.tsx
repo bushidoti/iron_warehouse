@@ -30,7 +30,7 @@ const EditVehicle  = () => {
                 if (data.status === 200) {
                     message.success('اموال بروز شد');
                     await fetchData()
-                    navigate('/warhouse/property/report')
+                    navigate('/property/report')
 
                 }
             })
@@ -56,7 +56,6 @@ const EditVehicle  = () => {
                 property: {
                     code: data.data.code,
                     factorCode: data.data.factorCode,
-                    inventory: data.data.inventory,
                     name: data.data.name,
                     property_number: data.data.property_number,
                     document_code: data.data.document_code,
@@ -119,7 +118,7 @@ const EditVehicle  = () => {
         <>
             <Form form={form}
               autoComplete="off"
-              name="property"
+              name="propertyRep"
               layout="vertical"
               onFinish={subObjAdd}
               validateMessages={validateMessages}
@@ -153,7 +152,6 @@ const EditVehicle  = () => {
                            rules={[{required: true}]}>
                     <Input/>
                 </Form.Item>
-                {context.currentPropertyTable === 'هواپیما' ? null :
                     <Space.Compact>
                        <Form.Item name={['property', 'part3plate']} label="سریال" hasFeedback className='w-[80px] inline-block ms-2 mt-2' rules={[{required: true, len: 2}]}>
                             <Input maxLength={2} type={'number'} placeholder={'- -'} className='text-center'/>
@@ -170,7 +168,6 @@ const EditVehicle  = () => {
                            <Input maxLength={2} type={'number'} placeholder={'- -'} className='text-center'/>
                        </Form.Item>
                     </Space.Compact>
-                }
                <Form.Item name={['property', 'user']} className='w-[233px] inline-block m-2' label="یوزر"
                            rules={[{required: true}]}>
                     <Input/>

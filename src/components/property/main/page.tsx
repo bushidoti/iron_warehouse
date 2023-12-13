@@ -20,12 +20,10 @@ import EmojiFoodBeverageIcon from '@mui/icons-material/EmojiFoodBeverage';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import CellWifiIcon from '@mui/icons-material/CellWifi';
 import SafetyEquipmentTable from "./tables/table_safety_equipment.";
-import AirportEquipmentTable from "./tables/table_airport_equipment";
 import VehicleTable from "./tables/vehicle_table";
 import ElectronicFurnitureTable from "./tables/table_electronic";
 import OfficeFurnitureTable from "./tables/table_office";
 import FacilityFurnitureTable from "./tables/table_facility";
-import AirportFurnitureTable from "./tables/table_airport";
 import DigitalFurnitureTable from "./tables/table_digital";
 import NoneIndustrialTable from "./tables/table_none_industrial";
 import IndustrialTable from "./tables/table_industrial";
@@ -164,10 +162,7 @@ const MainProperty: React.FC = () => {
                     {(() => {
                         if (context.currentPropertyTable === 'تجهیزات ایمنی'){
                             return <SafetyEquipmentTable/>
-                        } else if (context.currentPropertyTable === 'تجهیزات فرودگاهی'){
-                            return <AirportEquipmentTable/>
-                        } else  if (context.currentPropertyTable === 'خودرو اداری' ||
-                            context.currentPropertyTable === 'خودرو فرودگاهی' || context.currentPropertyTable === 'هواپیما' ){
+                        } else  if (context.currentPropertyTable === 'خودرو اداری' ){
                             return <VehicleTable/>
                         } else if (context.currentPropertyTable === 'اثاثه الکترونیکی'){
                             return <ElectronicFurnitureTable/>
@@ -175,8 +170,6 @@ const MainProperty: React.FC = () => {
                             return <OfficeFurnitureTable/>
                         } else if (context.currentPropertyTable === 'اثاثه تاسیساتی'){
                             return <FacilityFurnitureTable/>
-                        } else if (context.currentPropertyTable === 'اثاثه فرودگاهی'){
-                            return <AirportFurnitureTable/>
                         } else if (context.currentPropertyTable === 'اثاثه دیجیتالی'){
                             return <DigitalFurnitureTable/>
                         } else if (context.currentPropertyTable === 'ابزار آلات غیر صنعتی'){

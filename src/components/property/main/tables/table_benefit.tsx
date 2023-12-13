@@ -20,7 +20,6 @@ interface DataType {
     code: number;
     factorCode: number;
     category: number;
-    inventory: number;
     name: number;
     property_number: number;
     document_code: number;
@@ -62,7 +61,7 @@ const BenefitTable: React.FC = () => {
 
     const fetchData = async () => {
        setLoading(true)
-        await axios.get(`${Url}/api/property/?size=${pagination.pageSize}&page=${pagination.current}&fields=code,movement_status,category,factorCode,inventory,name,property_number,document_code,model,year_buy,user,using_location,movement_message&${qs.stringify(filteredInfo, {
+        await axios.get(`${Url}/api/property/?size=${pagination.pageSize}&page=${pagination.current}&fields=code,movement_status,category,factorCode,name,property_number,document_code,model,year_buy,user,using_location,movement_message&${qs.stringify(filteredInfo, {
                 encode: false,
                 arrayFormat: 'comma'
             })}&category=${context.currentPropertyTable}`, {

@@ -33,8 +33,6 @@ import {UploadPropertyFactor} from "../property/upload/upload";
 import RegisterProperty from "../property/register/page";
 import PropertyFactor from "../property/main/factor";
 import MainProperty from "../property/main/page";
-import EditAirportEquipment from "../property/register/edit/airport-equipment";
-import EditAirportFurniture from "../property/register/edit/airport-furniture";
 import EditBenefit from "../property/register/edit/benefit";
 import EditDigitalFurniture from "../property/register/edit/digital-furniture";
 import EditElectronicFurniture from "../property/register/edit/electronic-furniture";
@@ -89,8 +87,6 @@ export const RouteLayout = () => {
              <Route path={`/property/factor/${context.currentPropertyFactor}`}
                            element={<PropertyFactor/>}/>
              <Route path={'/property'} element={<MainProperty/>}/>
-            <Route path={`/property/airport-equipment/edit/${context.currentProperty}`} element={<EditAirportEquipment/>}/>
-            <Route path={`/property/airport-furniture/edit/${context.currentProperty}`} element={<EditAirportFurniture/>}/>
             <Route path={`/property/benefit/edit/${context.currentProperty}`} element={<EditBenefit/>}/>
             <Route path={`/property/digital-furniture/edit/${context.currentProperty}`} element={<EditDigitalFurniture/>}/>
             <Route path={`/property/electronic-furniture/edit/${context.currentProperty}`} element={<EditElectronicFurniture/>}/>

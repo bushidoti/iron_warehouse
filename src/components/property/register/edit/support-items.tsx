@@ -30,7 +30,7 @@ const EditSupportItem = () => {
                 if (data.status === 200) {
                     message.success('اموال بروز شد');
                     await fetchData()
-                    navigate('/warhouse/property/report')
+                    navigate('/property/report')
 
                 }
             })
@@ -53,7 +53,6 @@ const EditSupportItem = () => {
                 property: {
                     code: data.data.code,
                     factorCode: data.data.factorCode,
-                    inventory: data.data.inventory,
                     name: data.data.name,
                     model: data.data.model,
                     sub_item_type: data.data.sub_item_type,
@@ -88,7 +87,7 @@ const EditSupportItem = () => {
         <>
         <Form form={form}
               autoComplete="off"
-              name="property"
+              name="propertyRep"
               layout="vertical"
               onFinish={subObjAdd}
               validateMessages={validateMessages}

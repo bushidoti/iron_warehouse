@@ -5,27 +5,21 @@ import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
-import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
-import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
-import DirectionsBusFilledIcon from '@mui/icons-material/DirectionsBusFilled';
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import HeatPumpIcon from '@mui/icons-material/HeatPump';
 import DevicesIcon from '@mui/icons-material/Devices';
-import LivingIcon from '@mui/icons-material/Living';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import EmojiFoodBeverageIcon from '@mui/icons-material/EmojiFoodBeverage';
 import EngineeringIcon from '@mui/icons-material/Engineering';
 import CellWifiIcon from '@mui/icons-material/CellWifi';
 import SafetyEquipment from "./form/safety-equipment";
-import AirportEquipment from "./form/airport-equipment";
 import Vehicle from "./form/vehicle";
 import ElectronicFurniture from "./form/electronic-furniture";
 import OfficeFurniture from "./form/office-furniture";
 import FacilityFurniture from "./form/facility-furniture";
-import AirportFurniture from "./form/airport-furniture";
 import DigitalFurniture from "./form/digital-furniture";
 import NoneIndustrial from "./form/none_industrial";
 import SupportItem from "./form/support-items";
@@ -39,11 +33,6 @@ const items: MenuProps['items'] = [
     key: 'equipment',
     icon: <HomeRepairServiceIcon />,
     children: [
-         {
-            label: 'تجهیزات فرودگاهی',
-            key: 'تجهیزات فرودگاهی',
-            icon: <AirplaneTicketIcon />,
-          },
           {
             label:  'تجهیزات ایمنی',
             key: 'تجهیزات ایمنی',
@@ -60,16 +49,6 @@ const items: MenuProps['items'] = [
             label: 'خودرو اداری',
             key: 'خودرو اداری',
             icon: <DirectionsCarFilledIcon />,
-          },
-          {
-            label: 'خودرو فرودگاهی',
-            key: 'خودرو فرودگاهی',
-            icon: <DirectionsBusFilledIcon />,
-          },
-          {
-            label: 'هواپیما',
-            key: 'هواپیما',
-            icon: <AirplanemodeActiveIcon />,
           }
     ],
   },
@@ -92,11 +71,6 @@ const items: MenuProps['items'] = [
             label: 'اثاثه تاسیساتی',
             key: 'اثاثه تاسیساتی',
             icon: <HeatPumpIcon />,
-         },
-         {
-            label: 'اثاثه فرودگاهی',
-            key: 'اثاثه فرودگاهی',
-            icon: <LivingIcon />,
          },
          {
             label: 'اثاثه دیجیتالی',
@@ -163,10 +137,7 @@ const RepairRegister: React.FC = () => {
                     {(() => {
                         if (context.currentPropertyForm === 'تجهیزات ایمنی'){
                             return <SafetyEquipment/>
-                        } else if (context.currentPropertyForm === 'تجهیزات فرودگاهی'){
-                            return <AirportEquipment/>
-                        } else  if (context.currentPropertyForm === 'خودرو اداری' ||
-                            context.currentPropertyForm === 'خودرو فرودگاهی' || context.currentPropertyForm === 'هواپیما' ){
+                        } else  if (context.currentPropertyForm === 'خودرو اداری'){
                             return <Vehicle/>
                         } else if (context.currentPropertyForm === 'اثاثه الکترونیکی'){
                             return <ElectronicFurniture/>
@@ -174,8 +145,6 @@ const RepairRegister: React.FC = () => {
                             return <OfficeFurniture/>
                         } else if (context.currentPropertyForm === 'اثاثه تاسیساتی'){
                             return <FacilityFurniture/>
-                        } else if (context.currentPropertyForm === 'اثاثه فرودگاهی'){
-                            return <AirportFurniture/>
                         } else if (context.currentPropertyForm === 'اثاثه دیجیتالی'){
                             return <DigitalFurniture/>
                         } else if (context.currentPropertyForm === 'ابزار آلات غیر صنعتی'){

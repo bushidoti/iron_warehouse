@@ -25,7 +25,6 @@ const TablePrint = (props: {
                     <th className='th' scope="col">شماره موتور</th>
                     <th className='th' scope="col">یوزر</th>
                     <th className='th' scope="col">مالک</th>
-                    <th className='th' scope="col">انبار</th>
                 </tr>
                 </thead>
 
@@ -46,7 +45,6 @@ const TablePrint = (props: {
                         <td className='td'>{data.chassis}</td>
                         <td className='td'>{data.user}</td>
                         <td className='td'>{data.owner}</td>
-                        <td className='td'>{data.inventory}</td>
                     </tr>
                 ))
                 }
