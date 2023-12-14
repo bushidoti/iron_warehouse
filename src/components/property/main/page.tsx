@@ -5,16 +5,12 @@ import HomeRepairServiceIcon from '@mui/icons-material/HomeRepairService';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import EventSeatIcon from '@mui/icons-material/EventSeat';
 import DevicesOtherIcon from '@mui/icons-material/DevicesOther';
-import AirplaneTicketIcon from '@mui/icons-material/AirplaneTicket';
 import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
-import AirplanemodeActiveIcon from '@mui/icons-material/AirplanemodeActive';
-import DirectionsBusFilledIcon from '@mui/icons-material/DirectionsBusFilled';
 import DirectionsCarFilledIcon from '@mui/icons-material/DirectionsCarFilled';
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 import HeatPumpIcon from '@mui/icons-material/HeatPump';
 import DevicesIcon from '@mui/icons-material/Devices';
-import LivingIcon from '@mui/icons-material/Living';
 import ConstructionIcon from '@mui/icons-material/Construction';
 import EmojiFoodBeverageIcon from '@mui/icons-material/EmojiFoodBeverage';
 import EngineeringIcon from '@mui/icons-material/Engineering';
@@ -38,11 +34,6 @@ const items: MenuProps['items'] = [
     key: 'equipment',
     icon: <HomeRepairServiceIcon />,
     children: [
-         {
-            label: 'تجهیزات فرودگاهی',
-            key: 'تجهیزات فرودگاهی',
-            icon: <AirplaneTicketIcon />,
-          },
           {
             label:  'تجهیزات ایمنی',
             key: 'تجهیزات ایمنی',
@@ -59,16 +50,6 @@ const items: MenuProps['items'] = [
             label: 'خودرو اداری',
             key: 'خودرو اداری',
             icon: <DirectionsCarFilledIcon />,
-          },
-          {
-            label: 'خودرو فرودگاهی',
-            key: 'خودرو فرودگاهی',
-            icon: <DirectionsBusFilledIcon />,
-          },
-          {
-            label: 'هواپیما',
-            key: 'هواپیما',
-            icon: <AirplanemodeActiveIcon />,
           }
     ],
   },
@@ -91,11 +72,6 @@ const items: MenuProps['items'] = [
             label: 'اثاثه تاسیساتی',
             key: 'اثاثه تاسیساتی',
             icon: <HeatPumpIcon />,
-         },
-         {
-            label: 'اثاثه فرودگاهی',
-            key: 'اثاثه فرودگاهی',
-            icon: <LivingIcon />,
          },
          {
             label: 'اثاثه دیجیتالی',

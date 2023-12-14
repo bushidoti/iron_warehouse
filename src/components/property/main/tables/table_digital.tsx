@@ -260,7 +260,7 @@ const DigitalFurnitureTable: React.FC = () => {
             filteredValue: filteredInfo.code || null,
             render: (_value, record) => <Button disabled={record.movement_status === 'ارسال شده'} type={"link"} onClick={() => {
                 context.setCurrentProperty(record.code)
-                navigate(`/warhouse/property/digital-furniture/edit/${record.code}`)
+                navigate(`/property/digital-furniture/edit/${record.code}`)
              }}>{record.code}</Button>,
         }, {
             align: "center",
@@ -417,7 +417,7 @@ const DigitalFurnitureTable: React.FC = () => {
                 <Space.Compact>
                      <FactorSearchBar/>
                     <Button type={"primary"} loading={loading} disabled={context.currentPropertyFactor === 0} onClick={() => {
-                            navigate(`/warhouse/property/factor/${context.currentPropertyFactor}`)
+                            navigate(`/property/factor/${context.currentPropertyFactor}`)
                     }}>مشاهده</Button>
                 </Space.Compact>
             </Space>
